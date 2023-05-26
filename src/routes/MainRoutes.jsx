@@ -7,17 +7,14 @@ import Loadable from '~/ui-component/Loadable';
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('~/views/dashboard/Default')));
 
-// utilities routing
-const UtilsTypography = Loadable(lazy(() => import('~/views/utilities/Typography')));
-const UtilsColor = Loadable(lazy(() => import('~/views/utilities/Color')));
-const UtilsShadow = Loadable(lazy(() => import('~/views/utilities/Shadow')));
-const UtilsMaterialIcons = Loadable(lazy(() => import('~/views/utilities/MaterialIcons')));
-const UtilsTablerIcons = Loadable(lazy(() => import('~/views/utilities/TablerIcons')));
-
 // sample page routing
-const SamplePage = Loadable(lazy(() => import('~/views/sample-page')));
-
-// ==============================|| MAIN ROUTING ||============================== //
+const UserPage = Loadable(lazy(() => import('~/views/pages/users')));
+const SecurityTeamPage = Loadable(lazy(() => import('~/views/pages/securityTeams')));
+const OrganizationPage = Loadable(lazy(() => import('~/views/pages/organization')));
+const ForgotCheckoutReportPage = Loadable(lazy(() => import('~/views/pages/singularNoun/ForgotCheckoutReport')));
+const LatePatrolRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/LatePatrolRequest')));
+const LeaveRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/LeaveRequest')));
+const PatrolRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/PatrolRequest')));
 
 const MainRoutes = {
   path: '/',
@@ -37,44 +34,38 @@ const MainRoutes = {
       ]
     },
     {
-      path: 'utils',
+      path: 'users',
+      element: <UserPage />
+    },
+    {
+      path: 'security-teams',
+      element: <SecurityTeamPage />
+    },
+    {
+      path: 'organization',
+      element: <OrganizationPage />
+    },
+    {
+      path: 'singular-noun',
       children: [
         {
-          path: 'util-typography',
-          element: <UtilsTypography />
+          path: 'leave-request',
+          element: <LeaveRequestPage />
         },
         {
-          path: 'util-color',
-          element: <UtilsColor />
+          path: 'patrol-request',
+          element: <PatrolRequestPage />
         },
         {
-          path: 'util-shadow',
-          element: <UtilsShadow />
-        }
-      ]
-    },
-    {
-      path: 'icons',
-      children: [
+          path: 'late-patrol-request',
+          element: <LatePatrolRequestPage />
+        },
         {
-          path: 'tabler-icons',
-          element: <UtilsTablerIcons />
-        }
+          path: 'forgot-checkout-report',
+          element: <ForgotCheckoutReportPage />
+        },
       ]
     },
-    {
-      path: 'icons',
-      children: [
-        {
-          path: 'material-icons',
-          element: <UtilsMaterialIcons />
-        }
-      ]
-    },
-    {
-      path: 'sample-page',
-      element: <SamplePage />
-    }
   ]
 };
 
