@@ -142,7 +142,3 @@ Note: Cũng có thể có trường hợp đơn vị nhỏ, giám đốc là ng�
 	- Người tạo đơn
 	- Trạng thái đơn
 	- Người duyệt đơn (Bỏ trống nếu chưa có người duyệt đơn)
-
-4. Tổ trưởng tổ bảo vệ
-4.1. Phân công tuần tra
-	4.1.1. Xem danh sách điểm tuần tra tổ phụ trách trên bản đồ
