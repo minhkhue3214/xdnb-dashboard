@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import {
   Drawer,
   Fab,
@@ -16,16 +14,17 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { IconSettings } from '@tabler/icons';
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // project imports
+import { useCustomizationStore } from '~/hooks/customization';
+import { gridSpacing } from '~/store/constant';
 import SubCard from '~/ui-component/cards/SubCard';
 import AnimateButton from '~/ui-component/extended/AnimateButton';
-import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from '~/store/actions';
-import { gridSpacing } from '~/store/constant';
 
 // concat 'px'
 function valueText(value) {
@@ -36,8 +35,7 @@ function valueText(value) {
 
 const Customization = () => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const customization = useSelector((state) => state.customization);
+  const { customizationState, dispatchSetBorderRadius, dispatchSetFontFamily } = useCustomizationStore();
 
   // drawer on/off
   const [open, setOpen] = useState(false);
@@ -46,17 +44,17 @@ const Customization = () => {
   };
 
   // state - border radius
-  const [borderRadius, setBorderRadius] = useState(customization.borderRadius);
+  const [borderRadius, setBorderRadius] = useState(customizationState.borderRadius);
   const handleBorderRadius = (event, newValue) => {
     setBorderRadius(newValue);
   };
 
   useEffect(() => {
-    dispatch({ type: SET_BORDER_RADIUS, borderRadius });
-  }, [dispatch, borderRadius]);
+    dispatchSetBorderRadius(borderRadius);
+  }, [borderRadius, dispatchSetBorderRadius]);
 
   let initialFont;
-  switch (customization.fontFamily) {
+  switch (customizationState.fontFamily) {
     case `'Inter', sans-serif`:
       initialFont = 'Inter';
       break;
@@ -85,8 +83,8 @@ const Customization = () => {
         newFont = `'Roboto', sans-serif`;
         break;
     }
-    dispatch({ type: SET_FONT_FAMILY, fontFamily: newFont });
-  }, [dispatch, fontFamily]);
+    dispatchSetFontFamily(newFont);
+  }, [dispatchSetFontFamily, fontFamily]);
 
   return (
     <>

@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
 // material-ui
@@ -12,7 +11,7 @@ import Sidebar from './Sidebar';
 // import Customization from '../Customization';
 import navigation from '~/menu-items';
 import { drawerWidth } from '~/store/constant';
-import { SET_MENU } from '~/store/actions';
+import { useCustomizationStore } from '~/hooks/customization';
 
 // assets
 import { IconChevronRight } from '@tabler/icons';
@@ -56,11 +55,12 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 const MainLayout = () => {
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
+  const { customizationState, dispatchSetMenu } = useCustomizationStore();
+
   // Handle left drawer
-  const leftDrawerOpened = useSelector((state) => state.customization.opened);
-  const dispatch = useDispatch();
+  const leftDrawerOpened = customizationState.opened;
   const handleLeftDrawerToggle = () => {
-    dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
+    dispatchSetMenu(!leftDrawerOpened);
   };
 
   return (
