@@ -21,7 +21,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 // project imports
-import useScriptRef from '~/hooks/useScriptRef';
+import { useAuthenticationStore } from '~/hooks/authentication';
 import AnimateButton from '~/ui-component/extended/AnimateButton';
 
 // assets
@@ -30,9 +30,9 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
   const [checked, setChecked] = useState(true);
 
+  const { dispatchLogin } = useAuthenticationStore();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -56,17 +56,19 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            if (scriptedRef.current) {
+            const result = dispatchLogin();
+
+            console.log('result', result);
+
+            if (result) {
               setStatus({ success: true });
               setSubmitting(false);
             }
           } catch (err) {
             console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
+            setStatus({ success: false });
+            setErrors({ submit: err.message });
+            setSubmitting(false);
           }
         }}
       >
@@ -135,9 +137,6 @@ const FirebaseLogin = ({ ...others }) => {
                 }
                 label="Ghi nhớ mật khẩu"
               />
-              {/* <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                Forgot Password?
-              </Typography> */}
             </Stack>
             <Box sx={{ mt: 3, visibility: errors.submit ? 'visible' : 'hidden' }}>
               <FormHelperText error>{errors.submit}</FormHelperText>

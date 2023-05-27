@@ -1,18 +1,14 @@
 import { Link } from 'react-router-dom';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // project imports
-import AuthWrapper1 from '../AuthWrapper1';
-import AuthCardWrapper from '../AuthCardWrapper';
-import AuthLogin from '../auth-forms/AuthLogin';
 import Logo from '~/ui-component/Logo';
-
-// assets
-
-// ================================|| AUTH3 - LOGIN ||================================ //
+import AuthCardWrapper from '../AuthCardWrapper';
+import AuthWrapper1 from '../AuthWrapper1';
+import AuthLogin from '../auth-forms/AuthLogin';
 
 const Login = () => {
   const theme = useTheme();
@@ -38,9 +34,6 @@ const Login = () => {
                           <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
                             Dashboard quản lý bảo vệ
                           </Typography>
-                          {/* <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Enter your credentials to continue
-                          </Typography> */}
                         </Stack>
                       </Grid>
                     </Grid>
@@ -48,23 +41,12 @@ const Login = () => {
                   <Grid item xs={12}>
                     <AuthLogin />
                   </Grid>
-                  {/* <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to="/pages/register/register3" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Don&apos;t have an account?
-                      </Typography>
-                    </Grid>
-                  </Grid> */}
                 </Grid>
               </AuthCardWrapper>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-        </Grid>
+        <Grid item xs={12} sx={{ m: 3, mt: 1 }}></Grid>
       </Grid>
     </AuthWrapper1>
   );

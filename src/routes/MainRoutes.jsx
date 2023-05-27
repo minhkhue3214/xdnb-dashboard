@@ -1,4 +1,7 @@
 import { lazy } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+
+import { useAuthenticationStore } from '~/hooks/authentication';
 
 // project imports
 import MainLayout from '~/layout/MainLayout';
@@ -16,9 +19,22 @@ const LatePatrolRequestPage = Loadable(lazy(() => import('~/views/pages/singular
 const LeaveRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/LeaveRequest')));
 const PatrolRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/PatrolRequest')));
 
+function ProtectedRoute() {
+  // Kiểm tra trạng thái đăng nhập ở đây
+  const { authenticationState } = useAuthenticationStore(); // Thay checkLoginStatus bằng hàm kiểm tra trạng thái đăng nhập thực tế
+
+  return authenticationState.isLogin ? (
+    <MainLayout>
+      <Outlet />
+    </MainLayout>
+  ) : (
+    <Navigate to="/login" replace />
+  );
+}
+
 const MainRoutes = {
   path: '/',
-  element: <MainLayout />,
+  element: <ProtectedRoute />,
   children: [
     {
       path: '/',
@@ -63,9 +79,9 @@ const MainRoutes = {
         {
           path: 'forgot-checkout-report',
           element: <ForgotCheckoutReportPage />
-        },
+        }
       ]
-    },
+    }
   ]
 };
 

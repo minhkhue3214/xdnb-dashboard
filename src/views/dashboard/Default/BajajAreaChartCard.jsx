@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useCustomizationStore } from '~/hooks/customization';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import { Card, Grid, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // third-party
 import ApexCharts from 'apexcharts';
@@ -16,8 +16,8 @@ import chartData from './chart-data/bajaj-area-chart';
 
 const BajajAreaChartCard = () => {
   const theme = useTheme();
-  const customization = useSelector((state) => state.customization);
-  const { navType } = customization;
+  const { customizationState } = useCustomizationStore();
+  const { navType } = customizationState;
 
   const orangeDark = theme.palette.secondary[800];
 
