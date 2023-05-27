@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useCustomizationStore } from '~/hooks/customization';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -38,9 +38,9 @@ const status = [
 const TotalGrowthBarChart = ({ isLoading }) => {
   const [value, setValue] = useState('today');
   const theme = useTheme();
-  const customization = useSelector((state) => state.customization);
+  const { customizationState } = useCustomizationStore();
 
-  const { navType } = customization;
+  const { navType } = customizationState;
   const { primary } = theme.palette.text;
   const darkLight = theme.palette.dark.light;
   const grey200 = theme.palette.grey[200];

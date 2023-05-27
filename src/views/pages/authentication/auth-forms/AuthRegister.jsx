@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Button,
@@ -21,13 +19,13 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // third party
-import * as Yup from 'yup';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 // project imports
-import useScriptRef from '~/hooks/useScriptRef';
 import Google from '~/assets/images/icons/social-google.svg';
 import AnimateButton from '~/ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from '~/utils/password-strength';
@@ -35,14 +33,14 @@ import { strengthColor, strengthIndicator } from '~/utils/password-strength';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useCustomizationStore } from '~/hooks/customization';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const FirebaseRegister = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.customization);
+  const { customizationState } = useCustomizationStore();
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
@@ -107,7 +105,7 @@ const FirebaseRegister = ({ ...others }) => {
                 borderColor: `${theme.palette.grey[100]} !important`,
                 color: `${theme.palette.grey[900]}!important`,
                 fontWeight: 500,
-                borderRadius: `${customization.borderRadius}px`
+                borderRadius: `${customizationState.borderRadius}px`
               }}
               disableRipple
               disabled
@@ -136,17 +134,12 @@ const FirebaseRegister = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
+            setStatus({ success: true });
+            setSubmitting(false);
           } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
+            setStatus({ success: false });
+            setErrors({ submit: err.message });
+            setSubmitting(false);
           }
         }}
       >
