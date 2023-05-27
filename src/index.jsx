@@ -11,6 +11,7 @@ import store from '~/store';
 // style + assets
 import '~/assets/scss/style.scss';
 import config from '~/config';
+import './i18n.js';
 
 // ==============================|| REACT DOM RENDER  ||============================== //
 
