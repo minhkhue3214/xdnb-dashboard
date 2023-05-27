@@ -45,7 +45,7 @@ import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 const ProfileSection = () => {
   const theme = useTheme();
   const { customizationState } = useCustomizationStore();
-  const { dispatchLogout }  = useAuthenticationStore();
+  const { dispatchLogout } = useAuthenticationStore();
 
   const navigate = useNavigate();
 

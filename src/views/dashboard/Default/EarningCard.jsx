@@ -18,7 +18,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import EarningIcon from '~/assets/images/icons/earning.svg';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.dark,
@@ -59,9 +59,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
 const EarningCard = ({ isLoading }) => {
-  const { t, i18n } = useTranslation();
-
-  const lng = navigator.language;
+  const { t } = useTranslation();
 
   const theme = useTheme();
 
@@ -173,7 +171,7 @@ const EarningCard = ({ isLoading }) => {
                     color: theme.palette.secondary[200]
                   }}
                 >
-                  <h1>{t("welcome text")}</h1>
+                  <h1>{t('welcome text')}</h1>
                 </Typography>
               </Grid>
             </Grid>
