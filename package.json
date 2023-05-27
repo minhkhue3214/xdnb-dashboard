@@ -34,7 +34,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "lint":"eslint src --ext .js,.jsx --max-warnings=0"
+    "lint":"eslint src --ext .js,.jsx"
   },
   "eslintConfig": {
     "extends": [
