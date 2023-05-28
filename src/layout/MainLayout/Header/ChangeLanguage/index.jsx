@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // material-ui
@@ -8,10 +8,13 @@ const ChangeLanguage = () => {
   const { i18n } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    setSelectedLanguage(lng);
-  };
+  const changeLanguage = useCallback(
+    (lng) => {
+      i18n.changeLanguage(lng);
+      setSelectedLanguage(lng);
+    },
+    [i18n]
+  );
 
   return (
     <ButtonGroup variant="contained" aria-label="outlined primary button group">
@@ -33,4 +36,4 @@ const ChangeLanguage = () => {
   );
 };
 
-export default ChangeLanguage;
+export default memo(ChangeLanguage);

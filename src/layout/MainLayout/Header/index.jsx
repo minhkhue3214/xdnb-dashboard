@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -13,8 +14,6 @@ import ChangeLanguage from './ChangeLanguage';
 
 // assets
 import { IconMenu2 } from '@tabler/icons';
-
-// ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
 const Header = ({ handleLeftDrawerToggle }) => {
   const theme = useTheme();
@@ -73,4 +72,4 @@ Header.propTypes = {
   handleLeftDrawerToggle: PropTypes.func
 };
 
-export default Header;
+export default memo(Header);

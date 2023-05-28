@@ -1,8 +1,7 @@
+import { memo } from 'react';
 // material-ui
 import { Card, CardContent, Grid } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
-
-// ==============================|| SKELETON - EARNING CARD ||============================== //
 
 const EarningCard = () => (
   <Card>
@@ -29,4 +28,4 @@ const EarningCard = () => (
   </Card>
 );
 
-export default EarningCard;
+export default memo(EarningCard);

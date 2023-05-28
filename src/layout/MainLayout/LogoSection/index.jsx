@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
@@ -10,12 +11,11 @@ import Logo from '~/ui-component/Logo';
 
 const LogoSection = () => {
   const { customizationState, dispatchMenuOpen } = useCustomizationStore();
-  const defaultId = customizationState.defaultId;
   return (
-    <ButtonBase disableRipple onClick={() => dispatchMenuOpen(defaultId)} component={Link} to={config.defaultPath}>
+    <ButtonBase disableRipple onClick={() => dispatchMenuOpen(customizationState.defaultId)} component={Link} to={config.defaultPath}>
       <Logo />
     </ButtonBase>
   );
 };
 
-export default LogoSection;
+export default memo(LogoSection);

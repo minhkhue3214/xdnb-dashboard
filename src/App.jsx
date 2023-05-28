@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useCustomizationStore } from './hooks/customization';
 
 import { ThemeProvider } from '@mui/material/styles';
@@ -27,4 +28,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default memo(App);

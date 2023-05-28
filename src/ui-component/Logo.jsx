@@ -1,3 +1,4 @@
+import { memo } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 
@@ -66,4 +67,4 @@ const Logo = () => {
   );
 };
 
-export default Logo;
+export default memo(Logo);

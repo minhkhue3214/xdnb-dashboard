@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
@@ -14,8 +15,6 @@ import NavItem from '../NavItem';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons';
 
-// ==============================|| SIDEBAR MENU LIST COLLAPSE ITEMS ||============================== //
-
 const NavCollapse = ({ menu, level }) => {
   const theme = useTheme();
   const { customizationState } = useCustomizationStore();
@@ -23,24 +22,27 @@ const NavCollapse = ({ menu, level }) => {
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
+  const { pathname } = useLocation();
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setOpen(!open);
     setSelected(!selected ? menu.id : null);
     if (menu?.id !== 'authentication') {
       navigate(menu.children[0]?.url);
     }
-  };
+  }, [menu.children, menu.id, navigate, open, selected]);
 
-  const { pathname } = useLocation();
-  const checkOpenForParent = (child, id) => {
-    child.forEach((item) => {
-      if (item.url === pathname) {
-        setOpen(true);
-        setSelected(id);
-      }
-    });
-  };
+  const checkOpenForParent = useCallback(
+    (child, id) => {
+      child.forEach((item) => {
+        if (item.url === pathname) {
+          setOpen(true);
+          setSelected(id);
+        }
+      });
+    },
+    [pathname]
+  );
 
   // menu collapse for sub-levels
   useEffect(() => {
@@ -155,4 +157,4 @@ NavCollapse.propTypes = {
   level: PropTypes.number
 };
 
-export default NavCollapse;
+export default memo(NavCollapse);

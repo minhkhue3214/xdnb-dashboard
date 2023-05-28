@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -56,8 +56,6 @@ const HeaderAvatarStyle = styled(Avatar, { shouldForwardProp })(({ theme }) => (
   }
 }));
 
-// ==============================|| SEARCH INPUT - MOBILE||============================== //
-
 const MobileSearch = ({ value, setValue, popupState }) => {
   const theme = useTheme();
 
@@ -112,8 +110,6 @@ MobileSearch.propTypes = {
   setValue: PropTypes.func,
   popupState: PopupState
 };
-
-// ==============================|| SEARCH INPUT ||============================== //
 
 const SearchSection = () => {
   const theme = useTheme();
@@ -189,4 +185,4 @@ const SearchSection = () => {
   );
 };
 
-export default SearchSection;
+export default memo(SearchSection);
