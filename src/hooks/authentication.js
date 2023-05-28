@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '~/store/authentication';
+import { loginRequest, logoutSuccess } from '~/store/slices/authentication';
 
 const useAuthenticationStore = () => {
   const dispatch = useDispatch();
@@ -9,7 +9,7 @@ const useAuthenticationStore = () => {
 
   const dispatchLogin = useCallback(
     (payload) => {
-      dispatch(login(payload));
+      dispatch(loginRequest(payload));
 
       return true;
     },
@@ -17,7 +17,7 @@ const useAuthenticationStore = () => {
   );
 
   const dispatchLogout = useCallback(() => {
-    dispatch(logout());
+    dispatch(logoutSuccess());
 
     return true;
   }, [dispatch]);

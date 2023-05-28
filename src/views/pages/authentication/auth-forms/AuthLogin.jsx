@@ -1,4 +1,4 @@
-import { useState, memo, useCallback } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 import {
   Box,
@@ -57,9 +57,11 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            const result = dispatchLogin();
-
-            console.log('result', result);
+            console.log('value', values);
+            const result = dispatchLogin({
+              user_name: values.username,
+              password: values.password
+            });
 
             if (result) {
               setStatus({ success: true });

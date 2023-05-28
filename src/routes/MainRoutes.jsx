@@ -23,7 +23,9 @@ function ProtectedRoute() {
   // Kiểm tra trạng thái đăng nhập ở đây
   const { authenticationState } = useAuthenticationStore(); // Thay checkLoginStatus bằng hàm kiểm tra trạng thái đăng nhập thực tế
 
-  return authenticationState.isLogin ? (
+  console.log('authenticationState.loginInfo', authenticationState.loginInfo);
+
+  return authenticationState.loginInfo ? (
     <MainLayout>
       <Outlet />
     </MainLayout>
