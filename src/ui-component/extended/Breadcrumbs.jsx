@@ -39,7 +39,7 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
       height: '1rem',
       color: theme.palette.secondary.main
     };
-  });
+  }, [theme]);
 
   const [main, setMain] = useState();
   const [item, setItem] = useState();

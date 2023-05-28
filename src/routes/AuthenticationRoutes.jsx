@@ -15,7 +15,7 @@ function NoneProtectedRoute() {
   // Kiểm tra trạng thái đăng nhập ở đây
   const { authenticationState } = useAuthenticationStore(); // Thay checkLoginStatus bằng hàm kiểm tra trạng thái đăng nhập thực tế
 
-  return !authenticationState.isLogin ? (
+  return !authenticationState.loginInfo ? (
     <MinimalLayout>
       <Outlet />
     </MinimalLayout>

@@ -1,15 +1,9 @@
-import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-
-import customization from './customization';
-import authentication from './authentication';
-
-const rootReducer = combineReducers({
-  authentication,
-  customization
-});
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from '~/store/sagas/rootSaga';
+import rootReducer from '~/store/slices/rootReducer';
 
 const persistConfig = {
   key: 'root',
@@ -18,9 +12,13 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
+const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
-  reducer: persistedReducer
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware)
 });
+
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);

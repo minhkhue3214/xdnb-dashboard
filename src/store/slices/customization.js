@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import config from '~/config';
 
 export const customization = createSlice({
-  name: 'customization',
+  name: 'toast',
   initialState: {
     isOpen: [], // for active default menu
     defaultId: 'default',
