@@ -1,3 +1,5 @@
+import { memo, useMemo } from 'react';
+
 import PropTypes from 'prop-types';
 
 // material-ui
@@ -18,34 +20,38 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
   const theme = useTheme();
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
-  const drawer = (
-    <>
-      <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-        <Box sx={{ display: 'flex', p: 2, mx: 'auto' }}>
-          <LogoSection />
+  const drawer = useMemo(() => {
+    return (
+      <>
+        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+          <Box sx={{ display: 'flex', p: 2, mx: 'auto' }}>
+            <LogoSection />
+          </Box>
         </Box>
-      </Box>
-      <BrowserView>
-        <PerfectScrollbar
-          component="div"
-          style={{
-            height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
-            paddingLeft: '16px',
-            paddingRight: '16px'
-          }}
-        >
-          <MenuList />
-        </PerfectScrollbar>
-      </BrowserView>
-      <MobileView>
-        <Box sx={{ px: 2 }}>
-          <MenuList />
-        </Box>
-      </MobileView>
-    </>
-  );
+        <BrowserView>
+          <PerfectScrollbar
+            component="div"
+            style={{
+              height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
+              paddingLeft: '16px',
+              paddingRight: '16px'
+            }}
+          >
+            <MenuList />
+          </PerfectScrollbar>
+        </BrowserView>
+        <MobileView>
+          <Box sx={{ px: 2 }}>
+            <MenuList />
+          </Box>
+        </MobileView>
+      </>
+    );
+  }, [matchUpMd]);
 
-  const container = window !== undefined ? () => window.document.body : undefined;
+  const container = useMemo(() => {
+    return window !== undefined ? () => window.document.body : undefined;
+  }, [window]);
 
   return (
     <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
@@ -81,4 +87,4 @@ Sidebar.propTypes = {
   window: PropTypes.object
 };
 
-export default Sidebar;
+export default memo(Sidebar);

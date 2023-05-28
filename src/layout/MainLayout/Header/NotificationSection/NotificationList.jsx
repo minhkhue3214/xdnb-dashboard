@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import {
@@ -33,34 +34,41 @@ const ListItemWrapper = styled('div')(({ theme }) => ({
   }
 }));
 
-// ==============================|| NOTIFICATION LIST ITEM ||============================== //
-
 const NotificationList = () => {
   const theme = useTheme();
 
-  const chipSX = {
-    height: 24,
-    padding: '0 6px'
-  };
-  const chipErrorSX = {
-    ...chipSX,
-    color: theme.palette.orange.dark,
-    backgroundColor: theme.palette.orange.light,
-    marginRight: '5px'
-  };
+  const chipSX = useMemo(() => {
+    return {
+      height: 24,
+      padding: '0 6px'
+    };
+  }, []);
 
-  const chipWarningSX = {
-    ...chipSX,
-    color: theme.palette.warning.dark,
-    backgroundColor: theme.palette.warning.light
-  };
+  const chipErrorSX = useMemo(() => {
+    return {
+      ...chipSX,
+      color: theme.palette.orange.dark,
+      backgroundColor: theme.palette.orange.light,
+      marginRight: '5px'
+    };
+  }, [chipSX, theme.palette.orange.dark, theme.palette.orange.light]);
 
-  const chipSuccessSX = {
-    ...chipSX,
-    color: theme.palette.success.dark,
-    backgroundColor: theme.palette.success.light,
-    height: 28
-  };
+  const chipWarningSX = useMemo(() => {
+    return {
+      ...chipSX,
+      color: theme.palette.warning.dark,
+      backgroundColor: theme.palette.warning.light
+    };
+  }, [chipSX, theme.palette.warning.dark, theme.palette.warning.light]);
+
+  const chipSuccessSX = useMemo(() => {
+    return {
+      ...chipSX,
+      color: theme.palette.success.dark,
+      backgroundColor: theme.palette.success.light,
+      height: 28
+    };
+  }, [chipSX, theme.palette.success.dark, theme.palette.success.light]);
 
   return (
     <List
@@ -279,4 +287,4 @@ const NotificationList = () => {
   );
 };
 
-export default NotificationList;
+export default memo(NotificationList);

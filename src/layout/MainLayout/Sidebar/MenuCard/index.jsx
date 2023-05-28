@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 
 // material-ui
@@ -49,8 +50,6 @@ const CardStyle = styled(Card)(({ theme }) => ({
   }
 }));
 
-// ==============================|| PROGRESS BAR WITH LABEL ||============================== //
-
 function LinearProgressWithLabel({ value, ...others }) {
   const theme = useTheme();
 
@@ -78,8 +77,6 @@ function LinearProgressWithLabel({ value, ...others }) {
 LinearProgressWithLabel.propTypes = {
   value: PropTypes.number
 };
-
-// ==============================|| SIDEBAR MENU Card ||============================== //
 
 const MenuCard = () => {
   const theme = useTheme();
@@ -122,4 +119,4 @@ const MenuCard = () => {
   );
 };
 
-export default MenuCard;
+export default memo(MenuCard);

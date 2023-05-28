@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
@@ -35,8 +35,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useCustomizationStore } from '~/hooks/customization';
 
-// ===========================|| FIREBASE - REGISTER ||=========================== //
-
 const FirebaseRegister = ({ ...others }) => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -47,27 +45,27 @@ const FirebaseRegister = ({ ...others }) => {
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
 
-  const googleHandler = async () => {
+  const googleHandler = useCallback(() => {
     console.error('Register');
-  };
+  }, []);
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const handleClickShowPassword = useCallback(() => {
+    setShowPassword((value) => !value);
+  }, []);
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = useCallback((event) => {
     event.preventDefault();
-  };
+  }, []);
 
-  const changePassword = (value) => {
+  const changePassword = useCallback((value) => {
     const temp = strengthIndicator(value);
     setStrength(temp);
     setLevel(strengthColor(temp));
-  };
+  }, []);
 
   useEffect(() => {
     changePassword('123456');
-  }, []);
+  }, [changePassword]);
 
   return (
     <>
@@ -276,4 +274,4 @@ const FirebaseRegister = ({ ...others }) => {
   );
 };
 
-export default FirebaseRegister;
+export default memo(FirebaseRegister);

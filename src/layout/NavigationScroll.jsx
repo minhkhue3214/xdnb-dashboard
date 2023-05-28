@@ -1,8 +1,7 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
-// ==============================|| NAVIGATION SCROLL TO TOP ||============================== //
 
 const NavigationScroll = ({ children }) => {
   const location = useLocation();
@@ -23,4 +22,4 @@ NavigationScroll.propTypes = {
   children: PropTypes.node
 };
 
-export default NavigationScroll;
+export default memo(NavigationScroll);

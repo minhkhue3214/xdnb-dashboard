@@ -1,3 +1,4 @@
+import { memo, useCallback, useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 
 // material-ui
@@ -49,19 +50,17 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
     marginRight: '10px'
   }
 }));
-
-// ==============================|| MAIN LAYOUT ||============================== //
-
 const MainLayout = () => {
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   const { customizationState, dispatchSetMenu } = useCustomizationStore();
 
   // Handle left drawer
-  const leftDrawerOpened = customizationState.opened;
-  const handleLeftDrawerToggle = () => {
+  const leftDrawerOpened = useMemo(() => customizationState.opened, [customizationState.opened]);
+
+  const handleLeftDrawerToggle = useCallback(() => {
     dispatchSetMenu(!leftDrawerOpened);
-  };
+  }, [dispatchSetMenu, leftDrawerOpened]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -96,4 +95,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default memo(MainLayout);

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
 
@@ -9,8 +10,6 @@ import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/materia
 const headerSX = {
   '& .MuiCardHeader-action': { mr: 0 }
 };
-
-// ==============================|| CUSTOM MAIN CARD ||============================== //
 
 const MainCard = forwardRef(
   (
@@ -77,4 +76,4 @@ MainCard.propTypes = {
   title: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object])
 };
 
-export default MainCard;
+export default memo(MainCard);

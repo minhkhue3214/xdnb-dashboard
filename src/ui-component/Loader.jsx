@@ -1,3 +1,4 @@
+import { memo } from 'react';
 // material-ui
 import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
@@ -11,11 +12,10 @@ const LoaderWrapper = styled('div')({
   width: '100%'
 });
 
-// ==============================|| LOADER ||============================== //
 const Loader = () => (
   <LoaderWrapper>
     <LinearProgress color="primary" />
   </LoaderWrapper>
 );
 
-export default Loader;
+export default memo(Loader);

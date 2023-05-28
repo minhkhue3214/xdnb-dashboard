@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo, useCallback } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { useAuthenticationStore } from '~/hooks/authentication';
@@ -40,8 +40,6 @@ import User1 from '~/assets/images/users/user-round.svg';
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 
-// ==============================|| PROFILE MENU ||============================== //
-
 const ProfileSection = () => {
   const theme = useTheme();
   const { customizationState } = useCustomizationStore();
@@ -54,34 +52,37 @@ const ProfileSection = () => {
   const [notification, setNotification] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
-  /**
-   * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-   * */
-  const anchorRef = useRef(null);
-  const handleLogout = async () => {
-    dispatchLogout();
-  };
 
-  const handleClose = (event) => {
+  const prevOpen = useRef(open);
+  const anchorRef = useRef(null);
+
+  const handleLogout = useCallback(() => {
+    dispatchLogout();
+  }, [dispatchLogout]);
+
+  const handleClose = useCallback((event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
     setOpen(false);
-  };
+  }, []);
 
-  const handleListItemClick = (event, index, route = '') => {
-    setSelectedIndex(index);
-    handleClose(event);
+  const handleListItemClick = useCallback(
+    (event, index, route = '') => {
+      setSelectedIndex(index);
+      handleClose(event);
 
-    if (route && route !== '') {
-      navigate(route);
-    }
-  };
-  const handleToggle = () => {
+      if (route && route !== '') {
+        navigate(route);
+      }
+    },
+    [handleClose, navigate]
+  );
+
+  const handleToggle = useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
-  };
+  }, []);
 
-  const prevOpen = useRef(open);
   useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
@@ -309,4 +310,4 @@ const ProfileSection = () => {
   );
 };
 
-export default ProfileSection;
+export default memo(ProfileSection);

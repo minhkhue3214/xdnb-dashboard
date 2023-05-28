@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
@@ -32,8 +32,7 @@ import NotificationList from './NotificationList';
 // assets
 import { IconBell } from '@tabler/icons';
 
-// notification status options
-const status = [
+const STATUS = [
   {
     value: 'all',
     label: 'All Notification'
@@ -52,31 +51,26 @@ const status = [
   }
 ];
 
-// ==============================|| NOTIFICATION ||============================== //
-
 const NotificationSection = () => {
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
-  /**
-   * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-   * */
   const anchorRef = useRef(null);
+  const prevOpen = useRef(open);
 
-  const handleToggle = () => {
+  const handleToggle = useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
-  };
+  }, []);
 
-  const handleClose = (event) => {
+  const handleClose = useCallback((event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
     setOpen(false);
-  };
+  }, []);
 
-  const prevOpen = useRef(open);
   useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
@@ -84,9 +78,9 @@ const NotificationSection = () => {
     prevOpen.current = open;
   }, [open]);
 
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     if (event?.target.value) setValue(event?.target.value);
-  };
+  }, []);
 
   return (
     <>
@@ -184,7 +178,7 @@ const NotificationSection = () => {
                                   native: true
                                 }}
                               >
-                                {status.map((option) => (
+                                {STATUS.map((option) => (
                                   <option key={option.value} value={option.value}>
                                     {option.label}
                                   </option>
@@ -216,4 +210,4 @@ const NotificationSection = () => {
   );
 };
 
-export default NotificationSection;
+export default memo(NotificationSection);

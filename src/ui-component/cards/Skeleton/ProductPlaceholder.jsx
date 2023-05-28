@@ -1,10 +1,9 @@
+import { memo } from 'react';
 // material-ui
 import { CardContent, Grid, Skeleton, Stack } from '@mui/material';
 
 // project import
 import MainCard from '../MainCard';
-
-// ===========================|| SKELETON TOTAL GROWTH BAR CHART ||=========================== //
 
 const ProductPlaceholder = () => (
   <MainCard content={false} boxShadow>
@@ -41,4 +40,4 @@ const ProductPlaceholder = () => (
   </MainCard>
 );
 
-export default ProductPlaceholder;
+export default memo(ProductPlaceholder);

@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
-
-// ==============================|| CUSTOM SUB CARD ||============================== //
 
 const SubCard = forwardRef(({ children, content, contentClass, darkTitle, secondary, sx = {}, contentSX = {}, title, ...others }, ref) => {
   const theme = useTheme();
@@ -63,4 +61,4 @@ SubCard.defaultProps = {
   content: true
 };
 
-export default SubCard;
+export default memo(SubCard);

@@ -1,7 +1,7 @@
+import { memo } from 'react';
+
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-
-// ==============================|| ANIMATION FOR CONTENT ||============================== //
 
 const NavMotion = ({ children }) => {
   const motionVariants = {
@@ -36,4 +36,4 @@ NavMotion.propTypes = {
   children: PropTypes.node
 };
 
-export default NavMotion;
+export default memo(NavMotion);

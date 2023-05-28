@@ -1,3 +1,4 @@
+import { memo, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -30,19 +31,21 @@ const linkSX = {
 const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAlign, separator, title, titleBottom, ...others }) => {
   const theme = useTheme();
 
-  const iconStyle = {
-    marginRight: theme.spacing(0.75),
-    marginTop: `-${theme.spacing(0.25)}`,
-    width: '1rem',
-    height: '1rem',
-    color: theme.palette.secondary.main
-  };
+  const iconStyle = useMemo(() => {
+    return {
+      marginRight: theme.spacing(0.75),
+      marginTop: `-${theme.spacing(0.25)}`,
+      width: '1rem',
+      height: '1rem',
+      color: theme.palette.secondary.main
+    };
+  });
 
   const [main, setMain] = useState();
   const [item, setItem] = useState();
 
   // set active item state
-  const getCollapse = (menu) => {
+  const getCollapse = useCallback((menu) => {
     if (menu.children) {
       menu.children.filter((collapse) => {
         if (collapse.type && collapse.type === 'collapse') {
@@ -56,7 +59,7 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
         return false;
       });
     }
-  };
+  }, []);
 
   useEffect(() => {
     navigation?.items?.map((menu) => {
@@ -184,4 +187,4 @@ Breadcrumbs.propTypes = {
   titleBottom: PropTypes.bool
 };
 
-export default Breadcrumbs;
+export default memo(Breadcrumbs);

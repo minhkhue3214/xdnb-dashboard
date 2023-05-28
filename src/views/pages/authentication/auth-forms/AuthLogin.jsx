@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 
 import {
   Box,
@@ -34,13 +34,14 @@ const FirebaseLogin = ({ ...others }) => {
 
   const { dispatchLogin } = useAuthenticationStore();
   const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
-  const handleMouseDownPassword = (event) => {
+  const handleClickShowPassword = useCallback(() => {
+    setShowPassword((value) => !value);
+  }, []);
+
+  const handleMouseDownPassword = useCallback((event) => {
     event.preventDefault();
-  };
+  }, []);
 
   return (
     <>
@@ -156,4 +157,4 @@ const FirebaseLogin = ({ ...others }) => {
   );
 };
 
-export default FirebaseLogin;
+export default memo(FirebaseLogin);

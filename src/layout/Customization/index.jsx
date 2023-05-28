@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, memo } from 'react';
 
 // material-ui
 import {
@@ -31,43 +31,45 @@ function valueText(value) {
   return `${value}px`;
 }
 
-// ==============================|| LIVE CUSTOMIZATION ||============================== //
-
 const Customization = () => {
   const theme = useTheme();
   const { customizationState, dispatchSetBorderRadius, dispatchSetFontFamily } = useCustomizationStore();
+  const [open, setOpen] = useState(false);
+  const [borderRadius, setBorderRadius] = useState(customizationState.borderRadius);
 
   // drawer on/off
-  const [open, setOpen] = useState(false);
   const handleToggle = () => {
     setOpen(!open);
   };
 
   // state - border radius
-  const [borderRadius, setBorderRadius] = useState(customizationState.borderRadius);
-  const handleBorderRadius = (event, newValue) => {
+  const handleBorderRadius = useCallback((_, newValue) => {
     setBorderRadius(newValue);
-  };
+  }, []);
 
   useEffect(() => {
     dispatchSetBorderRadius(borderRadius);
   }, [borderRadius, dispatchSetBorderRadius]);
 
-  let initialFont;
-  switch (customizationState.fontFamily) {
-    case `'Inter', sans-serif`:
-      initialFont = 'Inter';
-      break;
-    case `'Poppins', sans-serif`:
-      initialFont = 'Poppins';
-      break;
-    case `'Roboto', sans-serif`:
-    default:
-      initialFont = 'Roboto';
-      break;
-  }
+  const initialFont = useMemo(() => {
+    let initialFont;
 
-  // state - font family
+    switch (customizationState.fontFamily) {
+      case `'Inter', sans-serif`:
+        initialFont = 'Inter';
+        break;
+      case `'Poppins', sans-serif`:
+        initialFont = 'Poppins';
+        break;
+      case `'Roboto', sans-serif`:
+      default:
+        initialFont = 'Roboto';
+        break;
+    }
+
+    return initialFont;
+  }, [customizationState.fontFamily]);
+
   const [fontFamily, setFontFamily] = useState(initialFont);
   useEffect(() => {
     let newFont;
@@ -88,7 +90,6 @@ const Customization = () => {
 
   return (
     <>
-      {/* toggle button */}
       <Tooltip title="Live Customize">
         <Fab
           component="div"
@@ -213,4 +214,4 @@ const Customization = () => {
   );
 };
 
-export default Customization;
+export default memo(Customization);

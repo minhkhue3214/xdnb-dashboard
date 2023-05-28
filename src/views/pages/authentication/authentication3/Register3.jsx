@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
@@ -69,4 +70,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default memo(Register);

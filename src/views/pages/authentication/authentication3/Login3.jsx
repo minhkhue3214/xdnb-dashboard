@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
@@ -52,4 +53,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default memo(Login);
