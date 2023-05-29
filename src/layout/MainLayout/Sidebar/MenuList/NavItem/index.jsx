@@ -2,6 +2,7 @@ import { memo, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { forwardRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // material-ui
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
@@ -12,6 +13,7 @@ import { useCustomizationStore } from '~/hooks/customization';
 // assets
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 const NavItem = ({ item, level }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const { customizationState, dispatchSetMenu, dispatchMenuOpen } = useCustomizationStore();
@@ -89,13 +91,13 @@ const NavItem = ({ item, level }) => {
       <ListItemText
         primary={
           <Typography variant={customizationState?.isOpen?.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'} color="inherit">
-            {item.title}
+            {t(`${item.title}`)}
           </Typography>
         }
         secondary={
           item.caption && (
             <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-              {item.caption}
+              {t(`${item.caption}`)}
             </Typography>
           )
         }

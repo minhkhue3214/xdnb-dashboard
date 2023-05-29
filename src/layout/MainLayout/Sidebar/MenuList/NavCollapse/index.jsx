@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useCustomizationStore } from '~/hooks/customization';
+import { useTranslation } from 'react-i18next';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -16,6 +17,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons';
 
 const NavCollapse = ({ menu, level }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const { customizationState } = useCustomizationStore();
   const navigate = useNavigate();
@@ -110,13 +112,14 @@ const NavCollapse = ({ menu, level }) => {
         <ListItemText
           primary={
             <Typography variant={selected === menu.id ? 'h5' : 'body1'} color="inherit" sx={{ my: 'auto' }}>
-              {menu.title}
+              {t(`${menu.title}`)}
             </Typography>
           }
           secondary={
             menu.caption && (
               <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                {menu.caption}
+                {t(`${menu.caption}`)}
+                {/* {menu.caption} */}
               </Typography>
             )
           }
