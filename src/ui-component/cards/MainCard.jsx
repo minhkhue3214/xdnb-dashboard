@@ -19,11 +19,21 @@ const MainCard = forwardRef(
       children,
       content = true,
       contentClass = '',
-      contentSX = {},
+      contentSX = {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden',
+        width: '100%'
+      },
       darkTitle,
       secondary,
       shadow,
-      sx = {},
+      sx = {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column'
+      },
       title,
       ...others
     },
