@@ -61,7 +61,7 @@ const pages = {
     },
     {
       id: 'singular-noun',
-      title: 'Singular Noun',
+      title: 'Request',
       type: 'collapse',
       icon: icons.IconFileDescription,
 
