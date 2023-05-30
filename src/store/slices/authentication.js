@@ -3,11 +3,11 @@ import dispatchToast from '~/handlers/toast';
 
 const initialState = {
   accessToken: {
-    value: '',
+    token: '',
     expires: ''
   },
   refreshToken: {
-    value: '',
+    token: '',
     expires: ''
   },
   loginInfo: null
