@@ -1,5 +1,6 @@
 import axios from 'axios';
 import queryString from 'query-string';
+import { store } from '~/store';
 
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -8,13 +9,11 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-  if (localStorage.getItem('access_token')) {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
-    }
+  const token = store.getState()?.authentication?.accessToken?.token;
+
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
-  // Handle token here ...
   return config;
 });
 
