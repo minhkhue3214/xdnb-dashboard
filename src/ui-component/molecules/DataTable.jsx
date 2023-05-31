@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import styled from 'styled-components';
 
@@ -28,6 +28,8 @@ import styled from 'styled-components';
   headerClassName: Xác định lớp CSS được áp dụng cho tiêu đề cột
 */
 export default function DataTable({ columns, rows, checkboxSelection }) {
+  console.log('rows', rows);
+
   return (
     <DataTableWrapper>
       <DataGrid
