@@ -4,4 +4,8 @@ const loginRequestApi = (params) => {
   return axiosClient.post('/auth/login', params);
 };
 
-export { loginRequestApi };
+const refreshTokenRequestApi = (params) => {
+  return axiosClient.post('/auth/refresh-tokens', params);
+};
+
+export { loginRequestApi, refreshTokenRequestApi };

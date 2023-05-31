@@ -10,13 +10,20 @@ const initialState = {
     token: '',
     expires: ''
   },
-  loginInfo: null
+  loginInfo: null,
+  rememberMe: true
 };
 
 export const authentication = createSlice({
   name: 'authentication',
   initialState,
   reducers: {
+    initApp: () => {
+      //
+    },
+    changeRememberMe: (state, action) => {
+      state.rememberMe = action.payload;
+    },
     loginRequest: () => {
       // request login
     },
@@ -42,10 +49,32 @@ export const authentication = createSlice({
     },
     logoutFail: (_, action) => {
       dispatchToast('error', action.payload);
+    },
+    refreshTokenSuccess: (state, action) => {
+      const { accessToken, refreshToken } = action.payload;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+    },
+    refreshTokenFail: (state, action) => {
+      state.accessToken = initialState.accessToken;
+      state.refreshToken = initialState.refreshToken;
+      state.loginInfo = initialState.loginInfo;
+      dispatchToast('error', action.payload);
     }
   }
 });
 
-export const { loginRequest, loginSuccess, logoutRequest, logoutSuccess, loginFail, logoutFail } = authentication.actions;
+export const {
+  initApp,
+  changeRememberMe,
+  loginRequest,
+  loginSuccess,
+  logoutRequest,
+  logoutSuccess,
+  loginFail,
+  logoutFail,
+  refreshTokenSuccess,
+  refreshTokenFail
+} = authentication.actions;
 
 export default authentication.reducer;

@@ -30,9 +30,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
-  const [checked, setChecked] = useState(true);
-
-  const { dispatchLogin } = useAuthenticationStore();
+  const { dispatchLogin, authenticationState, dispatchChangeRememberMe } = useAuthenticationStore();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = useCallback(() => {
@@ -136,7 +134,12 @@ const FirebaseLogin = ({ ...others }) => {
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
               <FormControlLabel
                 control={
-                  <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
+                  <Checkbox
+                    checked={authenticationState.rememberMe}
+                    onChange={(event) => dispatchChangeRememberMe(event.target.checked)}
+                    name="checked"
+                    color="primary"
+                  />
                 }
                 label="Ghi nhớ mật khẩu"
               />

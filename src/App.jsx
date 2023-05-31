@@ -1,9 +1,10 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { useCustomizationStore } from './hooks/customization';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import { createGlobalStyle } from 'styled-components';
+import { useAuthenticationStore } from '~/hooks/authentication';
 
 // routing
 import Routes from '~/routes';
@@ -18,6 +19,17 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const { customizationState } = useCustomizationStore();
+  const { authenticationState, dispatchInitApp } = useAuthenticationStore();
+
+  useEffect(() => {
+    if (authenticationState?.accessToken?.token && authenticationState?.refreshToken?.token) {
+      dispatchInitApp({
+        accessToken: authenticationState?.accessToken,
+        refreshToken: authenticationState?.refreshToken
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <StyledEngineProvider injectFirst>

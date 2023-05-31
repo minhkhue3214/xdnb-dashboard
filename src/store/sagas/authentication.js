@@ -1,6 +1,7 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
-import { loginRequestApi } from '~/api/authentication';
-import { loginRequest, loginSuccess, loginFail } from '~/store/slices/rootAction';
+import { put, call, delay, takeLatest } from 'redux-saga/effects';
+import { loginRequestApi, refreshTokenRequestApi } from '~/api/authentication';
+import { initApp, loginRequest, loginSuccess, loginFail, refreshTokenSuccess, refreshTokenFail } from '~/store/slices/rootAction';
+import moment from 'moment';
 
 function* loginRequestSaga(action) {
   try {
@@ -14,11 +15,46 @@ function* loginRequestSaga(action) {
       })
     );
   } catch (error) {
-    console.log('error', error);
     yield put(loginFail(error?.message || 'Login Failed!'));
+  }
+}
+
+function* refreshTokenRequestSaga(action) {
+  try {
+    let { accessToken, refreshToken } = action.payload;
+
+    console.log('refreshTokenRequestSaga');
+
+    const refreshTokenExpirationTime = moment(refreshToken?.expires);
+    const accessTokenExpirationTime = moment(accessToken?.expires);
+    const currentTime = moment();
+
+    // Trong trường hợp refresh token hết hạn. throws luôn ra error:
+    if (refreshTokenExpirationTime.isBefore(currentTime)) {
+      throw new Error('Refresh token expired');
+    }
+
+    if (accessTokenExpirationTime.isAfter(currentTime)) {
+      const diffInMillis = accessTokenExpirationTime.diff(currentTime);
+      yield delay(diffInMillis);
+    }
+
+    const data = yield call(refreshTokenRequestApi, {
+      refreshToken: refreshToken.token
+    });
+
+    yield put(
+      refreshTokenSuccess({
+        accessToken: data.access,
+        refreshToken: data.refresh
+      })
+    );
+  } catch (error) {
+    yield put(refreshTokenFail(error?.message || 'Refresh Token Failed!'));
   }
 }
 
 export default function* authenticationSaga() {
   yield takeLatest(loginRequest.type, loginRequestSaga);
+  yield takeLatest([initApp.type, loginSuccess.type, refreshTokenSuccess.type], refreshTokenRequestSaga);
 }
