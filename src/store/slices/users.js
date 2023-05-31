@@ -3,6 +3,10 @@ import dispatchToast from '~/handlers/toast';
 
 const initialState = {
     users: [],
+    pagination: {
+        currentPage: null,
+        totalPages: null,
+    }
 }
 
 export const users = createSlice({
@@ -13,10 +17,12 @@ export const users = createSlice({
             // request user
         },
         getAllUserSuccess: (state, action) => {
-            const users = action.payload;
+            const { page, totalPages, results } = action.payload;
             console.log('users', users);
 
-            state.users = users;
+            state.users = results;
+            state.pagination.currentPage = page;
+            state.pagination.totalPages = totalPages;
         },
         getAllUserFail: (_, action) => {
             dispatchToast('error', action.payload);

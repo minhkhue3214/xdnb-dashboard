@@ -1,23 +1,24 @@
-// import { useCallback } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { getAllUserRequest } from '~/store/slices/authentication';
+import { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllUserRequest } from '~/store/slices/users';
 
-// const getAllUsers = () => {
-//     const dispatch = useDispatch();
+const GetAllUsers = () => {
+    const dispatch = useDispatch();
 
-//     const listUserState = useSelector((state) => state.users);
+    const listUserState = useSelector((state) => state.users);
 
-//     const dispatchGetAllUsers = useCallback(
-//         (payload) => {
-//             dispatch(getAllUserRequest(payload));
+    const dispatchGetAllUsers = useCallback(() => {
+        dispatch(getAllUserRequest());
 
-//             return true;
-//         },
-//         [dispatch]
-//     );
+        return true;
+    },
+        [dispatch]
+    );
 
-//     return {
-//         dispatchGetAllUsers,
-//         listUserState
-//     };
-// }
+    return {
+        dispatchGetAllUsers,
+        listUserState
+    };
+}
+
+export { GetAllUsers };

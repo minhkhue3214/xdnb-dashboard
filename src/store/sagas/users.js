@@ -1,16 +1,20 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { getAllUsersApi } from '~/api/authentication';
+import { getAllUsersApi } from '~/api/users';
 
-import { getAllUserRequest, getAllUserFail } from '~/store/slices/rootAction';
+import { getAllUserRequest, getAllUserSuccess, getAllUserFail } from '~/store/slices/rootAction';
 
-function* requestAllUsersSaga(action) {
+function* requestAllUsersSaga() {
     try {
-        const data = yield call(getAllUsersApi, action.payload);
+        const data = yield call(getAllUsersApi);
         console.log("requestAllUsersSaga", data);
 
-        // yield put(
-        //     getAllUserSuccess()
-        // );
+        yield put(
+            getAllUserSuccess({
+                page: data?.page,
+                results: data?.results,
+                totalPages: data?.totalPages,
+            })
+        );
     } catch (error) {
         console.log('error', error);
         yield put(getAllUserFail(error?.message || 'Login Failed!'));

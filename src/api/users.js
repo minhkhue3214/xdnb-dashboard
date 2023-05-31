@@ -1,6 +1,6 @@
 import axiosClient from './axiosClient';
-const getAllUsersApi = (params) => {
-    return axiosClient.get('/users', params);
+const getAllUsersApi = () => {
+    return axiosClient.get('/users');
 };
 
 export { getAllUsersApi };
