@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 // project imports
 import Button from '@mui/material/Button';
 import { AiOutlineUserAdd, AiFillEdit } from 'react-icons/ai';
@@ -10,60 +10,24 @@ import MainCard from '~/ui-component/cards/MainCard';
 import { DataTable } from '~/ui-component/molecules';
 import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
+import AddUserModal from './AddUserModal';
 
 import { GetAllUsers } from '~/hooks/users';
-
-// const rowsTest = [
-//   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-//   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-//   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-//   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-//   { id: 14, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 15, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 16, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 17, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 18, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 19, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-//   { id: 24, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 25, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 26, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 27, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 28, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 29, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-//   { id: 34, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 35, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 36, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 37, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 38, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 39, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-//   { id: 44, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 45, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 46, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 47, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 48, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 49, lastName: 'Roxie', firstName: 'Harvey', age: 65 }
-// ];
 
 const UsersPage = () => {
   const { listUserState, dispatchGetAllUsers } = GetAllUsers();
 
+  const [page, setPage] = useState(1);
+
+  const [openAddUserModal, setOpenAddUserModal] = useState(false);
+
   useEffect(() => {
-    console.log('testing dispatchGetAllUsers', dispatchGetAllUsers);
     dispatchGetAllUsers();
   }, [dispatchGetAllUsers]);
 
-  useEffect(() => {
-    console.log('testing listUserState', listUserState);
-    setUsers(listUserState.users);
-  }, [listUserState]);
-
-  const [users, setUsers] = useState([]);
-  const [page, setPage] = useState(1);
+  const users = useMemo(() => {
+    return listUserState.users;
+  }, [listUserState.users]);
 
   const handleEdit = (params) => {
     toast('success', `Edit: ${JSON.stringify(params.row)}`);
@@ -105,7 +69,13 @@ const UsersPage = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button variant="contained" startIcon={<AiOutlineUserAdd />}>
+        <Button
+          variant="contained"
+          startIcon={<AiOutlineUserAdd />}
+          onClick={() => {
+            setOpenAddUserModal(true);
+          }}
+        >
           Thêm người dùng
         </Button>
         <Button variant="outlined" startIcon={<TbTableExport />}>
@@ -118,6 +88,7 @@ const UsersPage = () => {
       <PaginationWrapper>
         <Pagination count={10} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
+      <AddUserModal open={openAddUserModal} setOpen={setOpenAddUserModal} />
     </MainCard>
   );
 };
