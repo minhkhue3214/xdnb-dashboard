@@ -1,7 +1,8 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { getAllUsersApi } from '~/api/users';
+import { getAllUsersApi, requestDeleteUserApi } from '~/api/users';
 
-import { getAllUserRequest, getAllUserSuccess, getAllUserFail } from '~/store/slices/rootAction';
+import { getAllUserRequest, getAllUserSuccess, getAllUserFail, deleteUserRequest, deleteUserSuccess, deleteFail } from '~/store/slices/rootAction';
+
 
 function* requestAllUsersSaga() {
     try {
@@ -21,7 +22,21 @@ function* requestAllUsersSaga() {
     }
 }
 
+function* requestDeleteUserSaga(action) {
+    try {
+
+        yield call(requestDeleteUserApi, action.payload);
+        yield put(
+            deleteUserSuccess(action.payload)
+        );
+    } catch (error) {
+        console.log('error', error);
+        yield put(deleteFail(error?.message || 'Login Failed!'));
+    }
+}
+
 
 export default function* getAllUsersSaga() {
     yield takeLatest(getAllUserRequest.type, requestAllUsersSaga);
+    yield takeLatest(deleteUserRequest.type, requestDeleteUserSaga);
 }

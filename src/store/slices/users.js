@@ -27,9 +27,23 @@ export const users = createSlice({
         getAllUserFail: (_, action) => {
             dispatchToast('error', action.payload);
         },
+        //delete users
+        deleteUserRequest: () => {
+            // request user
+        },
+        deleteUserSuccess: (state, action) => {
+            console.log("deleteUserSuccess", action);
+            let updateUsers = state.users.filter((user) => user.id !== action.payload)
+            state.users = updateUsers;
+            dispatchToast('success', 'Deleted user!');
+        },
+        deleteFail: (_, action) => {
+            dispatchToast('error', action.payload);
+        },
+
     }
 });
 
-export const { getAllUserRequest, getAllUserSuccess, getAllUserFail } = users.actions;
+export const { getAllUserRequest, getAllUserSuccess, getAllUserFail, deleteUserRequest, deleteUserSuccess, deleteFail } = users.actions;
 
 export default users.reducer;
