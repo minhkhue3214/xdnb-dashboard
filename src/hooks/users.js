@@ -7,8 +7,8 @@ const GetAllUsers = () => {
 
     const listUserState = useSelector((state) => state.users);
 
-    const dispatchGetAllUsers = useCallback(() => {
-        dispatch(getAllUserRequest());
+    const dispatchGetAllUsers = useCallback((payload) => {
+        dispatch(getAllUserRequest(payload));
 
         return true;
     },

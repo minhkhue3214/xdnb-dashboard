@@ -1,6 +1,7 @@
 import axiosClient from './axiosClient';
-const getAllUsersApi = () => {
-    return axiosClient.get('/users');
+const getAllUsersApi = (params) => {
+    console.log("getAllUsersApi", params);
+    return axiosClient.get('/users', params);
 };
 
 const requestDeleteUserApi = (params) => {
