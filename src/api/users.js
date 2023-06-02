@@ -3,4 +3,8 @@ const getAllUsersApi = () => {
     return axiosClient.get('/users');
 };
 
-export { getAllUsersApi };
+const requestDeleteUserApi = (params) => {
+    return axiosClient.delete(`/users/${params}`);
+};
+
+export { getAllUsersApi, requestDeleteUserApi };
