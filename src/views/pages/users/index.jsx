@@ -66,6 +66,8 @@ const UsersPage = () => {
   ];
 
   const handleChange = useCallback((event, value) => {
+    console.log('setPage', value);
+    dispatchGetAllUsers({ params: { page: value } });
     setPage(value);
   }, []);
 

@@ -4,9 +4,9 @@ import { getAllUsersApi, requestDeleteUserApi } from '~/api/users';
 import { getAllUserRequest, getAllUserSuccess, getAllUserFail, deleteUserRequest, deleteUserSuccess, deleteFail } from '~/store/slices/rootAction';
 
 
-function* requestAllUsersSaga() {
+function* requestAllUsersSaga(action) {
   try {
-    const data = yield call(getAllUsersApi);
+    const data = yield call(getAllUsersApi, action.payload);
     console.log('requestAllUsersSaga', data);
 
     yield put(
@@ -23,20 +23,20 @@ function* requestAllUsersSaga() {
 }
 
 function* requestDeleteUserSaga(action) {
-    try {
+  try {
 
-        yield call(requestDeleteUserApi, action.payload);
-        yield put(
-            deleteUserSuccess(action.payload)
-        );
-    } catch (error) {
-        console.log('error', error);
-        yield put(deleteFail(error?.message || 'Login Failed!'));
-    }
+    yield call(requestDeleteUserApi, action.payload);
+    yield put(
+      deleteUserSuccess(action.payload)
+    );
+  } catch (error) {
+    console.log('error', error);
+    yield put(deleteFail(error?.message || 'Login Failed!'));
+  }
 }
 
 
 export default function* getAllUsersSaga() {
-    yield takeLatest(getAllUserRequest.type, requestAllUsersSaga);
-    yield takeLatest(deleteUserRequest.type, requestDeleteUserSaga);
+  yield takeLatest(getAllUserRequest.type, requestAllUsersSaga);
+  yield takeLatest(deleteUserRequest.type, requestDeleteUserSaga);
 }
