@@ -61,6 +61,11 @@ const GlobalStyle = createGlobalStyle`
     overflow: hidden;
     position: relative;
 
+    .ant-modal-root {
+      z-index: 9999;
+      position: relative;
+    }
+
     #root {
       width: 100%;
       height: 100%;

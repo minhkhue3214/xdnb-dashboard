@@ -5,21 +5,21 @@ import { getAllUserRequest, getAllUserSuccess, getAllUserFail, deleteUserRequest
 
 
 function* requestAllUsersSaga() {
-    try {
-        const data = yield call(getAllUsersApi);
-        console.log("requestAllUsersSaga", data);
+  try {
+    const data = yield call(getAllUsersApi);
+    console.log('requestAllUsersSaga', data);
 
-        yield put(
-            getAllUserSuccess({
-                page: data?.page,
-                results: data?.results,
-                totalPages: data?.totalPages,
-            })
-        );
-    } catch (error) {
-        console.log('error', error);
-        yield put(getAllUserFail(error?.message || 'Login Failed!'));
-    }
+    yield put(
+      getAllUserSuccess({
+        page: data?.page,
+        results: data?.results,
+        totalPages: data?.totalPages
+      })
+    );
+  } catch (error) {
+    console.log('error', error);
+    yield put(getAllUserFail(error?.message || 'Login Failed!'));
+  }
 }
 
 function* requestDeleteUserSaga(action) {
