@@ -18,7 +18,6 @@ export const users = createSlice({
         },
         getAllUserSuccess: (state, action) => {
             const { page, totalPages, results } = action.payload;
-            console.log('users', users);
 
             state.users = results;
             state.pagination.currentPage = page;
@@ -32,7 +31,6 @@ export const users = createSlice({
             // request user
         },
         deleteUserSuccess: (state, action) => {
-            console.log("deleteUserSuccess", action);
             let updateUsers = state.users.filter((user) => user.id !== action.payload)
             state.users = updateUsers;
             dispatchToast('success', 'Deleted user!');
