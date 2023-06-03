@@ -16,9 +16,9 @@ const GetAllUsers = () => {
     [dispatch]
   );
 
-
-    const dispatchDeleteUser = useCallback((payload) => {
-        dispatch(deleteUserRequest(payload));
+  const dispatchDeleteUser = useCallback(
+    (payload) => {
+      dispatch(deleteUserRequest(payload));
 
       return true;
     },
