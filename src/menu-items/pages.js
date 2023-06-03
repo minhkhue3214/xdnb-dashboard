@@ -53,6 +53,13 @@ const pages = {
       icon: icons.IconSteam
     },
     {
+      id: 'shifts',
+      title: 'Shifts',
+      type: 'item',
+      url: '/shifts',
+      icon: icons.IconSteam
+    },
+    {
       id: 'organization',
       title: 'Organization',
       type: 'item',

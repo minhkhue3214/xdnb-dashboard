@@ -16,7 +16,7 @@ import { GetAllUsers } from '~/hooks/users';
 
 const UsersPage = () => {
   const { listUserState, dispatchGetAllUsers, dispatchDeleteUser } = GetAllUsers();
-  const [page, setPage] = useState(listUserState.pagination.currentPage);
+  const [page, setPage] = useState(1);
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
 
   useEffect(() => {
@@ -38,11 +38,11 @@ const UsersPage = () => {
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columnsTest = [
     { field: 'id', headerName: 'ID', flex: 2 },
-    { field: 'name', headerName: 'Name', flex: 2 },
+    { field: 'name', headerName: 'Name', flex: 1 },
     { field: 'user_name', headerName: 'User name', flex: 2 },
     { field: 'email', headerName: 'Email', flex: 2 },
-    { field: 'isEmailVerified', headerName: 'EmailVerified', flex: 2 },
-    { field: 'role', headerName: 'Role', flex: 2 },
+    { field: 'isEmailVerified', headerName: 'EmailVerified', flex: 1 },
+    { field: 'role', headerName: 'Role', flex: 1 },
     {
       field: 'actions',
       headerName: 'Actions',

@@ -16,10 +16,9 @@ const GetAllUsers = () => {
     [dispatch]
   );
 
-  const dispatchDeleteUser = useCallback(
-    (payload) => {
-      console.log('testing dispatchDeleteUser', payload);
-      dispatch(deleteUserRequest(payload));
+
+    const dispatchDeleteUser = useCallback((payload) => {
+        dispatch(deleteUserRequest(payload));
 
       return true;
     },
