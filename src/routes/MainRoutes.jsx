@@ -13,6 +13,7 @@ const DashboardDefault = Loadable(lazy(() => import('~/views/dashboard/Default')
 // sample page routing
 const UserPage = Loadable(lazy(() => import('~/views/pages/users')));
 const SecurityTeamPage = Loadable(lazy(() => import('~/views/pages/securityTeams')));
+const Shifts = Loadable(lazy(() => import('~/views/pages/shifts')));
 const OrganizationPage = Loadable(lazy(() => import('~/views/pages/organization')));
 const ForgotCheckoutReportPage = Loadable(lazy(() => import('~/views/pages/singularNoun/ForgotCheckoutReport')));
 const LatePatrolRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/LatePatrolRequest')));
@@ -56,6 +57,10 @@ const MainRoutes = {
     {
       path: 'security-teams',
       element: <SecurityTeamPage />
+    },
+    {
+      path: 'shifts',
+      element: <Shifts />
     },
     {
       path: 'organization',

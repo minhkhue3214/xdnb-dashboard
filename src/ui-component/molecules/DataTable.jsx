@@ -28,7 +28,7 @@ import styled from 'styled-components';
   headerClassName: Xác định lớp CSS được áp dụng cho tiêu đề cột
 */
 export default function DataTable({ columns, rows, checkboxSelection }) {
-  console.log('rows', rows);
+  console.log('DataTable', rows);
 
   return (
     <DataTableWrapper>

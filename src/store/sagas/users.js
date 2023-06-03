@@ -7,7 +7,6 @@ import { getAllUserRequest, getAllUserSuccess, getAllUserFail, deleteUserRequest
 function* requestAllUsersSaga(action) {
   try {
     const data = yield call(getAllUsersApi, action.payload);
-    console.log('requestAllUsersSaga', data);
 
     yield put(
       getAllUserSuccess({
@@ -18,7 +17,7 @@ function* requestAllUsersSaga(action) {
     );
   } catch (error) {
     console.log('error', error);
-    yield put(getAllUserFail(error?.message || 'Login Failed!'));
+    yield put(getAllUserFail(error?.message || 'Get all users failed!'));
   }
 }
 
@@ -31,7 +30,7 @@ function* requestDeleteUserSaga(action) {
     );
   } catch (error) {
     console.log('error', error);
-    yield put(deleteFail(error?.message || 'Login Failed!'));
+    yield put(deleteFail(error?.message || 'Delete user Failed!'));
   }
 }
 
