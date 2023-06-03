@@ -3,31 +3,34 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getAllUserRequest, deleteUserRequest } from '~/store/slices/users';
 
 const GetAllUsers = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const listUserState = useSelector((state) => state.users);
+  const listUserState = useSelector((state) => state.users);
 
-    const dispatchGetAllUsers = useCallback((payload) => {
-        dispatch(getAllUserRequest(payload));
+  const dispatchGetAllUsers = useCallback(
+    (payload) => {
+      dispatch(getAllUserRequest(payload));
 
-        return true;
+      return true;
     },
-        [dispatch]
-    );
+    [dispatch]
+  );
 
+  const dispatchDeleteUser = useCallback(
+    (payload) => {
+      console.log('testing dispatchDeleteUser', payload);
+      dispatch(deleteUserRequest(payload));
 
-    const dispatchDeleteUser = useCallback((payload) => {
-        console.log("testing dispatchDeleteUser", payload);
-        dispatch(deleteUserRequest(payload));
+      return true;
+    },
+    [dispatch]
+  );
 
-        return true;
-    }, [dispatch]);
-
-    return {
-        dispatchGetAllUsers,
-        dispatchDeleteUser,
-        listUserState
-    };
-}
+  return {
+    dispatchGetAllUsers,
+    dispatchDeleteUser,
+    listUserState
+  };
+};
 
 export { GetAllUsers };
