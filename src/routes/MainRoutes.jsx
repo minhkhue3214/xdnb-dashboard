@@ -12,13 +12,11 @@ const DashboardDefault = Loadable(lazy(() => import('~/views/dashboard/Default')
 
 // sample page routing
 const UserPage = Loadable(lazy(() => import('~/views/pages/users')));
-const SecurityTeamPage = Loadable(lazy(() => import('~/views/pages/securityTeams')));
 const Shifts = Loadable(lazy(() => import('~/views/pages/shifts')));
 const OrganizationPage = Loadable(lazy(() => import('~/views/pages/organization')));
-const ForgotCheckoutReportPage = Loadable(lazy(() => import('~/views/pages/singularNoun/ForgotCheckoutReport')));
-const LatePatrolRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/LatePatrolRequest')));
-const LeaveRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/LeaveRequest')));
-const PatrolRequestPage = Loadable(lazy(() => import('~/views/pages/singularNoun/PatrolRequest')));
+const ForgotCheckoutReportPage = Loadable(lazy(() => import('~/views/pages/requestForm/ForgotCheckoutReport')));
+const LeaveRequestPage = Loadable(lazy(() => import('~/views/pages/requestForm/LeaveRequest')));
+const LateAttendanceRequestPage = Loadable(lazy(() => import('~/views/pages/requestForm/LateAttendanceRequest')));
 
 function ProtectedRoute() {
   // Kiểm tra trạng thái đăng nhập ở đây
@@ -55,10 +53,6 @@ const MainRoutes = {
       element: <UserPage />
     },
     {
-      path: 'security-teams',
-      element: <SecurityTeamPage />
-    },
-    {
       path: 'shifts',
       element: <Shifts />
     },
@@ -67,19 +61,15 @@ const MainRoutes = {
       element: <OrganizationPage />
     },
     {
-      path: 'singular-noun',
+      path: 'request-form',
       children: [
         {
           path: 'leave-request',
           element: <LeaveRequestPage />
         },
         {
-          path: 'patrol-request',
-          element: <PatrolRequestPage />
-        },
-        {
-          path: 'late-patrol-request',
-          element: <LatePatrolRequestPage />
+          path: 'late-attendance-request',
+          element: <LateAttendanceRequestPage />
         },
         {
           path: 'forgot-checkout-report',

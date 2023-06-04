@@ -6,12 +6,12 @@ const icons = { IconDashboard };
 
 const dashboard = {
   id: 'dashboard',
-  title: 'Dashboard',
+  title: 'menu.dashboard',
   type: 'group',
   children: [
     {
       id: 'default',
-      title: 'Dashboard',
+      title: 'menu.dashboard',
       type: 'item',
       url: '/dashboard/default',
       icon: icons.IconDashboard,
