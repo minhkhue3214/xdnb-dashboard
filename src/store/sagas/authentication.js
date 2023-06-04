@@ -52,7 +52,7 @@ function* refreshTokenRequestSaga(action) {
   }
 }
 
-export default function* authenticationSaga() {
+export default function* watchAuthentication() {
   yield takeLatest(loginRequest.type, loginRequestSaga);
   yield takeLatest([initApp.type, loginSuccess.type, refreshTokenSuccess.type], refreshTokenRequestSaga);
 }

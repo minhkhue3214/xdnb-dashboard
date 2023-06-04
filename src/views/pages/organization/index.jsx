@@ -10,10 +10,10 @@ import { DataTable } from '~/ui-component/molecules';
 import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import { Button, Popconfirm } from 'antd';
-import { GetAllOrganizations } from '~/hooks/organizations';
+import { useOrganizationsStore } from '~/hooks/organizations';
 
 const OrganizationPage = () => {
-  const { listOrganizationsState, dispatchGetAllOrganizations, dispatchDeleteOrganizations } = GetAllOrganizations();
+  const { organizationsState, dispatchGetAllOrganizations, dispatchDeleteOrganizations } = useOrganizationsStore();
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -21,9 +21,9 @@ const OrganizationPage = () => {
   }, [dispatchGetAllOrganizations]);
 
   const Organizations = useMemo(() => {
-    // console.log('listOrganizationsState', listOrganizationsState.pagination.currentPage);
-    return listOrganizationsState.organizations;
-  }, [listOrganizationsState.organizations]);
+    // console.log('organizationsState', organizationsState.pagination.currentPage);
+    return organizationsState.organizations;
+  }, [organizationsState.organizations]);
 
   const handleEdit = (params) => {
     toast('success', `Edit: ${JSON.stringify(params.row)}`);
@@ -61,11 +61,14 @@ const OrganizationPage = () => {
     }
   ];
 
-  const handleChange = useCallback((event, value) => {
-    console.log('setPage', value);
-    setPage(value);
-    dispatchGetAllOrganizations({ params: { page: value } });
-  }, []);
+  const handleChange = useCallback(
+    (event, value) => {
+      console.log('setPage', value);
+      setPage(value);
+      dispatchGetAllOrganizations({ params: { page: value } });
+    },
+    [dispatchGetAllOrganizations]
+  );
 
   return (
     <MainCard>
@@ -87,7 +90,7 @@ const OrganizationPage = () => {
         <DataTable columns={columnsTest} rows={Organizations} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
-        <Pagination count={listOrganizationsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
+        <Pagination count={organizationsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
     </MainCard>
   );

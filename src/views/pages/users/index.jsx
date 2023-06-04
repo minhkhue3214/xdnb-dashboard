@@ -12,10 +12,10 @@ import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import AddUserModal from './AddUserModal';
 import { Popconfirm } from 'antd';
-import { GetAllUsers } from '~/hooks/users';
+import { useUsersStore } from '~/hooks/users';
 
 const UsersPage = () => {
-  const { listUserState, dispatchGetAllUsers, dispatchDeleteUser } = GetAllUsers();
+  const { userState, dispatchGetAllUsers, dispatchDeleteUser } = useUsersStore();
   const [page, setPage] = useState(1);
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
 
@@ -24,8 +24,8 @@ const UsersPage = () => {
   }, [dispatchGetAllUsers]);
 
   const users = useMemo(() => {
-    return listUserState.users;
-  }, [listUserState.users]);
+    return userState.users;
+  }, [userState.users]);
 
   const handleEdit = (params) => {
     toast('success', `Edit: ${JSON.stringify(params.row)}`);
@@ -36,10 +36,10 @@ const UsersPage = () => {
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
-  const columnsTest = [
+  const columns = [
     { field: 'id', headerName: 'ID', flex: 2 },
     { field: 'name', headerName: 'Name', flex: 1 },
-    { field: 'user_name', headerName: 'User name', flex: 2 },
+    { field: 'username', headerName: 'User name', flex: 2 },
     { field: 'email', headerName: 'Email', flex: 2 },
     { field: 'isEmailVerified', headerName: 'EmailVerified', flex: 1 },
     { field: 'role', headerName: 'Role', flex: 1 },
@@ -87,10 +87,10 @@ const UsersPage = () => {
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <DataTable columns={columnsTest} rows={users} checkboxSelection={false} />
+        <DataTable columns={columns} rows={users} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
-        <Pagination count={listUserState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
+        <Pagination count={userState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
       <AddUserModal open={openAddUserModal} setOpen={setOpenAddUserModal} />
     </MainCard>

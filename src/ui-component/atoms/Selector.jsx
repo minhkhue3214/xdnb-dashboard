@@ -28,14 +28,20 @@ const Selector = ({
   style = {},
   labelStyle = {},
   selectStyle = {},
+  messageStyle = {},
   visileLabel = true,
+  visibleMessage = true,
   mode = '',
   label = '',
+  message = '', // messageText
+  type = '', // '' | 'warning' | 'error'
   options = [],
   defaultValue = [],
   onFocus,
   onBlur,
+  onChange,
   hiddenMode = 'hidden',
+  value = [],
   ...restProps
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
@@ -56,6 +62,13 @@ const Selector = ({
     [onBlur]
   );
 
+  React.useEffect(() => {
+    if (mode !== 'multiple' && Array.isArray(value) && value?.length > 1) {
+      onChange && onChange([value[0]]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
   return (
     <SelectWrapper style={style}>
       <Label style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} ${isFocused ? 'focused' : ''}`}>
@@ -66,6 +79,7 @@ const Selector = ({
         showArrow
         tagRender={TagRender}
         defaultValue={defaultValue}
+        value={value}
         style={selectStyle}
         options={options}
         dropdownStyle={{
@@ -73,8 +87,12 @@ const Selector = ({
         }}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onChange={onChange}
         {...restProps}
       />
+      <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
+        {message}
+      </Message>
     </SelectWrapper>
   );
 };
@@ -110,4 +128,18 @@ const Label = styled.label`
 
 const SelectCustom = styled(Select)`
   min-width: 200px;
+`;
+
+const Message = styled.span`
+  position: relative;
+  height: 12px;
+  font-size: 12px;
+
+  &.error {
+    color: #ff4d4f;
+  }
+
+  &.warning {
+    color: #faad14;
+  }
 `;

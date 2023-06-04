@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import { createGlobalStyle } from 'styled-components';
 import { useAuthenticationStore } from '~/hooks/authentication';
+import styled from 'styled-components';
 
 // routing
 import Routes from '~/routes';
@@ -38,7 +39,7 @@ const App = () => {
         <NavigationScroll>
           <GlobalStyle />
           <Routes />
-          <ToastContainer />
+          <ToastContainerCustom />
         </NavigationScroll>
       </ThemeProvider>
     </StyledEngineProvider>
@@ -48,7 +49,6 @@ const App = () => {
 export default memo(App);
 
 const GlobalStyle = createGlobalStyle`
-  
 * {
   padding: 0;
   margin: 0;
@@ -130,4 +130,8 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 }
+`;
+
+const ToastContainerCustom = styled(ToastContainer)`
+  z-index: 10000;
 `;
