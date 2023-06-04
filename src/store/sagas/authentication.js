@@ -29,20 +29,13 @@ function* refreshTokenRequestSaga(action) {
 
     // Trong trường hợp refresh token hết hạn. throws luôn ra error:
     if (refreshTokenExpirationTime.isBefore(currentTime)) {
-      console.log('refreshTokenRequestSaga', accessToken, refreshToken);
       throw new Error('Refresh token expired');
     }
 
-    console.log(accessToken?.expires, currentTime, accessTokenExpirationTime.isAfter(currentTime), accessTokenExpirationTime, currentTime);
-
     if (accessTokenExpirationTime.isAfter(currentTime)) {
-      console.log('refreshTokenRequestSaga 2', accessToken, refreshToken, currentTime);
       const diffInMillis = accessTokenExpirationTime.diff(currentTime);
-      console.log('refreshTokenRequestSaga 4', diffInMillis);
       yield delay(diffInMillis);
     }
-
-    console.log('refreshTokenRequestSaga3', accessToken, refreshToken);
 
     const data = yield call(refreshTokenRequestApi, {
       refreshToken: refreshToken.token
