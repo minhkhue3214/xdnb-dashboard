@@ -1,0 +1,40 @@
+{
+  "menu": {
+    "dashboard": "Dashboard",
+    "users": "Users Management",
+    "organization": "Organization Management",
+    "shifts": "Shift Management",
+    "requestForm": "Request Form Management",
+    "submenu": {
+      "requestForm": {
+        "leaveRequest": "Leave Request",
+        "lateAttendanceRequest": "Late Attendance Request",
+        "forgotCheckoutReport": "Forgot Checkout Report"
+      }
+    }
+  },
+  "profile": {
+    "socialProfile": "Social Profile",
+    "logout": "Logout"
+  },
+  "pages": {
+    "users": {
+      "addUser": "Add User",
+      "editUser": "Edit User",
+      "deleteUser": "Delete User"
+    },
+    "organization": {
+      "addOrganization": "Add Organization",
+      "editOrganization": "Edit Organization",
+      "deleteOrganization": "Delete Organization"
+    },
+    "shift": {
+      "addShift": "Add Shift",
+      "editShift": "Edit Shift",
+      "deleteShift": "Delete Shift"
+    },
+    "requestForm": {
+
+    }
+  }
+}

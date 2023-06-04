@@ -4,6 +4,8 @@ import * as yup from 'yup';
 import { Input, Selector } from '~/ui-component/atoms';
 import styled from 'styled-components';
 import { useCallback } from 'react';
+import { roles } from '~/store/constant';
+
 const AddUserModal = ({ open, setOpen }) => {
   const formik = useFormik({
     initialValues: {
@@ -157,24 +159,7 @@ const AddUserModal = ({ open, setOpen }) => {
             selectStyle={{
               width: '100%'
             }}
-            options={[
-              {
-                label: 'Giám đốc',
-                value: 'admin'
-              },
-              {
-                label: 'Quản lý tổ chức',
-                value: 'manager'
-              },
-              {
-                label: 'Tổ trưởng bảo vệ',
-                value: 'leader'
-              },
-              {
-                label: 'Nhân viên bảo vệ',
-                value: 'user'
-              }
-            ]}
+            options={roles}
             value={formik.values.role}
             onChange={handleChangeRole}
           />

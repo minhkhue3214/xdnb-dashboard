@@ -186,7 +186,7 @@ const ProfileSection = () => {
                           primary={
                             <Grid container spacing={1} justifyContent="space-between">
                               <Grid item>
-                                <Typography variant="body2">{t('Social Profile')}</Typography>
+                                <Typography variant="body2">{t('profile.socialProfile')}</Typography>
                               </Grid>
                               <Grid item>
                                 <Chip
@@ -210,7 +210,7 @@ const ProfileSection = () => {
                         <ListItemIcon>
                           <IconLogout stroke={1.5} size="1.3rem" />
                         </ListItemIcon>
-                        <ListItemText primary={<Typography variant="body2">{t('Logout')}</Typography>} />
+                        <ListItemText primary={<Typography variant="body2">{t('profile.logout')}</Typography>} />
                       </ListItemButton>
                     </List>
                   </Box>

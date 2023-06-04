@@ -1,0 +1,40 @@
+{
+  "menu": {
+    "dashboard": "Bảng thống kê",
+    "users": "Quản lý người dùng",
+    "organization": "Quản lý tổ chức",
+    "shifts": "Quản lý ca làm việc",
+    "requestForm": "Quản lý đơn từ",
+    "submenu": {
+      "requestForm": {
+        "leaveRequest": "Đơn xin nghỉ phép",
+        "lateAttendanceRequest": "Đơn xin chấm công muộn",
+        "forgotCheckoutReport": "Đơn báo quên checkout"
+      }
+    }
+  },
+  "profile": {
+    "socialProfile": "Thông tin cá nhân",
+    "logout": "Đăng xuất"
+  },
+  "pages": {
+    "users": {
+      "addUser": "Thêm người dùng",
+      "editUser": "Cập nhật thông tin người dùng",
+      "deleteUser": "Xóa người dùng"
+    },
+    "organization": {
+      "addOrganization": "Thêm tổ chức",
+      "editOrganization": "Cập nhật thông tin tổ chức",
+      "deleteOrganization": "Xóa tổ chức"
+    },
+    "shift": {
+      "addShift": "Thêm ca làm việc",
+      "editShift": "Cập nhật thông tin ca",
+      "deleteShift": "Xóa ca làm việc"
+    },
+    "requestForm": {
+
+    }
+  }
+}

@@ -12,9 +12,7 @@ import { store, persistor } from '~/store';
 // style + assets
 import '~/assets/scss/style.scss';
 import config from '~/config';
-import './i18n.js';
-
-// ==============================|| REACT DOM RENDER  ||============================== //
+import '~/i18n';
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript

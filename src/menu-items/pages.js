@@ -16,86 +16,50 @@ const pages = {
   type: 'group',
   children: [
     {
-      id: 'authentication',
-      title: 'Authentication',
-      type: 'collapse',
-      icon: icons.IconKey,
-
-      children: [
-        {
-          id: 'login3',
-          title: 'Login',
-          type: 'item',
-          url: '/login',
-          target: true
-        },
-        {
-          id: 'register3',
-          title: 'Register',
-          type: 'item',
-          url: '/register',
-          target: true
-        }
-      ]
-    },
-    {
       id: 'users',
-      title: 'Users',
+      title: 'menu.users',
       type: 'item',
       url: '/users',
       icon: icons.IconUser
     },
     {
-      id: 'security-teams',
-      title: 'Security Teams',
-      type: 'item',
-      url: '/security-teams',
-      icon: icons.IconSteam
-    },
-    {
       id: 'shifts',
-      title: 'Shifts',
+      title: 'menu.shifts',
       type: 'item',
       url: '/shifts',
       icon: icons.IconSteam
     },
     {
       id: 'organization',
-      title: 'Organization',
+      title: 'menu.organization',
       type: 'item',
       url: '/organization',
       icon: icons.IconBuildingCommunity
     },
     {
-      id: 'singular-noun',
-      title: 'Request',
+      id: 'request-form',
+      title: 'menu.requestForm',
       type: 'collapse',
       icon: icons.IconFileDescription,
 
       children: [
         {
           id: 'leave-request',
-          title: 'Leave Request',
+          title: 'menu.submenu.requestForm.leaveRequest',
           type: 'item',
-          url: '/singular-noun/leave-request'
+          url: '/request-form/leave-request'
         },
         {
-          id: 'patrol-request',
-          title: 'Patrol Request',
+          id: 'late-attendance-request',
+          title: 'menu.submenu.requestForm.lateAttendanceRequest',
           type: 'item',
-          url: '/singular-noun/patrol-request'
-        },
-        {
-          id: 'late-patrol-request',
-          title: 'Late Patrol Request',
-          type: 'item',
-          url: '/singular-noun/late-patrol-request'
+          url: '/request-form/late-attendance-request'
         },
         {
           id: 'forgot-checkout-report',
-          title: 'Forgot Checkout Report',
+          title: 'menu.submenu.requestForm.forgotCheckoutReport',
           type: 'item',
-          url: '/singular-noun/forgot-checkout-report'
+          url: '/request-form/forgot-checkout-report'
         }
       ]
     }
