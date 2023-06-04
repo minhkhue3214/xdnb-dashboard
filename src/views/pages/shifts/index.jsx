@@ -11,10 +11,10 @@ import { DataTable } from '~/ui-component/molecules';
 import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import { Button, Popconfirm } from 'antd';
-import { GetAllShifts } from '~/hooks/shifts';
+import { useShiftsStore } from '~/hooks/shifts';
 
 const Shifts = () => {
-  const { listShiftsState, dispatchGetAllShifts, dispatchDeleteShift } = GetAllShifts();
+  const { shiftsState, dispatchGetAllShifts, dispatchDeleteShift } = useShiftsStore();
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -22,8 +22,8 @@ const Shifts = () => {
   }, [dispatchGetAllShifts]);
 
   const shifts = useMemo(() => {
-    return listShiftsState.shifts;
-  }, [listShiftsState.shifts]);
+    return shiftsState.shifts;
+  }, [shiftsState.shifts]);
 
   const handleEdit = (params) => {
     toast('success', `Edit: ${JSON.stringify(params.row)}`);
@@ -65,10 +65,13 @@ const Shifts = () => {
     }
   ];
 
-  const handleChange = useCallback((event, value) => {
-    dispatchGetAllShifts({ params: { page: value } });
-    setPage(value);
-  }, []);
+  const handleChange = useCallback(
+    (event, value) => {
+      dispatchGetAllShifts({ params: { page: value } });
+      setPage(value);
+    },
+    [dispatchGetAllShifts]
+  );
 
   return (
     <MainCard>
@@ -84,7 +87,7 @@ const Shifts = () => {
         <DataTable columns={columnsTest} rows={shifts} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
-        <Pagination count={listShiftsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
+        <Pagination count={shiftsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
     </MainCard>
   );

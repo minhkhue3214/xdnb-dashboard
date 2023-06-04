@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react';
 import { Modal } from '~/ui-component/molecules';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -5,8 +6,14 @@ import { Input, Selector } from '~/ui-component/atoms';
 import styled from 'styled-components';
 import { useCallback } from 'react';
 import { roles } from '~/store/constant';
+import { useOrganizationsStore } from '~/hooks/organizations';
+import { useUsersStore } from '~/hooks/users';
 
 const AddUserModal = ({ open, setOpen }) => {
+  const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
+
+  const { dispatchAddUser } = useUsersStore();
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -22,11 +29,30 @@ const AddUserModal = ({ open, setOpen }) => {
       name: yup.string().max(100, 'Tên của bạn quá dài').required('Vui lòng nhập tên người dùng'),
       username: yup
         .string()
+        .matches(/^[a-zA-Z0-9_]+$/, 'Tên người dùng không được chứa ký tự đặc biệt')
         .required('Vui lòng nhập tên người dùng')
-        .test('no-spaces', 'Tên người dùng không được chứa dấu cách', (value) => !/\s/.test(value))
+        .test('no-spaces', 'Tên người dùng không được chứa dấu cách', (value) => !/\s/.test(value)),
+      role: yup.string().required('Vui lòng chọn role người dùng'),
+      orgIds: yup
+        .array()
+        .required('Vui lòng chọn tổ chức')
+        .test('not-empty', 'Vui lòng chọn ít nhất một tổ chức', (value) => value && value.length > 0)
     }),
     onSubmit: (values) => {
-      console.log('submit', values);
+      formik.validateForm().then(() => {
+        if (formik.isValid) {
+          dispatchAddUser({
+            name: values.name,
+            email: values.email,
+            role: values.role,
+            org_ids: values.orgIds,
+            username: values.username,
+            password: values.password
+          });
+
+          handleCancel();
+        }
+      });
     },
     validateOnChange: true
   });
@@ -45,10 +71,24 @@ const AddUserModal = ({ open, setOpen }) => {
 
   const handleChangeOrgIds = useCallback(
     (value) => {
+      if (!Array.isArray(value)) value = [value];
       formik.setFieldValue('orgIds', value);
     },
     [formik]
   );
+
+  const organizations = useMemo(() => {
+    return (
+      organizationsState.organizations.map((one) => ({
+        label: one.fullname,
+        value: one.id
+      })) || []
+    );
+  }, [organizationsState.organizations]);
+
+  useEffect(() => {
+    dispatchGetAllOrganizations();
+  }, [dispatchGetAllOrganizations]);
 
   return (
     <>
@@ -162,11 +202,13 @@ const AddUserModal = ({ open, setOpen }) => {
             options={roles}
             value={formik.values.role}
             onChange={handleChangeRole}
+            message={formik.touched.role ? formik.errors.role : ''}
+            type={formik.touched.role && formik.errors.role ? 'error' : ''}
           />
           <Selector
             label="* Tổ chức"
-            name="org"
-            mode="multiple"
+            name="orgIds"
+            mode={formik.values.role === 'manager' ? 'multiple' : ''}
             labelStyle={{
               padding: '2px'
             }}
@@ -178,18 +220,11 @@ const AddUserModal = ({ open, setOpen }) => {
             selectStyle={{
               width: '100%'
             }}
-            options={[
-              {
-                label: 'tổ chức 1',
-                value: 'org1'
-              },
-              {
-                label: 'tổ chức 2',
-                value: 'org2'
-              }
-            ]}
+            options={organizations}
             value={formik.values.orgIds}
             onChange={handleChangeOrgIds}
+            message={formik.touched.orgIds ? formik.errors.orgIds : ''}
+            type={formik.touched.orgIds && formik.errors.orgIds ? 'error' : ''}
           />
         </EditUserWrapper>
       </Modal>

@@ -1,8 +1,17 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { getAllUsersApi, requestDeleteUserApi } from '~/api/users';
+import { getAllUsersApi, requestDeleteUserApi, requestAddUserApi } from '~/api/users';
 
-import { getAllUserRequest, getAllUserSuccess, getAllUserFail, deleteUserRequest, deleteUserSuccess, deleteFail } from '~/store/slices/rootAction';
-
+import {
+  getAllUserRequest,
+  getAllUserSuccess,
+  getAllUserFail,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteFail,
+  addUserRequest,
+  addUserSuccess,
+  addUserFail
+} from '~/store/slices/rootAction';
 
 function* requestAllUsersSaga(action) {
   try {
@@ -23,19 +32,30 @@ function* requestAllUsersSaga(action) {
 
 function* requestDeleteUserSaga(action) {
   try {
-
     yield call(requestDeleteUserApi, action.payload);
-    yield put(
-      deleteUserSuccess(action.payload)
-    );
+    yield put(deleteUserSuccess(action.payload));
   } catch (error) {
     console.log('error', error);
-    yield put(deleteFail(error?.message || 'Delete user Failed!'));
+    yield put(deleteFail(error?.message || 'Delete user failed!'));
   }
 }
 
+function* requestAddUserSaga(action) {
+  try {
+    yield call(requestAddUserApi, action.payload);
+    yield put(addUserSuccess(action.payload));
+  } catch (error) {
+    console.log('error', error);
+    yield put(addUserFail(error?.message || 'Add user failed!'));
+  }
+}
 
-export default function* getAllUsersSaga() {
+export default function* watchUsers() {
   yield takeLatest(getAllUserRequest.type, requestAllUsersSaga);
   yield takeLatest(deleteUserRequest.type, requestDeleteUserSaga);
+  yield takeLatest(addUserRequest.type, requestAddUserSaga);
+
+  // Khi thêm user thành công hoặc xóa user thành công thì đều gọi lại requestAllUsers để cập nhật lại list user
+  yield takeLatest(deleteUserSuccess.type, requestAllUsersSaga);
+  yield takeLatest(addUserSuccess.type, requestAllUsersSaga);
 }
