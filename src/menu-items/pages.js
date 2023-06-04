@@ -1,11 +1,11 @@
 // assets
-import { IconBuildingCommunity, IconFileDescription, IconKey, IconSteam, IconUser } from '@tabler/icons';
+import { IconBuildingCommunity, IconClock, IconFileDescription, IconKey, IconUser } from '@tabler/icons';
 
 // constant
 const icons = {
   IconKey,
   IconUser,
-  IconSteam,
+  IconClock,
   IconBuildingCommunity,
   IconFileDescription
 };
@@ -27,7 +27,7 @@ const pages = {
       title: 'menu.shifts',
       type: 'item',
       url: '/shifts',
-      icon: icons.IconSteam
+      icon: icons.IconClock
     },
     {
       id: 'organization',

@@ -12,6 +12,7 @@ import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import { Button, Popconfirm } from 'antd';
 import { useShiftsStore } from '~/hooks/shifts';
+import dayjs from 'dayjs';
 
 const Shifts = () => {
   const { shiftsState, dispatchGetAllShifts, dispatchDeleteShift } = useShiftsStore();
@@ -30,22 +31,33 @@ const Shifts = () => {
   };
 
   const handleDelete = (params) => {
-    console.log('handleDelete', params.id);
     dispatchDeleteShift(params.id);
     // toast('success', `elete: ${JSON.stringify(params.row)}`);
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
-  const columnsTest = [
-    { field: 'id', headerName: 'ID', flex: 2 },
-    { field: 'name', headerName: 'Name', flex: 2 },
-    { field: 'time_start', headerName: 'Time start', flex: 2 },
-    { field: 'time_end', headerName: 'Time end', flex: 2 },
-    { field: 'from_date', headerName: 'From', flex: 2 },
-    { field: 'to_date', headerName: 'To', flex: 2 },
-    { field: 'code', headerName: 'Code', flex: 2 },
-    { field: 'max_time_late', headerName: 'Max time late', flex: 2 },
-    { field: 'description', headerName: 'Description', flex: 4 },
+  const columns = [
+    { field: 'id', headerName: 'ID', flex: 3, align: 'center', headerAlign: 'start' },
+    { field: 'name', headerName: 'Name', flex: 1, align: 'center', headerAlign: 'center' },
+    {
+      field: 'time_start',
+      headerName: 'Time start',
+      valueGetter: (params) => dayjs(params.row.time_start).format('hh:mm'),
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center'
+    },
+    {
+      field: 'time_end',
+      headerName: 'Time end',
+      valueGetter: (params) => dayjs(params.row.time_end).format('hh:mm'),
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center'
+    },
+    { field: 'code', headerName: 'Code', flex: 1, align: 'center', headerAlign: 'center' },
+    { field: 'max_time_late', headerName: 'Max time late', flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'description', headerName: 'Description', flex: 2, align: 'center', headerAlign: 'center' },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -61,7 +73,9 @@ const Shifts = () => {
           </Popconfirm>
         </>
       ),
-      flex: 2
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center'
     }
   ];
 
@@ -84,7 +98,7 @@ const Shifts = () => {
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <DataTable columns={columnsTest} rows={shifts} checkboxSelection={false} />
+        <DataTable columns={columns} rows={shifts} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination count={shiftsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
