@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react';
 // project imports
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import { AiOutlineUserAdd, AiFillEdit } from 'react-icons/ai';
 import { TbTableExport } from 'react-icons/tb';
 import { MdDelete } from 'react-icons/md';
@@ -11,7 +11,7 @@ import { DataTable } from '~/ui-component/molecules';
 import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import AddUserModal from './AddUserModal';
-import { Button, Popconfirm } from 'antd';
+import { Popconfirm } from 'antd';
 import { GetAllUsers } from '~/hooks/users';
 
 const UsersPage = () => {
@@ -24,7 +24,6 @@ const UsersPage = () => {
   }, [dispatchGetAllUsers]);
 
   const users = useMemo(() => {
-    // console.log('listUserState', listUserState.pagination.currentPage);
     return listUserState.users;
   }, [listUserState.users]);
 
@@ -33,9 +32,7 @@ const UsersPage = () => {
   };
 
   const handleDelete = (params) => {
-    console.log('handleDelete', params.id);
     dispatchDeleteUser(params.id);
-    // toast('success', `elete: ${JSON.stringify(params.row)}`);
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
@@ -65,11 +62,13 @@ const UsersPage = () => {
     }
   ];
 
-  const handleChange = useCallback((event, value) => {
-    console.log('setPage', value);
-    setPage(value);
-    dispatchGetAllUsers({ params: { page: value } });
-  }, []);
+  const handleChange = useCallback(
+    (event, value) => {
+      dispatchGetAllUsers({ params: { page: value } });
+      setPage(value);
+    },
+    [dispatchGetAllUsers]
+  );
 
   return (
     <MainCard>

@@ -2,7 +2,7 @@ import { Modal } from 'antd';
 import { useCallback } from 'react';
 
 const App = (props) => {
-  const { title, onConfirm, open, onOpen, style, children } = props;
+  const { title, onConfirm, open, onOpen, style, children, ...restProps } = props;
 
   const handleConfirm = useCallback(
     (value) => {
@@ -22,8 +22,9 @@ const App = (props) => {
         onCancel={() => handleConfirm(false)}
         width={1000}
         style={style}
+        {...restProps}
       >
-        {children}
+        {open && children}
       </Modal>
     </>
   );

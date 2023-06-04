@@ -22,7 +22,6 @@ const Shifts = () => {
   }, [dispatchGetAllShifts]);
 
   const shifts = useMemo(() => {
-    // console.log('listShiftsState', listShiftsState.pagination.currentPage);
     return listShiftsState.shifts;
   }, [listShiftsState.shifts]);
 
