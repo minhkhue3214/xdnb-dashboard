@@ -9,10 +9,10 @@ import { roles } from '~/store/constant';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { useUsersStore } from '~/hooks/users';
 
-const AddUserModal = ({ open, setOpen }) => {
+const UpdateUserModal = ({ id, open, setOpen }) => {
   const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
 
-  const { dispatchAddUser } = useUsersStore();
+  const { usersState, dispatchUpdateUser, dispatchGetUser } = useUsersStore();
 
   const formik = useFormik({
     initialValues: {
@@ -27,11 +27,6 @@ const AddUserModal = ({ open, setOpen }) => {
       email: yup.string().email('Email không hợp lệ').required('Vui lòng nhập email'),
       password: yup.string().min(8, 'Mật khẩu phải có ít nhất 8 ký tự').required('Vui lòng nhập mật khẩu'),
       name: yup.string().max(100, 'Tên của bạn quá dài').required('Vui lòng nhập tên người dùng'),
-      username: yup
-        .string()
-        .matches(/^[a-zA-Z0-9_]+$/, 'Tên người dùng không được chứa ký tự đặc biệt')
-        .required('Vui lòng nhập tên người dùng')
-        .test('no-spaces', 'Tên người dùng không được chứa dấu cách', (value) => !/\s/.test(value)),
       role: yup.string().required('Vui lòng chọn role người dùng'),
       orgIds: yup
         .array()
@@ -41,12 +36,12 @@ const AddUserModal = ({ open, setOpen }) => {
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
-          dispatchAddUser({
+          dispatchUpdateUser({
+            id,
             name: values.name,
             email: values.email,
             role: values.role,
             org_ids: values.orgIds,
-            username: values.username,
             password: values.password
           });
 
@@ -90,6 +85,25 @@ const AddUserModal = ({ open, setOpen }) => {
     dispatchGetAllOrganizations();
   }, [dispatchGetAllOrganizations]);
 
+  useEffect(() => {
+    if (id) {
+      dispatchGetUser(id);
+    }
+  }, [dispatchGetUser, id]);
+
+  useEffect(() => {
+    const data = usersState.detail;
+    if (data) {
+      formik.setFieldValue('email', data.email || '');
+      formik.setFieldValue('password', data.password || '');
+      formik.setFieldValue('name', data.name || '');
+      formik.setFieldValue('username', data.username || '');
+      formik.setFieldValue('role', data.role || '');
+      formik.setFieldValue('orgIds', data.orgIds || []);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usersState.detail]);
+
   return (
     <>
       <Modal
@@ -111,6 +125,7 @@ const AddUserModal = ({ open, setOpen }) => {
             value={formik.values.username}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
+            disabled
             labelStyle={{
               padding: '2px'
             }}
@@ -208,7 +223,7 @@ const AddUserModal = ({ open, setOpen }) => {
           <Selector
             label="* Tổ chức"
             name="orgIds"
-            mode={formik.values.role === 'manager' || formik.values.role === 'admin' ? 'multiple' : ''}
+            mode={formik.values.role === 'manager' ? 'multiple' : ''}
             labelStyle={{
               padding: '2px'
             }}
@@ -232,7 +247,7 @@ const AddUserModal = ({ open, setOpen }) => {
   );
 };
 
-export default AddUserModal;
+export default UpdateUserModal;
 
 const EditUserWrapper = styled.div`
   width: 100%;

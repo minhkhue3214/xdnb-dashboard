@@ -5,30 +5,63 @@ import { AiOutlineUserAdd, AiFillEdit } from 'react-icons/ai';
 import { TbTableExport } from 'react-icons/tb';
 import { MdDelete } from 'react-icons/md';
 import styled from 'styled-components';
-import toast from '~/handlers/toast';
 import MainCard from '~/ui-component/cards/MainCard';
 import { DataTable } from '~/ui-component/molecules';
 import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import AddUserModal from './AddUserModal';
+import UpdateUserModal from './UpdateUserModal';
 import { Popconfirm } from 'antd';
 import { useUsersStore } from '~/hooks/users';
 
 const UsersPage = () => {
-  const { userState, dispatchGetAllUsers, dispatchDeleteUser } = useUsersStore();
+  const { usersState, dispatchGetAllUsers, dispatchDeleteUser } = useUsersStore();
   const [page, setPage] = useState(1);
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
+  const [openEditUserModal, setOpenEditUserModal] = useState({
+    status: false,
+    id: ''
+  });
 
   useEffect(() => {
     dispatchGetAllUsers();
   }, [dispatchGetAllUsers]);
 
   const users = useMemo(() => {
-    return userState.users;
-  }, [userState.users]);
+    return usersState.users;
+  }, [usersState.users]);
+
+  const handleChangeEditUserModal = useCallback((props) => {
+    if (typeof props === 'boolean') {
+      setOpenEditUserModal({
+        status: props,
+        id: ''
+      });
+    } else if (typeof props !== 'object') {
+      return undefined;
+    }
+
+    const { status, id } = props;
+
+    if (!id) {
+      setOpenEditUserModal({
+        status: false,
+        id: ''
+      });
+    } else {
+      setOpenEditUserModal({
+        status,
+        id
+      });
+    }
+  }, []);
 
   const handleEdit = (params) => {
-    toast('success', `Edit: ${JSON.stringify(params.row)}`);
+    console.log(params?.row?.id);
+    handleChangeEditUserModal({
+      status: true,
+      id: params?.row?.id
+    });
   };
 
   const handleDelete = (params) => {
@@ -90,9 +123,10 @@ const UsersPage = () => {
         <DataTable columns={columns} rows={users} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
-        <Pagination count={userState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
+        <Pagination count={usersState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
       <AddUserModal open={openAddUserModal} setOpen={setOpenAddUserModal} />
+      <UpdateUserModal id={openEditUserModal.id} open={openEditUserModal.status} setOpen={handleChangeEditUserModal} />
     </MainCard>
   );
 };
