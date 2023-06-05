@@ -93,5 +93,5 @@ export default function* watchUsers() {
   yield takeLatest(updateUserRequest.type, requestUpdateUserSaga);
 
   // Khi thêm user thành công hoặc xóa user thành công thì đều gọi lại requestAllUsers để cập nhật lại list user
-  yield takeLatest([deleteUserSuccess.type, addUserSuccess.type, updateUserRequest.type], requestAllUsersSaga);
+  yield takeLatest([deleteUserSuccess.type, addUserSuccess.type, updateUserSuccess.type], requestAllUsersSaga);
 }
