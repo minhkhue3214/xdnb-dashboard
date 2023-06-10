@@ -10,19 +10,41 @@ import MainCard from '~/ui-component/cards/MainCard';
 import { DataTable } from '~/ui-component/molecules';
 import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
+import AddShiftModal from './AddShiftModal';
 import { Button, Popconfirm } from 'antd';
 import { useShiftsStore } from '~/hooks/shifts';
 
 const Shifts = () => {
   const { shiftsState, dispatchGetAllShifts, dispatchDeleteShift } = useShiftsStore();
   const [page, setPage] = useState(1);
+  const [openAddShiftModal, setOpenAddShiftModal] = useState(false);
+
+  function convertTimestampToHour(timestamp) {
+    const date = new Date(timestamp);
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const formattedHour = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+
+    return formattedHour;
+  }
 
   useEffect(() => {
     dispatchGetAllShifts();
   }, [dispatchGetAllShifts]);
 
   const shifts = useMemo(() => {
-    return shiftsState.shifts;
+    console.log('shiftsState.shifts', shiftsState.shifts);
+    const convertedshifts = shiftsState.shifts.map((shift) => {
+      const formattedHour = convertTimestampToHour(shift.time_start);
+      const formattedHour1 = convertTimestampToHour(shift.time_end);
+
+      return {
+        ...shift,
+        time_start: formattedHour,
+        time_end: formattedHour1
+      };
+    });
+    return convertedshifts;
   }, [shiftsState.shifts]);
 
   const handleEdit = (params) => {
@@ -37,7 +59,6 @@ const Shifts = () => {
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columnsTest = [
-    { field: 'id', headerName: 'ID', flex: 2 },
     { field: 'name', headerName: 'Name', flex: 2 },
     { field: 'time_start', headerName: 'Time start', flex: 2 },
     { field: 'time_end', headerName: 'Time end', flex: 2 },
@@ -76,7 +97,13 @@ const Shifts = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button variant="contained" startIcon={<AiOutlineUserAdd />} onClick={() => {}}>
+        <Button
+          variant="contained"
+          startIcon={<AiOutlineUserAdd />}
+          onClick={() => {
+            setOpenAddShiftModal(true);
+          }}
+        >
           Thêm ca trực
         </Button>
         <Button variant="outlined" startIcon={<TbTableExport />}>
@@ -89,6 +116,7 @@ const Shifts = () => {
       <PaginationWrapper>
         <Pagination count={shiftsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
+      <AddShiftModal open={openAddShiftModal} setOpen={setOpenAddShiftModal} />
     </MainCard>
   );
 };
