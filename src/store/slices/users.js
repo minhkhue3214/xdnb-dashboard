@@ -6,7 +6,8 @@ const initialState = {
   pagination: {
     currentPage: null,
     totalPages: null
-  }
+  },
+  detail: null
 };
 
 export const users = createSlice({
@@ -43,6 +44,26 @@ export const users = createSlice({
     },
     addUserFail: (_, action) => {
       dispatchToast('error', action.payload);
+    },
+    getUserRequest: () => {
+      // request update user
+    },
+    getUserSuccess: (state, action) => {
+      console.log('getUserSuccess', action.payload);
+      state.detail = action.payload;
+    },
+    getUserFail: (_, action) => {
+      state.detail = initialState.detail;
+      dispatchToast('error', action.payload);
+    },
+    updateUserRequest: () => {
+      // request update user
+    },
+    updateUserSuccess: () => {
+      dispatchToast('success', 'Updated User!');
+    },
+    updateUserFail: (_, action) => {
+      dispatchToast('error', action.payload);
     }
   }
 });
@@ -56,7 +77,13 @@ export const {
   deleteFail,
   addUserRequest,
   addUserSuccess,
-  addUserFail
+  addUserFail,
+  getUserRequest,
+  getUserSuccess,
+  getUserFail,
+  updateUserRequest,
+  updateUserSuccess,
+  updateUserFail
 } = users.actions;
 
 export default users.reducer;

@@ -52,7 +52,6 @@ const Shifts = () => {
   };
 
   const handleDelete = (params) => {
-    console.log('handleDelete', params.id);
     dispatchDeleteShift(params.id);
     // toast('success', `elete: ${JSON.stringify(params.row)}`);
   };
@@ -82,7 +81,9 @@ const Shifts = () => {
           </Popconfirm>
         </>
       ),
-      flex: 2
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center'
     }
   ];
 

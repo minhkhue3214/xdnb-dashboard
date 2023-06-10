@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import dispatchToast from '~/handlers/toast';
 
 const initialState = {
-    shifts: [],
-    pagination: {
-        currentPage: null,
-        totalPages: null,
-    }
-}
+  shifts: [],
+  pagination: {
+    currentPage: null,
+    totalPages: null
+  }
+};
 
 export const shifts = createSlice({
     name: 'shifts',
@@ -49,7 +49,8 @@ export const shifts = createSlice({
         }
 
     }
-});
+  }
+);
 
 export const {
     getAllShiftRequest,
