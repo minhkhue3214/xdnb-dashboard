@@ -10,20 +10,41 @@ import MainCard from '~/ui-component/cards/MainCard';
 import { DataTable } from '~/ui-component/molecules';
 import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
+import AddShiftModal from './AddShiftModal';
 import { Button, Popconfirm } from 'antd';
 import { useShiftsStore } from '~/hooks/shifts';
-import dayjs from 'dayjs';
 
 const Shifts = () => {
   const { shiftsState, dispatchGetAllShifts, dispatchDeleteShift } = useShiftsStore();
   const [page, setPage] = useState(1);
+  const [openAddShiftModal, setOpenAddShiftModal] = useState(false);
+
+  function convertTimestampToHour(timestamp) {
+    const date = new Date(timestamp);
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const formattedHour = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+
+    return formattedHour;
+  }
 
   useEffect(() => {
     dispatchGetAllShifts();
   }, [dispatchGetAllShifts]);
 
   const shifts = useMemo(() => {
-    return shiftsState.shifts;
+    console.log('shiftsState.shifts', shiftsState.shifts);
+    const convertedshifts = shiftsState.shifts.map((shift) => {
+      const formattedHour = convertTimestampToHour(shift.time_start);
+      const formattedHour1 = convertTimestampToHour(shift.time_end);
+
+      return {
+        ...shift,
+        time_start: formattedHour,
+        time_end: formattedHour1
+      };
+    });
+    return convertedshifts;
   }, [shiftsState.shifts]);
 
   const handleEdit = (params) => {
@@ -36,28 +57,15 @@ const Shifts = () => {
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
-  const columns = [
-    { field: 'id', headerName: 'ID', flex: 3, align: 'center', headerAlign: 'start' },
-    { field: 'name', headerName: 'Name', flex: 1, align: 'center', headerAlign: 'center' },
-    {
-      field: 'time_start',
-      headerName: 'Time start',
-      valueGetter: (params) => dayjs(params.row.time_start).format('hh:mm'),
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center'
-    },
-    {
-      field: 'time_end',
-      headerName: 'Time end',
-      valueGetter: (params) => dayjs(params.row.time_end).format('hh:mm'),
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center'
-    },
-    { field: 'code', headerName: 'Code', flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'max_time_late', headerName: 'Max time late', flex: 2, align: 'center', headerAlign: 'center' },
-    { field: 'description', headerName: 'Description', flex: 2, align: 'center', headerAlign: 'center' },
+  const columnsTest = [
+    { field: 'name', headerName: 'Name', flex: 2 },
+    { field: 'time_start', headerName: 'Time start', flex: 2 },
+    { field: 'time_end', headerName: 'Time end', flex: 2 },
+    { field: 'from_date', headerName: 'From', flex: 2 },
+    { field: 'to_date', headerName: 'To', flex: 2 },
+    { field: 'code', headerName: 'Code', flex: 2 },
+    { field: 'max_time_late', headerName: 'Max time late', flex: 2 },
+    { field: 'description', headerName: 'Description', flex: 4 },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -90,7 +98,13 @@ const Shifts = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button variant="contained" startIcon={<AiOutlineUserAdd />} onClick={() => {}}>
+        <Button
+          variant="contained"
+          startIcon={<AiOutlineUserAdd />}
+          onClick={() => {
+            setOpenAddShiftModal(true);
+          }}
+        >
           Thêm ca trực
         </Button>
         <Button variant="outlined" startIcon={<TbTableExport />}>
@@ -98,11 +112,12 @@ const Shifts = () => {
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <DataTable columns={columns} rows={shifts} checkboxSelection={false} />
+        <DataTable columns={columnsTest} rows={shifts} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination count={shiftsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
+      <AddShiftModal open={openAddShiftModal} setOpen={setOpenAddShiftModal} />
     </MainCard>
   );
 };

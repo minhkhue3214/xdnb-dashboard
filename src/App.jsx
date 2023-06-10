@@ -66,6 +66,14 @@ const GlobalStyle = createGlobalStyle`
       position: relative;
     }
 
+    .ant-select-dropdown{
+      z-index: 9999;
+    }
+
+    .ant-picker-dropdown{
+      z-index: 9999;
+    }
+
     #root {
       width: 100%;
       height: 100%;
@@ -128,6 +136,8 @@ const GlobalStyle = createGlobalStyle`
     *::-webkit-scrollbar-thumb:active{
       background:#9aa0a6
     }
+
+
   }
 }
 `;
