@@ -1,12 +1,23 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { getAllOrganizationsApi, requestDeleteOrganizationsApi } from '~/api/organizations';
+import {
+  getAllOrganizationsApi,
+  requestDeleteOrganizationsApi,
+  requestUpdateOrganizationApi,
+  requestGetOrganizationApi
+} from '~/api/organizations';
 import {
   getAllOrganizationRequest,
   getAllOrganizationSuccess,
   getAllOrganizationFail,
   deleteOrganizationRequest,
   deleteOrganizationSuccess,
-  deleteOrganizationFail
+  deleteOrganizationFail,
+  updateOrganizationRequest,
+  updateOrganizationSuccess,
+  updateOrganizationFail,
+  getOrganizationRequest,
+  getOrganizationSuccess,
+  getOrganizationFail
 } from '~/store/slices/rootAction';
 
 function* requestAllOrganizationsSaga(action) {
@@ -37,7 +48,44 @@ function* requestDeleteOrganizationSaga(action) {
   }
 }
 
+function* requestGetOrganizationSaga(action) {
+  try {
+    const data = yield call(requestGetOrganizationApi, action.payload);
+    yield put(
+      getOrganizationSuccess({
+        place: data.place,
+        code: data.code,
+        name: data.name,
+        fullname: data.fullname,
+        leader: data.leader,
+        id: data.id
+      })
+    );
+  } catch (error) {
+    console.log('error', error);
+    yield put(getOrganizationFail(error?.message || 'Get organization info failed!'));
+  }
+}
+
+function* requestUpdateOrganizationSaga(action) {
+  try {
+    const data = yield call(requestUpdateOrganizationApi, action.payload);
+    yield put(updateOrganizationSuccess(data));
+  } catch (error) {
+    console.log('error', error);
+    yield put(updateOrganizationFail(error?.message || 'Update organization info failed!'));
+  }
+}
+
 export default function* watchOrganizations() {
   yield takeLatest(getAllOrganizationRequest.type, requestAllOrganizationsSaga);
+  yield takeLatest(getOrganizationRequest.type, requestGetOrganizationSaga);
   yield takeLatest(deleteOrganizationRequest.type, requestDeleteOrganizationSaga);
+  yield takeLatest(updateOrganizationRequest.type, requestUpdateOrganizationSaga);
+
+  // Khi thêm organization thành công hoặc xóa organization thành công thì đều gọi lại requestAllOrganizations để cập nhật lại list
+  yield takeLatest(
+    [deleteOrganizationSuccess.type, updateOrganizationSuccess.type, getOrganizationRequest.type],
+    requestAllOrganizationsSaga
+  );
 }

@@ -1,9 +1,10 @@
 import { all } from 'redux-saga/effects';
-import authenticationSaga from './authentication';
-import getAllUsersSaga from './users';
-import getAllShiftsSaga from './shifts';
-import getAllOrganizationsSaga from './organizations';
+import watchAuthentication from './authentication';
+import watchUsers from './users';
+import watchShifts from './shifts';
+import watchOrganizations from './organizations';
+import watchPlaces from './places';
 
 export default function* rootSaga() {
-  yield all([authenticationSaga(), getAllUsersSaga(), getAllShiftsSaga(), getAllOrganizationsSaga()]);
+  yield all([watchAuthentication(), watchUsers(), watchShifts(), watchOrganizations(), watchPlaces()]);
 }

@@ -13,6 +13,13 @@ import IconButton from '@mui/material/IconButton';
 import AddShiftModal from './AddShiftModal';
 import { Button, Popconfirm } from 'antd';
 import { useShiftsStore } from '~/hooks/shifts';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+// Import các plugin cần thiết
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const Shifts = () => {
   const { shiftsState, dispatchGetAllShifts, dispatchDeleteShift } = useShiftsStore();
@@ -48,6 +55,7 @@ const Shifts = () => {
   }, [shiftsState.shifts]);
 
   const handleEdit = (params) => {
+    console.log('params.row', params.row);
     toast('success', `Edit: ${JSON.stringify(params.row)}`);
   };
 
@@ -57,15 +65,28 @@ const Shifts = () => {
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
-  const columnsTest = [
-    { field: 'name', headerName: 'Name', flex: 2 },
-    { field: 'time_start', headerName: 'Time start', flex: 2 },
-    { field: 'time_end', headerName: 'Time end', flex: 2 },
-    { field: 'from_date', headerName: 'From', flex: 2 },
-    { field: 'to_date', headerName: 'To', flex: 2 },
-    { field: 'code', headerName: 'Code', flex: 2 },
-    { field: 'max_time_late', headerName: 'Max time late', flex: 2 },
-    { field: 'description', headerName: 'Description', flex: 4 },
+  const columns = [
+    { field: 'id', headerName: 'ID', flex: 3, align: 'center', headerAlign: 'start' },
+    { field: 'name', headerName: 'Name', flex: 1, align: 'center', headerAlign: 'center' },
+    {
+      field: 'time_start',
+      headerName: 'Time start',
+      valueGetter: (params) => dayjs.unix(params.row.time_start).utc().utcOffset('+07:00').format('HH:mm'),
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center'
+    },
+    {
+      field: 'time_end',
+      headerName: 'Time end',
+      valueGetter: (params) => dayjs.unix(params.row.time_end).utc().utcOffset('+07:00').format('HH:mm'),
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center'
+    },
+    { field: 'code', headerName: 'Code', flex: 1, align: 'center', headerAlign: 'center' },
+    { field: 'max_time_late', headerName: 'Max time late', flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'description', headerName: 'Description', flex: 2, align: 'center', headerAlign: 'center' },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -112,7 +133,7 @@ const Shifts = () => {
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <DataTable columns={columnsTest} rows={shifts} checkboxSelection={false} />
+        <DataTable columns={columns} rows={shifts} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination count={shiftsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />

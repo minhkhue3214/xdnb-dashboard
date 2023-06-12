@@ -27,9 +27,9 @@ import styled from 'styled-components';
 
   headerClassName: Xác định lớp CSS được áp dụng cho tiêu đề cột
 */
-export default function DataTable({ columns, rows, checkboxSelection }) {
+export default function DataTable({ columns, rows, style, tableStyle, checkboxSelection, ...restProps }) {
   return (
-    <DataTableWrapper>
+    <DataTableWrapper style={style}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -38,6 +38,8 @@ export default function DataTable({ columns, rows, checkboxSelection }) {
         disableColumnMenu={true}
         checkboxSelection={checkboxSelection}
         hideFooter={true}
+        style={tableStyle}
+        {...restProps}
       />
     </DataTableWrapper>
   );
