@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import AddShiftModal from './AddShiftModal';
 import { Button, Popconfirm } from 'antd';
 import { useShiftsStore } from '~/hooks/shifts';
+import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
@@ -132,7 +133,7 @@ const Shifts = () => {
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <DataTable columns={columnsTest} rows={shifts} checkboxSelection={false} />
+        <DataTable columns={columns} rows={shifts} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination count={shiftsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
