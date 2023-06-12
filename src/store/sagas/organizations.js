@@ -3,7 +3,8 @@ import {
   getAllOrganizationsApi,
   requestDeleteOrganizationsApi,
   requestUpdateOrganizationApi,
-  requestGetOrganizationApi
+  requestGetOrganizationApi,
+  requestAddOrganizationApi
 } from '~/api/organizations';
 import {
   getAllOrganizationRequest,
@@ -17,7 +18,10 @@ import {
   updateOrganizationFail,
   getOrganizationRequest,
   getOrganizationSuccess,
-  getOrganizationFail
+  getOrganizationFail,
+  addOrganizationRequest,
+  addOrganizationSuccess,
+  addOrganizationFail
 } from '~/store/slices/rootAction';
 
 function* requestAllOrganizationsSaga(action) {
@@ -77,15 +81,26 @@ function* requestUpdateOrganizationSaga(action) {
   }
 }
 
+function* requestAddOrganizationSaga(action) {
+  try {
+    const data = yield call(requestAddOrganizationApi, action.payload);
+    yield put(addOrganizationSuccess(data));
+  } catch (error) {
+    console.log('error', error);
+    yield put(addOrganizationFail(error?.message || 'Add organization failed!'));
+  }
+}
+
 export default function* watchOrganizations() {
   yield takeLatest(getAllOrganizationRequest.type, requestAllOrganizationsSaga);
   yield takeLatest(getOrganizationRequest.type, requestGetOrganizationSaga);
   yield takeLatest(deleteOrganizationRequest.type, requestDeleteOrganizationSaga);
   yield takeLatest(updateOrganizationRequest.type, requestUpdateOrganizationSaga);
+  yield takeLatest(addOrganizationRequest.type, requestAddOrganizationSaga);
 
   // Khi thêm organization thành công hoặc xóa organization thành công thì đều gọi lại requestAllOrganizations để cập nhật lại list
   yield takeLatest(
-    [deleteOrganizationSuccess.type, updateOrganizationSuccess.type, getOrganizationRequest.type],
+    [deleteOrganizationSuccess.type, updateOrganizationSuccess.type, addOrganizationSuccess.type],
     requestAllOrganizationsSaga
   );
 }

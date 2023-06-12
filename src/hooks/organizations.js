@@ -4,7 +4,8 @@ import {
   getAllOrganizationRequest,
   deleteOrganizationRequest,
   updateOrganizationRequest,
-  getOrganizationRequest
+  getOrganizationRequest,
+  addOrganizationRequest
 } from '~/store/slices/organizations';
 
 const useOrganizationsStore = () => {
@@ -15,6 +16,15 @@ const useOrganizationsStore = () => {
   const dispatchGetAllOrganizations = useCallback(
     (payload) => {
       dispatch(getAllOrganizationRequest(payload));
+
+      return true;
+    },
+    [dispatch]
+  );
+
+  const dispatchAddOrganization = useCallback(
+    (payload) => {
+      dispatch(addOrganizationRequest(payload));
 
       return true;
     },
@@ -53,6 +63,7 @@ const useOrganizationsStore = () => {
     dispatchDeleteOrganization,
     dispatchUpdateOrganization,
     dispatchGetOrganization,
+    dispatchAddOrganization,
     organizationsState
   };
 };
