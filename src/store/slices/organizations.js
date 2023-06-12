@@ -6,7 +6,8 @@ const initialState = {
   pagination: {
     currentPage: null,
     totalPages: null
-  }
+  },
+  detail: null
 };
 
 export const organizations = createSlice({
@@ -14,7 +15,7 @@ export const organizations = createSlice({
   initialState,
   reducers: {
     getAllOrganizationRequest: () => {
-      // request user
+      // request organization
     },
     getAllOrganizationSuccess: (state, action) => {
       const { page, totalPages, results } = action.payload;
@@ -26,7 +27,7 @@ export const organizations = createSlice({
       dispatchToast('error', action.payload);
     },
     deleteOrganizationRequest: () => {
-      // request user
+      // request organization
     },
     deleteOrganizationSuccess: (state, action) => {
       console.log('deleteShiftSuccess', action);
@@ -35,6 +36,25 @@ export const organizations = createSlice({
       dispatchToast('success', 'Deleted organization!');
     },
     deleteOrganizationFail: (_, action) => {
+      dispatchToast('error', action.payload);
+    },
+    updateOrganizationRequest: () => {
+      // request update organization
+    },
+    updateOrganizationSuccess: () => {
+      dispatchToast('success', 'Updated Organization!');
+    },
+    updateOrganizationFail: (_, action) => {
+      dispatchToast('error', action.payload);
+    },
+    getOrganizationRequest: () => {
+      // request get organization
+    },
+    getOrganizationSuccess: (state, action) => {
+      state.detail = action.payload;
+    },
+    getOrganizationFail: (_, action) => {
+      state.detail = initialState.detail;
       dispatchToast('error', action.payload);
     }
   }
@@ -46,7 +66,13 @@ export const {
   getAllOrganizationFail,
   deleteOrganizationRequest,
   deleteOrganizationSuccess,
-  deleteOrganizationFail
+  deleteOrganizationFail,
+  updateOrganizationRequest,
+  updateOrganizationSuccess,
+  updateOrganizationFail,
+  getOrganizationRequest,
+  getOrganizationSuccess,
+  getOrganizationFail
 } = organizations.actions;
 
 export default organizations.reducer;

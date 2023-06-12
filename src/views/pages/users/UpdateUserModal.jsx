@@ -12,7 +12,7 @@ import { useUsersStore } from '~/hooks/users';
 const UpdateUserModal = ({ id, open, setOpen }) => {
   const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
 
-  const { usersState, dispatchUpdateUser, dispatchGetUser } = useUsersStore();
+  const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
 
   const formik = useFormik({
     initialValues: {
@@ -87,9 +87,9 @@ const UpdateUserModal = ({ id, open, setOpen }) => {
 
   useEffect(() => {
     if (id) {
-      dispatchGetUser(id);
+      dispatchGetUserById(id);
     }
-  }, [dispatchGetUser, id]);
+  }, [dispatchGetUserById, id]);
 
   useEffect(() => {
     const data = usersState.detail;

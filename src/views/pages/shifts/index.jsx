@@ -13,6 +13,12 @@ import IconButton from '@mui/material/IconButton';
 import { Button, Popconfirm } from 'antd';
 import { useShiftsStore } from '~/hooks/shifts';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+// Import các plugin cần thiết
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const Shifts = () => {
   const { shiftsState, dispatchGetAllShifts, dispatchDeleteShift } = useShiftsStore();
@@ -27,6 +33,7 @@ const Shifts = () => {
   }, [shiftsState.shifts]);
 
   const handleEdit = (params) => {
+    console.log('params.row', params.row);
     toast('success', `Edit: ${JSON.stringify(params.row)}`);
   };
 
@@ -42,7 +49,7 @@ const Shifts = () => {
     {
       field: 'time_start',
       headerName: 'Time start',
-      valueGetter: (params) => dayjs(params.row.time_start).format('hh:mm'),
+      valueGetter: (params) => dayjs.unix(params.row.time_start).utc().utcOffset('+07:00').format('HH:mm'),
       flex: 1,
       align: 'center',
       headerAlign: 'center'
@@ -50,7 +57,7 @@ const Shifts = () => {
     {
       field: 'time_end',
       headerName: 'Time end',
-      valueGetter: (params) => dayjs(params.row.time_end).format('hh:mm'),
+      valueGetter: (params) => dayjs.unix(params.row.time_end).utc().utcOffset('+07:00').format('HH:mm'),
       flex: 1,
       align: 'center',
       headerAlign: 'center'

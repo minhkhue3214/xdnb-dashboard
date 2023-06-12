@@ -1,6 +1,11 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllOrganizationRequest, deleteOrganizationRequest } from '~/store/slices/organizations';
+import {
+  getAllOrganizationRequest,
+  deleteOrganizationRequest,
+  updateOrganizationRequest,
+  getOrganizationRequest
+} from '~/store/slices/organizations';
 
 const useOrganizationsStore = () => {
   const dispatch = useDispatch();
@@ -16,7 +21,7 @@ const useOrganizationsStore = () => {
     [dispatch]
   );
 
-  const dispatchDeleteOrganizations = useCallback(
+  const dispatchDeleteOrganization = useCallback(
     (payload) => {
       dispatch(deleteOrganizationRequest(payload));
 
@@ -25,9 +30,29 @@ const useOrganizationsStore = () => {
     [dispatch]
   );
 
+  const dispatchUpdateOrganization = useCallback(
+    (payload) => {
+      dispatch(updateOrganizationRequest(payload));
+
+      return true;
+    },
+    [dispatch]
+  );
+
+  const dispatchGetOrganization = useCallback(
+    (payload) => {
+      dispatch(getOrganizationRequest(payload));
+
+      return true;
+    },
+    [dispatch]
+  );
+
   return {
     dispatchGetAllOrganizations,
-    dispatchDeleteOrganizations,
+    dispatchDeleteOrganization,
+    dispatchUpdateOrganization,
+    dispatchGetOrganization,
     organizationsState
   };
 };
