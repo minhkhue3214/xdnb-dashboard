@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import dispatchToast from '~/handlers/toast';
 
 const initialState = {
-    shifts: [],
-    pagination: {
-        currentPage: null,
-        totalPages: null,
-    }
-}
+  shifts: [],
+  pagination: {
+    currentPage: null,
+    totalPages: null
+  }
+};
 
 export const shifts = createSlice({
     name: 'shifts',
@@ -38,10 +38,30 @@ export const shifts = createSlice({
         deleteShiftFail: (_, action) => {
             dispatchToast('error', action.payload);
         },
+        addShiftRequest: () => {
+            // request add user
+        },
+        addShiftSuccess: () => {
+            dispatchToast('success', 'Added Shift!');
+        },
+        addShiftFail: (_, action) => {
+            dispatchToast('error', action.payload);
+        }
 
     }
-});
+  }
+);
 
-export const { getAllShiftRequest, getAllShiftSuccess, getAllShiftFail, deleteShiftRequest, deleteShiftSuccess, deleteShiftFail } = shifts.actions;
+export const {
+    getAllShiftRequest,
+    getAllShiftSuccess,
+    getAllShiftFail,
+    deleteShiftRequest,
+    deleteShiftSuccess,
+    deleteShiftFail,
+    addShiftRequest,
+    addShiftSuccess,
+    addShiftFail
+} = shifts.actions;
 
 export default shifts.reducer;

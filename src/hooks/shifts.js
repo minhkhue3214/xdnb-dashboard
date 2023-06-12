@@ -1,32 +1,45 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllShiftRequest, deleteShiftRequest } from '~/store/slices/shifts';
+import { getAllShiftRequest, deleteShiftRequest, addShiftRequest } from '~/store/slices/shifts';
 
-const GetAllShifts = () => {
-    const dispatch = useDispatch();
+const useShiftsStore = () => {
+  const dispatch = useDispatch();
 
-    const listShiftsState = useSelector((state) => state.shifts);
+  const shiftsState = useSelector((state) => state.shifts);
 
-    const dispatchGetAllShifts = useCallback((payload) => {
-        dispatch(getAllShiftRequest(payload));
+  const dispatchGetAllShifts = useCallback(
+    (payload) => {
+      dispatch(getAllShiftRequest(payload));
 
-        return true;
+      return true;
     },
-        [dispatch]
-    );
+    [dispatch]
+  );
 
+  const dispatchDeleteShift = useCallback(
+    (payload) => {
+      dispatch(deleteShiftRequest(payload));
 
-    const dispatchDeleteShift = useCallback((payload) => {
-        dispatch(deleteShiftRequest(payload));
+      return true;
+    },
+    [dispatch]
+  );
 
-        return true;
-    }, [dispatch]);
+  const dispatchAddShift = useCallback(
+    (payload) => {
+      dispatch(addShiftRequest(payload));
 
-    return {
-        dispatchGetAllShifts,
-        dispatchDeleteShift,
-        listShiftsState
-    };
-}
+      return true;
+    },
+    [dispatch]
+  );
 
-export { GetAllShifts };
+  return {
+    dispatchGetAllShifts,
+    dispatchDeleteShift,
+    dispatchAddShift,
+    shiftsState
+  };
+};
+
+export { useShiftsStore };

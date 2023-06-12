@@ -1,10 +1,10 @@
 import axiosClient from './axiosClient';
 const getAllOrganizationsApi = (params) => {
-    return axiosClient.get('/organizations', params);
+  return axiosClient.get('/organizations', params);
 };
 
-const requestDeleteOrganizationsApi = (params) => {
-    return axiosClient.delete(`/organizations/${params}`);
+const requestDeleteOrganizationsApi = (id) => {
+  return axiosClient.delete(`/organizations/${id}`);
 };
 
 export { getAllOrganizationsApi, requestDeleteOrganizationsApi };

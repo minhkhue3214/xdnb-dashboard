@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllUserRequest, deleteUserRequest } from '~/store/slices/users';
+import { getAllUserRequest, deleteUserRequest, addUserRequest, getUserRequest, updateUserRequest } from '~/store/slices/users';
 
-const GetAllUsers = () => {
+const useUsersStore = () => {
   const dispatch = useDispatch();
 
-  const listUserState = useSelector((state) => state.users);
+  const usersState = useSelector((state) => state.users);
 
   const dispatchGetAllUsers = useCallback(
     (payload) => {
@@ -25,11 +25,41 @@ const GetAllUsers = () => {
     [dispatch]
   );
 
+  const dispatchAddUser = useCallback(
+    (payload) => {
+      dispatch(addUserRequest(payload));
+
+      return true;
+    },
+    [dispatch]
+  );
+
+  const dispatchGetUser = useCallback(
+    (payload) => {
+      dispatch(getUserRequest(payload));
+
+      return true;
+    },
+    [dispatch]
+  );
+
+  const dispatchUpdateUser = useCallback(
+    (payload) => {
+      dispatch(updateUserRequest(payload));
+
+      return true;
+    },
+    [dispatch]
+  );
+
   return {
     dispatchGetAllUsers,
     dispatchDeleteUser,
-    listUserState
+    dispatchAddUser,
+    dispatchGetUser,
+    dispatchUpdateUser,
+    usersState
   };
 };
 
-export { GetAllUsers };
+export { useUsersStore };

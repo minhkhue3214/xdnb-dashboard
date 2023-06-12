@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import { createGlobalStyle } from 'styled-components';
 import { useAuthenticationStore } from '~/hooks/authentication';
+import styled from 'styled-components';
 
 // routing
 import Routes from '~/routes';
@@ -38,7 +39,7 @@ const App = () => {
         <NavigationScroll>
           <GlobalStyle />
           <Routes />
-          <ToastContainer />
+          <ToastContainerCustom />
         </NavigationScroll>
       </ThemeProvider>
     </StyledEngineProvider>
@@ -48,7 +49,6 @@ const App = () => {
 export default memo(App);
 
 const GlobalStyle = createGlobalStyle`
-  
 * {
   padding: 0;
   margin: 0;
@@ -64,6 +64,14 @@ const GlobalStyle = createGlobalStyle`
     .ant-modal-root {
       z-index: 9999;
       position: relative;
+    }
+
+    .ant-select-dropdown{
+      z-index: 9999;
+    }
+
+    .ant-picker-dropdown{
+      z-index: 9999;
     }
 
     #root {
@@ -128,6 +136,12 @@ const GlobalStyle = createGlobalStyle`
     *::-webkit-scrollbar-thumb:active{
       background:#9aa0a6
     }
+
+
   }
 }
+`;
+
+const ToastContainerCustom = styled(ToastContainer)`
+  z-index: 10000;
 `;

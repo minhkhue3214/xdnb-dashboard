@@ -2,46 +2,88 @@ import { createSlice } from '@reduxjs/toolkit';
 import dispatchToast from '~/handlers/toast';
 
 const initialState = {
-    users: [],
-    pagination: {
-        currentPage: null,
-        totalPages: null,
-    }
-}
+  users: [],
+  pagination: {
+    currentPage: null,
+    totalPages: null
+  },
+  detail: null
+};
 
 export const users = createSlice({
-    name: 'users',
-    initialState,
-    reducers: {
-        getAllUserRequest: () => {
-            // request user
-        },
-        getAllUserSuccess: (state, action) => {
-            const { page, totalPages, results } = action.payload;
+  name: 'users',
+  initialState,
+  reducers: {
+    getAllUserRequest: () => {
+      // request user
+    },
+    getAllUserSuccess: (state, action) => {
+      const { page, totalPages, results } = action.payload;
 
-            state.users = results;
-            state.pagination.currentPage = page;
-            state.pagination.totalPages = totalPages;
-        },
-        getAllUserFail: (_, action) => {
-            dispatchToast('error', action.payload);
-        },
-        //delete users
-        deleteUserRequest: () => {
-            // request user
-        },
-        deleteUserSuccess: (state, action) => {
-            let updateUsers = state.users.filter((user) => user.id !== action.payload)
-            state.users = updateUsers;
-            dispatchToast('success', 'Deleted user!');
-        },
-        deleteFail: (_, action) => {
-            dispatchToast('error', action.payload);
-        },
-
+      state.users = results;
+      state.pagination.currentPage = page;
+      state.pagination.totalPages = totalPages;
+    },
+    getAllUserFail: (_, action) => {
+      dispatchToast('error', action.payload);
+    },
+    deleteUserRequest: () => {
+      // request user
+    },
+    deleteUserSuccess: () => {
+      dispatchToast('success', 'Deleted user!');
+    },
+    deleteFail: (_, action) => {
+      dispatchToast('error', action.payload);
+    },
+    addUserRequest: () => {
+      // request add user
+    },
+    addUserSuccess: () => {
+      dispatchToast('success', 'Added User!');
+    },
+    addUserFail: (_, action) => {
+      dispatchToast('error', action.payload);
+    },
+    getUserRequest: () => {
+      // request update user
+    },
+    getUserSuccess: (state, action) => {
+      console.log('getUserSuccess', action.payload);
+      state.detail = action.payload;
+    },
+    getUserFail: (_, action) => {
+      state.detail = initialState.detail;
+      dispatchToast('error', action.payload);
+    },
+    updateUserRequest: () => {
+      // request update user
+    },
+    updateUserSuccess: () => {
+      dispatchToast('success', 'Updated User!');
+    },
+    updateUserFail: (_, action) => {
+      dispatchToast('error', action.payload);
     }
+  }
 });
 
-export const { getAllUserRequest, getAllUserSuccess, getAllUserFail, deleteUserRequest, deleteUserSuccess, deleteFail } = users.actions;
+export const {
+  getAllUserRequest,
+  getAllUserSuccess,
+  getAllUserFail,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteFail,
+  addUserRequest,
+  addUserSuccess,
+  addUserFail,
+  getUserRequest,
+  getUserSuccess,
+  getUserFail,
+  updateUserRequest,
+  updateUserSuccess,
+  updateUserFail
+} = users.actions;
 
 export default users.reducer;

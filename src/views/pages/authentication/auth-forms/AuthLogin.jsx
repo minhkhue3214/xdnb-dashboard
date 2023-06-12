@@ -57,7 +57,7 @@ const FirebaseLogin = ({ ...others }) => {
           try {
             console.log('value', values);
             const result = dispatchLogin({
-              user_name: values.username,
+              username: values.username,
               password: values.password
             });
 

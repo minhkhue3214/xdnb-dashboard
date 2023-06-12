@@ -2,7 +2,7 @@ import { toast, Slide } from 'react-toastify';
 
 const dispatchToast = (type, message) => {
   toast[type](message, {
-    position: 'top-center',
+    position: 'top-right',
     transition: Slide,
     autoClose: 3000,
     hideProgressBar: false,
