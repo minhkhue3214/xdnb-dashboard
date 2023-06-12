@@ -56,6 +56,15 @@ export const organizations = createSlice({
     getOrganizationFail: (_, action) => {
       state.detail = initialState.detail;
       dispatchToast('error', action.payload);
+    },
+    addOrganizationRequest: () => {
+      // request add organization
+    },
+    addOrganizationSuccess: () => {
+      dispatchToast('success', 'Added Organization!');
+    },
+    addOrganizationFail: (_, action) => {
+      dispatchToast('error', action.payload);
     }
   }
 });
@@ -72,7 +81,10 @@ export const {
   updateOrganizationFail,
   getOrganizationRequest,
   getOrganizationSuccess,
-  getOrganizationFail
+  getOrganizationFail,
+  addOrganizationRequest,
+  addOrganizationSuccess,
+  addOrganizationFail
 } = organizations.actions;
 
 export default organizations.reducer;

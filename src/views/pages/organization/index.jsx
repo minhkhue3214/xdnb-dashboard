@@ -11,10 +11,12 @@ import { useOrganizationsStore } from '~/hooks/organizations';
 import MainCard from '~/ui-component/cards/MainCard';
 import { DataTable } from '~/ui-component/molecules';
 import UpdateOrganization from './UpdateOrganization';
+import AddOrganization from './AddOrganization';
 
 const OrganizationPage = () => {
   const { organizationsState, dispatchGetAllOrganizations, dispatchDeleteOrganization } = useOrganizationsStore();
   const [page, setPage] = useState(1);
+  const [openAddOrganizationModal, setOpenAddOrganizationModal] = useState(false);
   const [openEditOrganizationModal, setOpenEditOrganizationModal] = useState({
     status: false,
     id: ''
@@ -105,7 +107,13 @@ const OrganizationPage = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button variant="contained" startIcon={<AiOutlineUserAdd />} onClick={() => {}}>
+        <Button
+          variant="contained"
+          startIcon={<AiOutlineUserAdd />}
+          onClick={() => {
+            setOpenAddOrganizationModal(true);
+          }}
+        >
           Thêm tổ chức
         </Button>
         <Button variant="outlined" startIcon={<TbTableExport />}>
@@ -118,6 +126,7 @@ const OrganizationPage = () => {
       <PaginationWrapper>
         <Pagination count={organizationsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
+      <AddOrganization open={openAddOrganizationModal} setOpen={setOpenAddOrganizationModal} />
       <UpdateOrganization
         id={openEditOrganizationModal.id}
         open={openEditOrganizationModal.status}

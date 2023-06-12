@@ -42,7 +42,7 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
     <Modal
       open={open}
       onOpen={setOpen}
-      title="Thêm tổ chức"
+      title="Cập nhật thông tin tổ chức"
       onOk={() => setOpen(false)}
       onCancel={() => setOpen(false)}
       width="95%"
