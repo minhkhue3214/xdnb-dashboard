@@ -1,12 +1,15 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { getAllShiftsApi, requestDeleteShiftApi } from '~/api/shifts';
+import { getAllShiftsApi, requestDeleteShiftApi, requestAddShiftApi } from '~/api/shifts';
 import {
   getAllShiftRequest,
   getAllShiftSuccess,
   getAllShiftFail,
   deleteShiftRequest,
   deleteShiftSuccess,
-  deleteShiftFail
+  deleteShiftFail,
+  addShiftSuccess,
+  addShiftRequest,
+  addShiftFail
 } from '~/store/slices/rootAction';
 
 function* requestAllShiftsSaga(action) {
@@ -36,7 +39,22 @@ function* requestDeleteShiftSaga(action) {
   }
 }
 
+function* requestAddShiftSaga(action) {
+  console.log("action", action);
+  try {
+    yield call(requestAddShiftApi, action.payload);
+    yield put(addShiftSuccess(action.payload));
+  } catch (error) {
+    console.log('error', error);
+    yield put(addShiftFail(error?.message || 'Add shift failed!'));
+  }
+}
+
 export default function* watchShifts() {
   yield takeLatest(getAllShiftRequest.type, requestAllShiftsSaga);
   yield takeLatest(deleteShiftRequest.type, requestDeleteShiftSaga);
+  yield takeLatest(addShiftRequest.type, requestAddShiftSaga);
+
+  yield takeLatest(deleteShiftSuccess.type, requestAllShiftsSaga);
+  yield takeLatest(addShiftSuccess.type, requestAllShiftsSaga);
 }

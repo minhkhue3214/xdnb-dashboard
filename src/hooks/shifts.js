@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllShiftRequest, deleteShiftRequest } from '~/store/slices/shifts';
+import { getAllShiftRequest, deleteShiftRequest, addShiftRequest } from '~/store/slices/shifts';
 
 const useShiftsStore = () => {
   const dispatch = useDispatch();
@@ -25,9 +25,19 @@ const useShiftsStore = () => {
     [dispatch]
   );
 
+  const dispatchAddShift = useCallback(
+    (payload) => {
+      dispatch(addShiftRequest(payload));
+
+      return true;
+    },
+    [dispatch]
+  );
+
   return {
     dispatchGetAllShifts,
     dispatchDeleteShift,
+    dispatchAddShift,
     shiftsState
   };
 };

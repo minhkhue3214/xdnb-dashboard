@@ -6,4 +6,9 @@ const requestDeleteShiftApi = (id) => {
   return axiosClient.delete(`/shift/${id}`);
 };
 
-export { getAllShiftsApi, requestDeleteShiftApi };
+const requestAddShiftApi = (params) => {
+  console.log("params", params);
+  return axiosClient.post('/shift', params);
+};
+
+export { getAllShiftsApi, requestDeleteShiftApi, requestAddShiftApi };
