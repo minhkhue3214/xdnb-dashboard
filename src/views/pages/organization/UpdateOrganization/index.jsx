@@ -29,7 +29,9 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
   useEffect(() => {
     if (id) {
       dispatchGetAllUsers({
-        org_ids: id
+        params: {
+          org_ids: id
+        }
       });
     }
   }, [dispatchGetAllUsers, id]);
