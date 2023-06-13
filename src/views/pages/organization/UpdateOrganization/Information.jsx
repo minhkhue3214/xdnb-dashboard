@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { EditInput, Selector } from '~/ui-component/atoms';
 
-const Information = ({ id: orgId, users }) => {
+const Information = ({ orgId, users }) => {
   const { organizationsState, dispatchGetOrganization, dispatchUpdateOrganization } = useOrganizationsStore();
   const [fullname, setFullname] = useState('');
   const [name, setName] = useState('');
