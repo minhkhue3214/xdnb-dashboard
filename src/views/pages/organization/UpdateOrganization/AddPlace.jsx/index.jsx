@@ -78,9 +78,9 @@ const AddPlace = ({ id, open, setOpen }) => {
             time_start: dayjs(values.timeStart).unix(),
             time_end: dayjs(values.timeEnd).unix(),
             wifi: values.wifi,
-            ip_address: values.ipAddress,
+            ip_address: values.ipAddress !== '...' ? values.ipAddress : '',
             mac: values.mac,
-            mac_address: values.macAddress
+            mac_address: values.macAddress !== '-----' ? values.macAddress : ''
           });
 
           handleCancel();

@@ -5,8 +5,10 @@ import checkValidIp from '~/handlers/checkValidIp';
 
 const MAX_OCTET_LENGTH = 3;
 
+const initOctets = ['', '', '', ''];
+
 const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}, ...restProps }) => {
-  const [octets, setOctets] = useState(['', '', '', '']);
+  const [octets, setOctets] = useState(initOctets);
   const counter = useRef(false);
 
   const handleOctetChange = (i, v) => {
@@ -25,7 +27,7 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
   useEffect(() => {
     if (counter && checkValidIp(value) && !counter?.current) {
       counter.current = true;
-      const octets = value?.split('.') || ['', '', '', ''];
+      const octets = value?.split('.') || initOctets;
       setOctets(octets);
     }
   }, [value, counter]);
@@ -35,6 +37,12 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
     onChange && onChange(ip);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [octets]);
+
+  useEffect(() => {
+    if (disabled) {
+      setOctets(initOctets);
+    }
+  }, [disabled]);
 
   return (
     <InputWrapper style={style}>
