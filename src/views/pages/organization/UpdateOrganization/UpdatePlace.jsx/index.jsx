@@ -19,7 +19,7 @@ import timezone from 'dayjs/plugin/timezone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const Update = ({ id, open, setOpen }) => {
+const Update = ({ id, orgId, open, setOpen }) => {
   const { placesState, dispatchUpdatePlace, dispatchGetPlaceById } = usePlacesStore();
 
   const formik = useFormik({
@@ -78,7 +78,7 @@ const Update = ({ id, open, setOpen }) => {
             id,
             lat: values.lat,
             long: values.long,
-            org_id: id,
+            org_id: orgId,
             r: values.r,
             address: values.address,
             name: values.name,
@@ -89,7 +89,7 @@ const Update = ({ id, open, setOpen }) => {
             mac: values.mac,
             mac_address: values.macAddress !== '-----' ? values.macAddress : '',
             params: {
-              org_id: id
+              org_id: orgId
             }
           });
 

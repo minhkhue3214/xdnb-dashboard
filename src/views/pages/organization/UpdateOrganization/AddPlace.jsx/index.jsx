@@ -13,7 +13,7 @@ import checkValidMac from '~/handlers/checkValidMac';
 import { usePlacesStore } from '~/hooks/places';
 import dayjs from 'dayjs';
 
-const AddPlace = ({ id, open, setOpen }) => {
+const AddPlace = ({ orgId, open, setOpen }) => {
   const { dispatchAddPlace } = usePlacesStore();
 
   const formik = useFormik({
@@ -71,7 +71,7 @@ const AddPlace = ({ id, open, setOpen }) => {
           dispatchAddPlace({
             lat: values.lat,
             long: values.long,
-            org_id: id,
+            org_id: orgId,
             r: values.r,
             address: values.address,
             name: values.name,
@@ -82,7 +82,7 @@ const AddPlace = ({ id, open, setOpen }) => {
             mac: values.mac,
             mac_address: values.macAddress !== '-----' ? values.macAddress : '',
             params: {
-              org_id: id
+              org_id: orgId
             }
           });
 

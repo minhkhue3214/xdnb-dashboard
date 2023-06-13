@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { EditInput, Selector } from '~/ui-component/atoms';
 
-const Information = ({ id, users }) => {
+const Information = ({ id: orgId, users }) => {
   const { organizationsState, dispatchGetOrganization, dispatchUpdateOrganization } = useOrganizationsStore();
   const [fullname, setFullname] = useState('');
   const [name, setName] = useState('');
@@ -12,7 +12,7 @@ const Information = ({ id, users }) => {
 
   const handleChange = useCallback(
     (type, value) => {
-      if (id) {
+      if (orgId) {
         switch (type) {
           case 'fullname':
             setFullname(value);
@@ -29,12 +29,12 @@ const Information = ({ id, users }) => {
         }
 
         dispatchUpdateOrganization({
-          id,
+          id: orgId,
           [type]: value
         });
       }
     },
-    [dispatchUpdateOrganization, id]
+    [dispatchUpdateOrganization, orgId]
   );
 
   const leaderOptions = useMemo(() => {
@@ -47,10 +47,10 @@ const Information = ({ id, users }) => {
   }, [users]);
 
   useEffect(() => {
-    if (id) {
-      dispatchGetOrganization(id);
+    if (orgId) {
+      dispatchGetOrganization(orgId);
     }
-  }, [dispatchGetOrganization, id]);
+  }, [dispatchGetOrganization, orgId]);
 
   useEffect(() => {
     if (organizationsState?.detail) {
