@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Modal } from '~/ui-component/molecules';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -8,16 +8,23 @@ import { useCallback } from 'react';
 import { roles } from '~/store/constant';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { useUsersStore } from '~/hooks/users';
+import { useAuthenticationStore } from '~/hooks/authentication';
 
-const UpdateUserModal = ({ id, open, setOpen }) => {
+const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) => {
   const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
-
+  const { authenticationState } = useAuthenticationStore();
+  const [newRoles, setNewRoles] = useState([]);
   const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
+
+  useEffect(() => {
+    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
+    console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
+    setNewRoles(updateRoles);
+  }, [authenticationState.role, roles]);
 
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
       name: '',
       username: '',
       role: 'user',
@@ -25,7 +32,6 @@ const UpdateUserModal = ({ id, open, setOpen }) => {
     },
     validationSchema: yup.object({
       email: yup.string().email('Email không hợp lệ').required('Vui lòng nhập email'),
-      password: yup.string().min(8, 'Mật khẩu phải có ít nhất 8 ký tự').required('Vui lòng nhập mật khẩu'),
       name: yup.string().max(100, 'Tên của bạn quá dài').required('Vui lòng nhập tên người dùng'),
       role: yup.string().required('Vui lòng chọn role người dùng'),
       orgIds: yup
@@ -41,8 +47,7 @@ const UpdateUserModal = ({ id, open, setOpen }) => {
             name: values.name,
             email: values.email,
             role: values.role,
-            org_ids: values.orgIds,
-            password: values.password
+            org_ids: values.orgIds
           });
 
           handleCancel();
@@ -104,6 +109,14 @@ const UpdateUserModal = ({ id, open, setOpen }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersState.detail]);
 
+  const handleOpenChangePassword = () => {
+    handleCancel();
+    handleChangeEditPasswordModal({
+      status: true,
+      id: id
+    });
+  };
+
   return (
     <>
       <Modal
@@ -160,26 +173,6 @@ const UpdateUserModal = ({ id, open, setOpen }) => {
             }}
           />
           <Input
-            label="* Mật khẩu"
-            name="password"
-            message={formik.touched.password ? formik.errors.password : ''}
-            type={formik.touched.password && formik.errors.password ? 'error' : ''}
-            value={formik.values.password}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Input
             label="* Tên đầy đủ"
             name="name"
             message={formik.touched.name ? formik.errors.name : ''}
@@ -214,7 +207,7 @@ const UpdateUserModal = ({ id, open, setOpen }) => {
             selectStyle={{
               width: '100%'
             }}
-            options={roles}
+            options={newRoles}
             value={formik.values.role}
             onChange={handleChangeRole}
             message={formik.touched.role ? formik.errors.role : ''}
@@ -241,6 +234,7 @@ const UpdateUserModal = ({ id, open, setOpen }) => {
             message={formik.touched.orgIds ? formik.errors.orgIds : ''}
             type={formik.touched.orgIds && formik.errors.orgIds ? 'error' : ''}
           />
+          <EditLinkPassword onClick={handleOpenChangePassword}>Tiến hành sửa mật khẩu</EditLinkPassword>
         </EditUserWrapper>
       </Modal>
     </>
@@ -253,4 +247,12 @@ const EditUserWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 16px 0;
+`;
+
+const EditLinkPassword = styled.h4`
+  cursor: pointer;
+
+  &:hover {
+    color: #f0432c;
+  }
 `;

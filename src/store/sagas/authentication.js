@@ -7,13 +7,20 @@ function* loginRequestSaga(action) {
   try {
     const data = yield call(loginRequestApi, action.payload);
 
-    yield put(
-      loginSuccess({
-        accessToken: data.tokens?.access,
-        refreshToken: data.tokens?.refresh,
-        loginInfo: data.user
-      })
-    );
+    const userRole = data.user.role;
+
+    if (userRole == "admin" || userRole == "manager") {
+      yield put(
+        loginSuccess({
+          accessToken: data.tokens?.access,
+          refreshToken: data.tokens?.refresh,
+          loginInfo: data.user
+        })
+      );
+    } else {
+      throw new Error('Bạn không có quyền truy cập vào trang quản trị');
+    }
+
   } catch (error) {
     yield put(loginFail(error?.message || 'Login Failed!'));
   }
