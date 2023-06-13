@@ -1,15 +1,19 @@
 import IconButton from '@mui/material/IconButton';
 import { Popconfirm } from 'antd';
-import React, { useCallback } from 'react';
-import { AiFillEdit } from 'react-icons/ai';
+import React, { useCallback, useState } from 'react';
+import { AiFillEdit, AiOutlineQrcode } from 'react-icons/ai';
 import { BiShowAlt } from 'react-icons/bi';
 import { MdDelete } from 'react-icons/md';
 import styled from 'styled-components';
 import { usePlacesStore } from '~/hooks/places';
-import { DataTable } from '~/ui-component/molecules';
+import { DataTable, QrCode } from '~/ui-component/molecules';
 
 const TablePlace = ({ places, onFocusMarker }) => {
   const { dispatchDeletePlace } = usePlacesStore();
+  const [openQRModal, setOpenQRModal] = useState({
+    status: false,
+    id: ''
+  });
 
   const handleDelete = useCallback(
     (params) => {
@@ -30,10 +34,42 @@ const TablePlace = ({ places, onFocusMarker }) => {
     [onFocusMarker]
   );
 
+  const handleChangeQrCodeModal = useCallback((props) => {
+    if (typeof props === 'boolean') {
+      setOpenQRModal({
+        status: props,
+        id: ''
+      });
+    } else if (typeof props !== 'object') {
+      return undefined;
+    }
+
+    const { status, id } = props;
+
+    if (!id) {
+      setOpenQRModal({
+        status: false,
+        id: ''
+      });
+    } else {
+      setOpenQRModal({
+        status,
+        id
+      });
+    }
+  }, []);
+
+  const handleShowQrCode = (params) => {
+    handleChangeQrCodeModal({
+      status: true,
+      id: params?.row?.id
+    });
+  };
+
   const columnsPlace = [
     { field: 'name', headerName: 'Place name', flex: 2, align: 'center', headerAlign: 'center' },
     { field: 'address', headerName: 'Address', flex: 2, align: 'center', headerAlign: 'center' },
-    { field: 'r', headerName: 'Radius', flex: 1.5, align: 'center', headerAlign: 'center' },
+    { field: 'r', headerName: 'Radius', flex: 1, align: 'center', headerAlign: 'center' },
     { field: 'lat', headerName: 'Lat', flex: 2, align: 'center', headerAlign: 'center' },
     { field: 'long', headerName: 'Long', flex: 2, align: 'center', headerAlign: 'center' },
     {
@@ -41,6 +77,9 @@ const TablePlace = ({ places, onFocusMarker }) => {
       headerName: 'Actions',
       renderCell: (params) => (
         <>
+          <IconButton aria-label="qrcode" color="primary" onClick={() => handleShowQrCode(params)}>
+            <AiOutlineQrcode size={22} />
+          </IconButton>
           <IconButton aria-label="edit" color="primary" onClick={() => handleFocusMarker(params)}>
             <BiShowAlt size={22} />
           </IconButton>
@@ -54,7 +93,7 @@ const TablePlace = ({ places, onFocusMarker }) => {
           </Popconfirm>
         </>
       ),
-      flex: 2.5,
+      flex: 3,
       align: 'center',
       headerAlign: 'center'
     }
@@ -63,6 +102,7 @@ const TablePlace = ({ places, onFocusMarker }) => {
   return (
     <DataTableWrapper>
       <DataTable columns={columnsPlace} rows={places} checkboxSelection={false} density="compact" />
+      <QrCode id={openQRModal.id} open={openQRModal.status} setOpen={setOpenQRModal} />
     </DataTableWrapper>
   );
 };

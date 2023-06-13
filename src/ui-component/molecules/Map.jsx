@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { Map, Marker, FullscreenControl } from 'react-map-gl';
 import { IoMdPin } from 'react-icons/io';
+import { FullscreenControl, Map, Marker } from 'react-map-gl';
+import { GeocoderControl } from '~/ui-component/atoms';
 
 function MapCustom({ initialViewState, focus, markers, ...restProps }) {
   const map = useRef();
 
   useEffect(() => {
-    if (map?.current && focus) {
+    if (map?.current && focus?.long && focus?.lat) {
       map.current.flyTo({ center: [focus?.long, focus?.lat], zoom: focus?.zoom || 8 });
     }
   }, [focus, map]);
@@ -26,12 +27,16 @@ function MapCustom({ initialViewState, focus, markers, ...restProps }) {
       mapboxAccessToken="pk.eyJ1Ijoic2FuZ2hoIiwiYSI6ImNsaGV0ZmRieTByZ3AzanA0bmhhdHk1NjEifQ.spO_SkdSwB39JXWDOCgW6w"
       {...restProps}
     >
-      {markers.map((marker, index) => (
-        <Marker longitude={marker.long} latitude={marker.lat} anchor="bottom" key={index}>
+      {markers?.map((marker, index) => (
+        <Marker longitude={marker?.long} latitude={marker?.lat} anchor="bottom" key={index}>
           <IoMdPin color="#4096ff" size={26} />
         </Marker>
       ))}
-      <FullscreenControl />
+      <FullscreenControl position="top-left" />
+      <GeocoderControl
+        mapboxAccessToken="pk.eyJ1Ijoic2FuZ2hoIiwiYSI6ImNsaGV0ZmRieTByZ3AzanA0bmhhdHk1NjEifQ.spO_SkdSwB39JXWDOCgW6w"
+        position="top-right"
+      />
     </Map>
   );
 }

@@ -9,10 +9,12 @@ import Information from './Information';
 import MapOrganization from './MapOrganization';
 import TablePlaces from './TablePlaces';
 import TableUsers from './TableUsers';
+import AddPlace from './AddPlace.jsx';
 
 const UpdateOrganization = ({ id, open, setOpen }) => {
   const { placesState, dispatchGetAllPlaces } = usePlacesStore();
   const { usersState, dispatchGetAllUsers } = useUsersStore();
+  const [openAddPlaceModal, setOpenAddPlaceModal] = useState(false);
 
   const [focusMarker, setFocusMarker] = useState({
     zoom: 8
@@ -53,7 +55,7 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
       footer={null}
     >
       <Controller>
-        <Button type="primary" icon={<FaMapMarkerAlt />}>
+        <Button type="primary" icon={<FaMapMarkerAlt />} onClick={() => setOpenAddPlaceModal(true)}>
           Thêm điểm tuần tra
         </Button>
       </Controller>
@@ -71,6 +73,7 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
           <TablePlaces places={placesState.places} onFocusMarker={setFocusMarker} id={id} />
         </Cell>
       </Wrapper>
+      <AddPlace open={openAddPlaceModal} setOpen={setOpenAddPlaceModal} id={id} />
     </Modal>
   );
 };
@@ -90,7 +93,7 @@ const Wrapper = styled.div`
   height: 80vh;
   display: grid;
   grid-template-rows: 1fr 1fr; /* 2 hàng bằng nhau */
-  grid-template-columns: 1fr 1fr; /* 2 cột bằng nhau */
+  grid-template-columns: 1fr 1.3fr; /* 2 cột bằng nhau */
   gap: 10px; /* Khoảng cách giữa các vùng */
 `;
 
