@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { usePlacesStore } from '~/hooks/places';
 import { DataTable, QrCode } from '~/ui-component/molecules';
 
-const TablePlace = ({ places, onFocusMarker, onChangeEditPlaceModal }) => {
+const TablePlace = ({ id, places, onFocusMarker, onChangeEditPlaceModal }) => {
   const { dispatchDeletePlace } = usePlacesStore();
   const [openQRModal, setOpenQRModal] = useState({
     status: false,
@@ -17,9 +17,14 @@ const TablePlace = ({ places, onFocusMarker, onChangeEditPlaceModal }) => {
 
   const handleDelete = useCallback(
     (params) => {
-      dispatchDeletePlace(params.id);
+      dispatchDeletePlace({
+        id: params.id,
+        params: {
+          org_id: id
+        }
+      });
     },
-    [dispatchDeletePlace]
+    [dispatchDeletePlace, id]
   );
 
   const handleEdit = useCallback(

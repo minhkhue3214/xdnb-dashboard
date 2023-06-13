@@ -73,6 +73,9 @@ export const users = createSlice({
     updatePasswordFail: (_, action) => {
       dispatchToast('error', action.payload);
     },
+    reGetAllUserRequest: () => {
+      // request all user
+    }
   }
 });
 
@@ -95,6 +98,7 @@ export const {
   updatePasswordRequest,
   updatePasswordSuccess,
   updatePasswordFail,
+  reGetAllUserRequest
 } = users.actions;
 
 export default users.reducer;

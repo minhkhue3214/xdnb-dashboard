@@ -99,7 +99,7 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
           <MapOrganization focusMarker={focusMarker} places={placesState.places} />
         </Cell>
         <Cell>
-          <TableUsers users={usersState.users} />
+          <TableUsers users={usersState.users} id={id} />
         </Cell>
         <Cell>
           <TablePlaces

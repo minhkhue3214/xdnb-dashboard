@@ -64,6 +64,9 @@ export const places = createSlice({
     },
     updatePlaceFail: (_, action) => {
       dispatchToast('error', action.payload);
+    },
+    reGetAllPlacesRequest: () => {
+      // re get places
     }
   }
 });
@@ -83,7 +86,8 @@ export const {
   getPlaceFail,
   updatePlaceRequest,
   updatePlaceSuccess,
-  updatePlaceFail
+  updatePlaceFail,
+  reGetAllPlacesRequest
 } = places.actions;
 
 export default places.reducer;

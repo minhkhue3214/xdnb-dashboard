@@ -17,7 +17,8 @@ import {
   getPlaceSuccess,
   updatePlaceFail,
   updatePlaceRequest,
-  updatePlaceSuccess
+  updatePlaceSuccess,
+  reGetAllPlacesRequest
 } from '~/store/slices/rootAction';
 
 function* requestAllPlacesSaga(action) {
@@ -39,8 +40,13 @@ function* requestAllPlacesSaga(action) {
 
 function* requestAddPlaceSaga(action) {
   try {
+    const params = action.payload?.params;
+    if (params) {
+      delete action.payload.params;
+    }
     const data = yield call(requestAddPlaceApi, action.payload);
     yield put(addPlaceSuccess(data));
+    yield put(reGetAllPlacesRequest({ params }));
   } catch (error) {
     console.log('error', error);
     yield put(addPlaceFail(error?.message || 'Add place failed!'));
@@ -49,8 +55,13 @@ function* requestAddPlaceSaga(action) {
 
 function* requestDeletePlaceSaga(action) {
   try {
+    const params = action.payload?.params;
+    if (params) {
+      delete action.payload.params;
+    }
     yield call(requestDeletePlaceApi, action.payload);
     yield put(deletePlaceSuccess(action.payload));
+    yield put(reGetAllPlacesRequest({ params }));
   } catch (error) {
     console.log('error', error);
     yield put(deletePlaceFail(error?.message || 'Delete place failed!'));
@@ -88,8 +99,14 @@ function* requestGetPlaceSaga(action) {
 
 function* requestUpdatePlaceSaga(action) {
   try {
+    const params = action.payload?.params;
+    if (params) {
+      delete action.payload.params;
+    }
+
     const data = yield call(requestUpdatePlaceApi, action.payload);
     yield put(updatePlaceSuccess(data));
+    yield put(reGetAllPlacesRequest({ params }));
   } catch (error) {
     console.log('error', error);
     yield put(updatePlaceFail(error?.message || 'Update place info failed!'));
@@ -103,6 +120,5 @@ export default function* watchPlaces() {
   yield takeLatest(getPlaceRequest.type, requestGetPlaceSaga);
   yield takeLatest(updatePlaceRequest.type, requestUpdatePlaceSaga);
 
-  // Khi thêm place thành công hoặc xóa place thành công thì đều gọi lại requestAllPlaces để cập nhật lại list
-  yield takeLatest([deletePlaceSuccess.type, addPlaceSuccess.type, updatePlaceSuccess.type], requestAllPlacesSaga);
+  yield takeLatest([reGetAllPlacesRequest.type], requestAllPlacesSaga);
 }

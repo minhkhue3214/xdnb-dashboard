@@ -5,7 +5,8 @@ const getAllPlacesApi = (params) => {
 };
 
 const requestGetPlaceApi = (params) => {
-  return axiosClient.get(`/places/${params}`);
+  const id = params?.id;
+  return axiosClient.get(`/places/${id || ''}`);
 };
 
 const requestAddPlaceApi = (params) => {
@@ -13,7 +14,8 @@ const requestAddPlaceApi = (params) => {
 };
 
 const requestDeletePlaceApi = (params) => {
-  return axiosClient.delete(`/places/${params}`);
+  const id = params?.id;
+  return axiosClient.delete(`/places/${id || ''}`);
 };
 
 const requestUpdatePlaceApi = (params) => {
