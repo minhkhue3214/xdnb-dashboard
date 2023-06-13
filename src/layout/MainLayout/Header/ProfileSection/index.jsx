@@ -1,7 +1,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useCustomizationStore } from '~/hooks/customization';
 
@@ -11,7 +10,6 @@ import {
   Box,
   Chip,
   ClickAwayListener,
-  Grid,
   List,
   ListItemButton,
   ListItemIcon,
@@ -31,15 +29,16 @@ import MainCard from '~/ui-component/cards/MainCard';
 import Transitions from '~/ui-component/extended/Transitions';
 
 // assets
-import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
+import { IconLogout, IconSettings } from '@tabler/icons';
 
 const ProfileSection = () => {
   const theme = useTheme();
   const { customizationState } = useCustomizationStore();
-  const { dispatchLogout } = useAuthenticationStore();
+  const { authenticationState, dispatchLogout } = useAuthenticationStore();
+  console.log('authenticationState', authenticationState.loginInfo.name);
   const { t } = useTranslation();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
@@ -58,17 +57,20 @@ const ProfileSection = () => {
     setOpen(false);
   }, []);
 
-  const handleListItemClick = useCallback(
-    (event, index, route = '') => {
-      setSelectedIndex(index);
-      handleClose(event);
+  console.log(setSelectedIndex);
 
-      if (route && route !== '') {
-        navigate(route);
-      }
-    },
-    [handleClose, navigate]
-  );
+  // const handleListItemClick = useCallback(
+  //   (event, index, route = '') => {
+  //     setSelectedIndex(index);
+  //     handleClose(event);
+
+  //     if (route && route !== '') {
+  //       navigate(route);
+  //     }
+  //   },
+  //   [handleClose, navigate]
+  // );
+  // console.log(handleListItemClick);
 
   const handleToggle = useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
@@ -149,11 +151,11 @@ const ProfileSection = () => {
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
-                  <Box sx={{ p: 2 }}>
+                  <Box sx={{ p: 1 }}>
                     <Stack direction="row" spacing={0.5} alignItems="center">
                       <Typography variant="h4">Good Morning,</Typography>
                       <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                        Johne Doe
+                        {authenticationState.loginInfo.name}
                       </Typography>
                     </Stack>
                   </Box>
@@ -174,34 +176,6 @@ const ProfileSection = () => {
                         }
                       }}
                     >
-                      <ListItemButton
-                        sx={{ borderRadius: `${customizationState.borderRadius}px` }}
-                        selected={selectedIndex === 1}
-                        onClick={(event) => handleListItemClick(event, 1, '#')}
-                      >
-                        <ListItemIcon>
-                          <IconUser stroke={1.5} size="1.3rem" />
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={
-                            <Grid container spacing={1} justifyContent="space-between">
-                              <Grid item>
-                                <Typography variant="body2">{t('profile.socialProfile')}</Typography>
-                              </Grid>
-                              <Grid item>
-                                <Chip
-                                  label="02"
-                                  size="small"
-                                  sx={{
-                                    bgcolor: theme.palette.warning.dark,
-                                    color: theme.palette.background.default
-                                  }}
-                                />
-                              </Grid>
-                            </Grid>
-                          }
-                        />
-                      </ListItemButton>
                       <ListItemButton
                         sx={{ borderRadius: `${customizationState.borderRadius}px` }}
                         selected={selectedIndex === 4}

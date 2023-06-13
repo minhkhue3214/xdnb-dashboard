@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllUserRequest, deleteUserRequest, addUserRequest, getUserRequest, updateUserRequest } from '~/store/slices/users';
+import { getAllUserRequest, deleteUserRequest, addUserRequest, getUserRequest, updateUserRequest, updatePasswordRequest } from '~/store/slices/users';
 
 const useUsersStore = () => {
   const dispatch = useDispatch();
@@ -52,12 +52,22 @@ const useUsersStore = () => {
     [dispatch]
   );
 
+  const dispatchUpdatePassword = useCallback(
+    (payload) => {
+      dispatch(updatePasswordRequest(payload));
+
+      return true;
+    },
+    [dispatch]
+  );
+
   return {
     dispatchGetAllUsers,
     dispatchDeleteUser,
     dispatchAddUser,
     dispatchGetUserById,
     dispatchUpdateUser,
+    dispatchUpdatePassword,
     usersState
   };
 };

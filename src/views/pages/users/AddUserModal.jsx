@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Modal } from '~/ui-component/molecules';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -8,11 +8,19 @@ import { useCallback } from 'react';
 import { roles } from '~/store/constant';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { useUsersStore } from '~/hooks/users';
+import { useAuthenticationStore } from '~/hooks/authentication';
 
 const AddUserModal = ({ open, setOpen }) => {
   const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
-
+  const { authenticationState } = useAuthenticationStore();
+  const [newRoles, setNewRoles] = useState([]);
   const { dispatchAddUser } = useUsersStore();
+
+  useEffect(() => {
+    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
+    // console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
+    setNewRoles(updateRoles);
+  }, [authenticationState.role, roles]);
 
   const formik = useFormik({
     initialValues: {
@@ -25,7 +33,11 @@ const AddUserModal = ({ open, setOpen }) => {
     },
     validationSchema: yup.object({
       email: yup.string().email('Email không hợp lệ').required('Vui lòng nhập email'),
-      password: yup.string().min(8, 'Mật khẩu phải có ít nhất 8 ký tự').required('Vui lòng nhập mật khẩu'),
+      password: yup
+        .string()
+        .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
+        .matches(/^(?=.*[a-z])(?=.*[0-9])/, 'Mật khẩu phải chứa ít nhất 1 chữ cái và 1 số')
+        .required('Vui lòng nhập mật khẩu'),
       name: yup.string().max(100, 'Tên của bạn quá dài').required('Vui lòng nhập tên người dùng'),
       username: yup
         .string()
@@ -199,7 +211,7 @@ const AddUserModal = ({ open, setOpen }) => {
             selectStyle={{
               width: '100%'
             }}
-            options={roles}
+            options={newRoles}
             value={formik.values.role}
             onChange={handleChangeRole}
             message={formik.touched.role ? formik.errors.role : ''}

@@ -64,7 +64,16 @@ export const users = createSlice({
     },
     updateUserFail: (_, action) => {
       dispatchToast('error', action.payload);
-    }
+    },
+    updatePasswordRequest: () => {
+      // request update user
+    },
+    updatePasswordSuccess: () => {
+      dispatchToast('success', 'Updated password!');
+    },
+    updatePasswordFail: (_, action) => {
+      dispatchToast('error', action.payload);
+    },
   }
 });
 
@@ -83,7 +92,10 @@ export const {
   getUserFail,
   updateUserRequest,
   updateUserSuccess,
-  updateUserFail
+  updateUserFail,
+  updatePasswordRequest,
+  updatePasswordSuccess,
+  updatePasswordFail,
 } = users.actions;
 
 export default users.reducer;

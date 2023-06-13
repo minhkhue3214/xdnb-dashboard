@@ -62,6 +62,7 @@ const FirebaseLogin = ({ ...others }) => {
             });
 
             if (result) {
+              console.log('authenticationState', authenticationState);
               setStatus({ success: true });
               setSubmitting(false);
             }

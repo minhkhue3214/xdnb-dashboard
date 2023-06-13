@@ -7,7 +7,6 @@ const requestDeleteShiftApi = (id) => {
 };
 
 const requestAddShiftApi = (params) => {
-  console.log("params", params);
   return axiosClient.post('/shift', params);
 };
 
