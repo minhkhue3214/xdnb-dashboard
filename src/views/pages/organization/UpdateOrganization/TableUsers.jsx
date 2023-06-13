@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useUsersStore } from '~/hooks/users';
 import { DataTable } from '~/ui-component/molecules';
 
-const TableUsers = ({ id, users }) => {
+const TableUsers = ({ id: orgId, users }) => {
   const { dispatchDeleteUser } = useUsersStore();
 
   const handleDelete = useCallback(
@@ -14,11 +14,11 @@ const TableUsers = ({ id, users }) => {
       dispatchDeleteUser({
         id: params.id,
         params: {
-          org_ids: id
+          org_ids: orgId
         }
       });
     },
-    [dispatchDeleteUser, id]
+    [dispatchDeleteUser, orgId]
   );
 
   const columnsUser = [

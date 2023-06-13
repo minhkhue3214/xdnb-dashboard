@@ -93,25 +93,25 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
       </Controller>
       <Wrapper>
         <Cell>
-          <Information id={id} users={usersState.users} />
+          <Information orgId={id} users={usersState.users} />
         </Cell>
         <Cell>
           <MapOrganization focusMarker={focusMarker} places={placesState.places} />
         </Cell>
         <Cell>
-          <TableUsers users={usersState.users} id={id} />
+          <TableUsers users={usersState.users} orgId={id} />
         </Cell>
         <Cell>
           <TablePlaces
             places={placesState.places}
             onFocusMarker={setFocusMarker}
-            id={id}
+            orgId={id}
             onChangeEditPlaceModal={handleChangeEditPlaceModal}
           />
         </Cell>
       </Wrapper>
-      <AddPlace open={openAddPlaceModal} setOpen={setOpenAddPlaceModal} id={id} />
-      <UpdatePlace open={openEditPlaceModal.status} setOpen={handleChangeEditPlaceModal} id={openEditPlaceModal.id} />
+      <AddPlace open={openAddPlaceModal} setOpen={setOpenAddPlaceModal} orgId={id} />
+      <UpdatePlace open={openEditPlaceModal.status} setOpen={handleChangeEditPlaceModal} id={openEditPlaceModal.id} orgId={id} />
     </Modal>
   );
 };
