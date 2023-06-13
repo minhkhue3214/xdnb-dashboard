@@ -23,4 +23,12 @@ const requestUpdateUserApi = (params) => {
   return axiosClient.put(`/users/${id}`, params);
 };
 
-export { getAllUsersApi, requestDeleteUserApi, requestAddUserApi, requestGetUserApi, requestUpdateUserApi };
+const requestUpdatePasswordApi = (params) => {
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  delete params['id'];
+  return axiosClient.put(`/users/change-password/${id}`, params);
+};
+
+export { getAllUsersApi, requestDeleteUserApi, requestAddUserApi, requestGetUserApi, requestUpdateUserApi, requestUpdatePasswordApi };

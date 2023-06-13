@@ -10,6 +10,7 @@ import { DataTable } from '~/ui-component/molecules';
 import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
 import AddUserModal from './AddUserModal';
+import ChangePasswordModal from './ChangePasswordModal';
 import UpdateUserModal from './UpdateUserModal';
 import { Popconfirm } from 'antd';
 import { useUsersStore } from '~/hooks/users';
@@ -18,7 +19,12 @@ const UsersPage = () => {
   const { usersState, dispatchGetAllUsers, dispatchDeleteUser } = useUsersStore();
   const [page, setPage] = useState(1);
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
+
   const [openEditUserModal, setOpenEditUserModal] = useState({
+    status: false,
+    id: ''
+  });
+  const [openEditPasswordModal, setOpenEditPasswordModal] = useState({
     status: false,
     id: ''
   });
@@ -26,6 +32,10 @@ const UsersPage = () => {
   useEffect(() => {
     dispatchGetAllUsers();
   }, [dispatchGetAllUsers]);
+
+  useEffect(() => {
+    setPage(usersState.pagination.currentPage);
+  }, [usersState.pagination.currentPage]);
 
   const users = useMemo(() => {
     return usersState.users;
@@ -56,6 +66,31 @@ const UsersPage = () => {
     }
   }, []);
 
+  const handleChangeEditPasswordModal = useCallback((props) => {
+    if (typeof props === 'boolean') {
+      setOpenEditPasswordModal({
+        status: props,
+        id: ''
+      });
+    } else if (typeof props !== 'object') {
+      return undefined;
+    }
+
+    const { status, id } = props;
+
+    if (!id) {
+      setOpenEditPasswordModal({
+        status: false,
+        id: ''
+      });
+    } else {
+      setOpenEditPasswordModal({
+        status,
+        id
+      });
+    }
+  }, []);
+
   const handleEdit = (params) => {
     console.log(params?.row?.id);
     handleChangeEditUserModal({
@@ -66,6 +101,7 @@ const UsersPage = () => {
 
   const handleDelete = (params) => {
     dispatchDeleteUser(params.id);
+    // setPage(1)
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
@@ -74,7 +110,6 @@ const UsersPage = () => {
     { field: 'name', headerName: 'Name', flex: 1 },
     { field: 'username', headerName: 'User name', flex: 2 },
     { field: 'email', headerName: 'Email', flex: 2 },
-    { field: 'isEmailVerified', headerName: 'EmailVerified', flex: 1 },
     { field: 'role', headerName: 'Role', flex: 1 },
     {
       field: 'actions',
@@ -126,7 +161,13 @@ const UsersPage = () => {
         <Pagination count={usersState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
       <AddUserModal open={openAddUserModal} setOpen={setOpenAddUserModal} />
-      <UpdateUserModal id={openEditUserModal.id} open={openEditUserModal.status} setOpen={handleChangeEditUserModal} />
+      <UpdateUserModal
+        id={openEditUserModal.id}
+        open={openEditUserModal.status}
+        setOpen={handleChangeEditUserModal}
+        handleChangeEditPasswordModal={handleChangeEditPasswordModal}
+      />
+      <ChangePasswordModal id={openEditPasswordModal.id} open={openEditPasswordModal.status} setOpen={handleChangeEditPasswordModal} />
     </MainCard>
   );
 };

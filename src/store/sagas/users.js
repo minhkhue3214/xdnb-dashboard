@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { getAllUsersApi, requestDeleteUserApi, requestAddUserApi, requestGetUserApi, requestUpdateUserApi } from '~/api/users';
+import { getAllUsersApi, requestDeleteUserApi, requestAddUserApi, requestGetUserApi, requestUpdateUserApi, requestUpdatePasswordApi } from '~/api/users';
 
 import {
   getAllUserRequest,
@@ -16,7 +16,10 @@ import {
   getUserFail,
   updateUserRequest,
   updateUserSuccess,
-  updateUserFail
+  updateUserFail,
+  updatePasswordRequest,
+  updatePasswordSuccess,
+  updatePasswordFail,
 } from '~/store/slices/rootAction';
 
 function* requestAllUsersSaga(action) {
@@ -85,12 +88,23 @@ function* requestUpdateUserSaga(action) {
   }
 }
 
+function* requestUpdatePasswordSaga(action) {
+  try {
+    const data = yield call(requestUpdatePasswordApi, action.payload);
+    yield put(updatePasswordSuccess(data));
+  } catch (error) {
+    console.log('error', error);
+    yield put(updatePasswordFail(error?.message || 'Update password info failed!'));
+  }
+}
+
 export default function* watchUsers() {
   yield takeLatest(getAllUserRequest.type, requestAllUsersSaga);
   yield takeLatest(deleteUserRequest.type, requestDeleteUserSaga);
   yield takeLatest(addUserRequest.type, requestAddUserSaga);
   yield takeLatest(getUserRequest.type, requestGetUserSaga);
   yield takeLatest(updateUserRequest.type, requestUpdateUserSaga);
+  yield takeLatest(updatePasswordRequest.type, requestUpdatePasswordSaga);
 
   // Khi thêm user thành công hoặc xóa user thành công thì đều gọi lại requestAllUsers để cập nhật lại list user
   yield takeLatest([deleteUserSuccess.type, addUserSuccess.type, updateUserSuccess.type], requestAllUsersSaga);
