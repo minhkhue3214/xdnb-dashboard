@@ -38,6 +38,7 @@ const UsersPage = () => {
   }, [usersState.pagination.currentPage]);
 
   const users = useMemo(() => {
+    console.log('users', usersState.users);
     return usersState.users;
   }, [usersState.users]);
 
@@ -92,7 +93,6 @@ const UsersPage = () => {
   }, []);
 
   const handleEdit = (params) => {
-    console.log(params?.row?.id);
     handleChangeEditUserModal({
       status: true,
       id: params?.row?.id
@@ -106,11 +106,10 @@ const UsersPage = () => {
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { field: 'id', headerName: 'ID', flex: 2 },
-    { field: 'name', headerName: 'Name', flex: 1 },
-    { field: 'username', headerName: 'User name', flex: 2 },
-    { field: 'email', headerName: 'Email', flex: 2 },
-    { field: 'role', headerName: 'Role', flex: 1 },
+    { field: 'username', headerName: 'Username', flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'name', headerName: 'Name', flex: 3, align: 'center', headerAlign: 'center' },
+    { field: 'email', headerName: 'Email', flex: 3, align: 'center', headerAlign: 'center' },
+    { field: 'role', headerName: 'Role', flex: 2, align: 'center', headerAlign: 'center' },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -126,7 +125,9 @@ const UsersPage = () => {
           </Popconfirm>
         </>
       ),
-      flex: 2
+      flex: 2,
+      align: 'center',
+      headerAlign: 'center'
     }
   ];
 

@@ -1,44 +1,78 @@
-import { memo, useCallback, useEffect, useState, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 // project imports
-import { AiOutlineUserAdd, AiFillEdit } from 'react-icons/ai';
-import { TbTableExport } from 'react-icons/tb';
+import IconButton from '@mui/material/IconButton';
+import Pagination from '@mui/material/Pagination';
+import { Button, Popconfirm } from 'antd';
+import { AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai';
 import { MdDelete } from 'react-icons/md';
+import { TbTableExport } from 'react-icons/tb';
 import styled from 'styled-components';
-import toast from '~/handlers/toast';
+import { useOrganizationsStore } from '~/hooks/organizations';
 import MainCard from '~/ui-component/cards/MainCard';
 import { DataTable } from '~/ui-component/molecules';
-import Pagination from '@mui/material/Pagination';
-import IconButton from '@mui/material/IconButton';
-import { Button, Popconfirm } from 'antd';
-import { useOrganizationsStore } from '~/hooks/organizations';
+import UpdateOrganization from './UpdateOrganization';
+import AddOrganization from './AddOrganization';
 
 const OrganizationPage = () => {
-  const { organizationsState, dispatchGetAllOrganizations, dispatchDeleteOrganizations } = useOrganizationsStore();
+  const { organizationsState, dispatchGetAllOrganizations, dispatchDeleteOrganization } = useOrganizationsStore();
   const [page, setPage] = useState(1);
+  const [openAddOrganizationModal, setOpenAddOrganizationModal] = useState(false);
+  const [openEditOrganizationModal, setOpenEditOrganizationModal] = useState({
+    status: false,
+    id: ''
+  });
 
   useEffect(() => {
     dispatchGetAllOrganizations();
   }, [dispatchGetAllOrganizations]);
 
   const Organizations = useMemo(() => {
-    // console.log('organizationsState', organizationsState.pagination.currentPage);
     return organizationsState.organizations;
   }, [organizationsState.organizations]);
 
-  const handleEdit = (params) => {
-    toast('success', `Edit: ${JSON.stringify(params.row)}`);
-  };
-
   const handleDelete = (params) => {
-    console.log('handleDelete', params.id);
-    dispatchDeleteOrganizations(params.id);
-    // toast('success', `elete: ${JSON.stringify(params.row)}`);
+    dispatchDeleteOrganization(params.id);
+  };
+  const handleChangeEditOrganizationModal = useCallback((props) => {
+    if (typeof props === 'boolean') {
+      setOpenEditOrganizationModal({
+        status: props,
+        id: ''
+      });
+    } else if (typeof props !== 'object') {
+      return undefined;
+    }
+
+    const { status, id } = props;
+
+    if (!id) {
+      setOpenEditOrganizationModal({
+        status: false,
+        id: ''
+      });
+    } else {
+      setOpenEditOrganizationModal({
+        status,
+        id
+      });
+    }
+  }, []);
+
+  const handleEditOrganization = (params) => {
+    handleChangeEditOrganizationModal({
+      status: true,
+      id: params?.row?.id
+    });
   };
 
-  // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
-  const columnsTest = [
+  const columns = [
     { field: 'id', headerName: 'ID', flex: 2 },
-    { field: 'leader', headerName: 'Leader', flex: 2 },
+    {
+      field: 'leader',
+      headerName: 'Leader',
+      flex: 2,
+      valueGetter: (params) => params?.row?.leader?.name
+    },
     { field: 'fullname', headerName: 'Full name', flex: 2 },
     { field: 'name', headerName: 'Name', flex: 1 },
     { field: 'code', headerName: 'Code', flex: 1 },
@@ -47,7 +81,7 @@ const OrganizationPage = () => {
       headerName: 'Actions',
       renderCell: (params) => (
         <>
-          <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(params)}>
+          <IconButton aria-label="edit" color="primary" onClick={() => handleEditOrganization(params)}>
             <AiFillEdit size={22} />
           </IconButton>
           <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(params)} okText="Đồng ý" cancelText="Hủy">
@@ -77,21 +111,27 @@ const OrganizationPage = () => {
           variant="contained"
           startIcon={<AiOutlineUserAdd />}
           onClick={() => {
-            setOpenAddUserModal(true);
+            setOpenAddOrganizationModal(true);
           }}
         >
-          Thêm người dùng
+          Thêm tổ chức
         </Button>
         <Button variant="outlined" startIcon={<TbTableExport />}>
           Xuất dữ liệu
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <DataTable columns={columnsTest} rows={Organizations} checkboxSelection={false} />
+        <DataTable columns={columns} rows={Organizations} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination count={organizationsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
+      <AddOrganization open={openAddOrganizationModal} setOpen={setOpenAddOrganizationModal} />
+      <UpdateOrganization
+        id={openEditOrganizationModal.id}
+        open={openEditOrganizationModal.status}
+        setOpen={handleChangeEditOrganizationModal}
+      />
     </MainCard>
   );
 };

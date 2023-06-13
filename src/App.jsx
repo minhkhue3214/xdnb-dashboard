@@ -17,6 +17,7 @@ import themes from '~/themes';
 import NavigationScroll from '~/layout/NavigationScroll';
 
 import 'react-toastify/dist/ReactToastify.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const App = () => {
   const { customizationState } = useCustomizationStore();
@@ -71,6 +72,10 @@ const GlobalStyle = createGlobalStyle`
     }
 
     .ant-picker-dropdown{
+      z-index: 9999;
+    }
+
+    .ant-popover {
       z-index: 9999;
     }
 

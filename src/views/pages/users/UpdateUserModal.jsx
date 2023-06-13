@@ -14,7 +14,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
   const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
   const { authenticationState } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
-  const { usersState, dispatchUpdateUser, dispatchGetUser } = useUsersStore();
+  const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
 
   useEffect(() => {
     const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
@@ -92,9 +92,9 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
 
   useEffect(() => {
     if (id) {
-      dispatchGetUser(id);
+      dispatchGetUserById(id);
     }
-  }, [dispatchGetUser, id]);
+  }, [dispatchGetUserById, id]);
 
   useEffect(() => {
     const data = usersState.detail;

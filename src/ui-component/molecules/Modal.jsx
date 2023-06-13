@@ -22,6 +22,7 @@ const App = (props) => {
         onCancel={() => handleConfirm(false)}
         width={1000}
         style={style}
+        destroyOnClose={true}
         {...restProps}
       >
         {open && children}

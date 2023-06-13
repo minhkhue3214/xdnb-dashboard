@@ -7,7 +7,6 @@ import { Input } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
 const ChangePasswordModal = ({ id, open, setOpen }) => {
-  console.log('ChangePasswordModal', id, open, setOpen);
 
   const [errMess, setErrMess] = useState(false);
 

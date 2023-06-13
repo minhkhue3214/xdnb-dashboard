@@ -1,5 +1,6 @@
 import axiosClient from './axiosClient';
 const getAllUsersApi = (params) => {
+  console.log('params', params);
   return axiosClient.get('/users', params);
 };
 

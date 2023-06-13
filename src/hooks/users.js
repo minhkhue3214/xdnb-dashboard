@@ -34,7 +34,7 @@ const useUsersStore = () => {
     [dispatch]
   );
 
-  const dispatchGetUser = useCallback(
+  const dispatchGetUserById = useCallback(
     (payload) => {
       dispatch(getUserRequest(payload));
 
@@ -65,7 +65,7 @@ const useUsersStore = () => {
     dispatchGetAllUsers,
     dispatchDeleteUser,
     dispatchAddUser,
-    dispatchGetUser,
+    dispatchGetUserById,
     dispatchUpdateUser,
     dispatchUpdatePassword,
     usersState

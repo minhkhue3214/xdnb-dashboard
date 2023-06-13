@@ -1,7 +1,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useCustomizationStore } from '~/hooks/customization';
 
@@ -39,7 +38,7 @@ const ProfileSection = () => {
   console.log('authenticationState', authenticationState.loginInfo.name);
   const { t } = useTranslation();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
@@ -58,18 +57,20 @@ const ProfileSection = () => {
     setOpen(false);
   }, []);
 
-  const handleListItemClick = useCallback(
-    (event, index, route = '') => {
-      setSelectedIndex(index);
-      handleClose(event);
+  console.log(setSelectedIndex);
 
-      if (route && route !== '') {
-        navigate(route);
-      }
-    },
-    [handleClose, navigate]
-  );
-  console.log(handleListItemClick);
+  // const handleListItemClick = useCallback(
+  //   (event, index, route = '') => {
+  //     setSelectedIndex(index);
+  //     handleClose(event);
+
+  //     if (route && route !== '') {
+  //       navigate(route);
+  //     }
+  //   },
+  //   [handleClose, navigate]
+  // );
+  // console.log(handleListItemClick);
 
   const handleToggle = useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
