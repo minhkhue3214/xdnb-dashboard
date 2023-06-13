@@ -18,9 +18,8 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
 
   useEffect(() => {
     const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
-    console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
     setNewRoles(updateRoles);
-  }, [authenticationState.role, roles]);
+  }, [authenticationState.loginInfo.role, authenticationState.role]);
 
   const formik = useFormik({
     initialValues: {

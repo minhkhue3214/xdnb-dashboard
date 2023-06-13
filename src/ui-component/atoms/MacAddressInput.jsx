@@ -1,9 +1,11 @@
 import { Input, Space } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
+import checkValidMac from '~/handlers/checkValidMac';
 
 const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}, ...restProps }) => {
   const [octets, setOctets] = useState(['', '', '', '', '', '']);
+  const counter = useRef(false);
 
   const handleOctetChange = (i, v) => {
     if (v && typeof v === 'string') {
@@ -15,9 +17,12 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
   };
 
   useEffect(() => {
-    setOctets(value?.split('-') || ['', '', '', '', '', '']);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (counter && checkValidMac(value) && !counter?.current) {
+      counter.current = true;
+      const octets = value?.split('-') || ['', '', '', '', '', ''];
+      setOctets(octets);
+    }
+  }, [value, counter]);
 
   useEffect(() => {
     const mac = octets.join('-');

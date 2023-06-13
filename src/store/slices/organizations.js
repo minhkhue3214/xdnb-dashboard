@@ -30,7 +30,6 @@ export const organizations = createSlice({
       // request organization
     },
     deleteOrganizationSuccess: (state, action) => {
-      console.log('deleteShiftSuccess', action);
       let updateOrganizations = state.organizations.filter((organization) => organization.id !== action.payload);
       state.organizations = updateOrganizations;
       dispatchToast('success', 'Deleted organization!');

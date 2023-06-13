@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import styled from 'styled-components';
 import { usePlacesStore } from '~/hooks/places';
@@ -10,20 +10,52 @@ import MapOrganization from './MapOrganization';
 import TablePlaces from './TablePlaces';
 import TableUsers from './TableUsers';
 import AddPlace from './AddPlace.jsx';
+import UpdatePlace from './UpdatePlace.jsx';
 
 const UpdateOrganization = ({ id, open, setOpen }) => {
   const { placesState, dispatchGetAllPlaces } = usePlacesStore();
   const { usersState, dispatchGetAllUsers } = useUsersStore();
   const [openAddPlaceModal, setOpenAddPlaceModal] = useState(false);
+  const [openEditPlaceModal, setOpenEditPlaceModal] = useState({
+    status: false,
+    id: ''
+  });
 
   const [focusMarker, setFocusMarker] = useState({
     zoom: 8
   });
 
+  const handleChangeEditPlaceModal = useCallback((props) => {
+    if (typeof props === 'boolean') {
+      setOpenEditPlaceModal({
+        status: props,
+        id: ''
+      });
+    } else if (typeof props !== 'object') {
+      return undefined;
+    }
+
+    const { status, id } = props;
+
+    if (!id) {
+      setOpenEditPlaceModal({
+        status: false,
+        id: ''
+      });
+    } else {
+      setOpenEditPlaceModal({
+        status,
+        id
+      });
+    }
+  }, []);
+
   useEffect(() => {
     if (id) {
       dispatchGetAllPlaces({
-        org_ids: id
+        params: {
+          org_id: id
+        }
       });
     }
   }, [dispatchGetAllPlaces, id]);
@@ -70,10 +102,16 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
           <TableUsers users={usersState.users} />
         </Cell>
         <Cell>
-          <TablePlaces places={placesState.places} onFocusMarker={setFocusMarker} id={id} />
+          <TablePlaces
+            places={placesState.places}
+            onFocusMarker={setFocusMarker}
+            id={id}
+            onChangeEditPlaceModal={handleChangeEditPlaceModal}
+          />
         </Cell>
       </Wrapper>
       <AddPlace open={openAddPlaceModal} setOpen={setOpenAddPlaceModal} id={id} />
+      <UpdatePlace open={openEditPlaceModal.status} setOpen={handleChangeEditPlaceModal} id={openEditPlaceModal.id} />
     </Modal>
   );
 };
