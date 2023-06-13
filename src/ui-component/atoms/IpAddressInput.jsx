@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Input, Space } from 'antd';
 import styled from 'styled-components';
+import checkValidIp from '~/handlers/checkValidIp';
 
 const MAX_OCTET_LENGTH = 3;
 
 const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}, ...restProps }) => {
   const [octets, setOctets] = useState(['', '', '', '']);
+  const counter = useRef(false);
 
   const handleOctetChange = (i, v) => {
     const specialCharRegex = /[!@#$%^&*(),.?":{}|<>-]/;
@@ -21,9 +23,12 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
   };
 
   useEffect(() => {
-    setOctets(value?.split('.') || ['', '', '', '']);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (counter && checkValidIp(value) && !counter?.current) {
+      counter.current = true;
+      const octets = value?.split('.') || ['', '', '', ''];
+      setOctets(octets);
+    }
+  }, [value, counter]);
 
   useEffect(() => {
     const ip = octets.join('.');

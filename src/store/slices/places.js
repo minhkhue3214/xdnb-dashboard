@@ -18,7 +18,6 @@ export const places = createSlice({
       // request place
     },
     getAllPlacesSuccess: (state, action) => {
-      console.log('getAllPlacesSuccess', action.payload);
       const { page, totalPages, results } = action.payload;
       state.places = results;
       state.pagination.currentPage = page;

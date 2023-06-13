@@ -66,12 +66,18 @@ function* requestGetPlaceSaga(action) {
         status: data.status,
         lat: data.lat,
         long: data.long,
-        orgIds: data.org_ids,
+        orgId: data.org_id,
         r: data.r,
         address: data.address,
         name: data.name,
         time: data.time,
-        id: data.id
+        id: data.id,
+        wifi: data.wifi,
+        mac: data.mac,
+        timeStart: data.time_start,
+        timeEnd: data.time_end,
+        ipAddress: data.ip_address,
+        macAddress: data.mac_address
       })
     );
   } catch (error) {
