@@ -18,6 +18,7 @@ import NavigationScroll from '~/layout/NavigationScroll';
 
 import 'react-toastify/dist/ReactToastify.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 const App = () => {
   const { customizationState } = useCustomizationStore();
@@ -77,6 +78,18 @@ const GlobalStyle = createGlobalStyle`
 
     .ant-popover {
       z-index: 9999;
+    }
+
+    .mapboxgl-ctrl-logo {
+      display: none;
+    }
+
+    .mapboxgl-compact {
+      display: none;
+    }
+
+    .mapboxgl-ctrl-attrib {
+      display: none;
     }
 
     #root {

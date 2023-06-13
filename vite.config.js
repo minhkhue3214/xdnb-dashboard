@@ -1,14 +1,25 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import dotenv from 'dotenv';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './node_modules'),
-      '~': path.resolve(__dirname, './src')
+export default defineConfig(({ mode }) => {
+  const env =
+    mode === 'production' ? dotenv.config({ path: '.env.production' }).parsed : dotenv.config({ path: '.env.development' }).parsed;
+
+  return {
+    plugins: [react()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './node_modules'),
+        '~': path.resolve(__dirname, './src')
+      }
+    },
+    define: {
+      'process.env': Object.keys(env).reduce((prev, next) => {
+        prev[`import.meta.env.${next}`] = JSON.stringify(env[next]);
+        return prev;
+      }, {})
     }
-  }
+  };
 });
