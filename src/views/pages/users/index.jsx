@@ -100,7 +100,9 @@ const UsersPage = () => {
   };
 
   const handleDelete = (params) => {
-    dispatchDeleteUser(params.id);
+    dispatchDeleteUser({
+      id: params?.id || ''
+    });
     // setPage(1)
   };
 

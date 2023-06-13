@@ -91,7 +91,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
 
   useEffect(() => {
     if (id) {
-      dispatchGetUserById(id);
+      dispatchGetUserById({ id });
     }
   }, [dispatchGetUserById, id]);
 

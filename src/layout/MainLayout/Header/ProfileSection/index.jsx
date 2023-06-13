@@ -31,16 +31,16 @@ import Transitions from '~/ui-component/extended/Transitions';
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons';
 
+const selectedIndex = -1;
+
 const ProfileSection = () => {
   const theme = useTheme();
   const { customizationState } = useCustomizationStore();
   const { authenticationState, dispatchLogout } = useAuthenticationStore();
-  console.log('authenticationState', authenticationState.loginInfo.name);
   const { t } = useTranslation();
 
   // const navigate = useNavigate();
 
-  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
 
   const prevOpen = useRef(open);
@@ -56,8 +56,6 @@ const ProfileSection = () => {
     }
     setOpen(false);
   }, []);
-
-  console.log(setSelectedIndex);
 
   // const handleListItemClick = useCallback(
   //   (event, index, route = '') => {

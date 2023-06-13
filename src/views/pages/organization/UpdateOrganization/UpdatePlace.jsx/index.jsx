@@ -87,7 +87,10 @@ const Update = ({ id, open, setOpen }) => {
             wifi: values.wifi,
             ip_address: values.ipAddress !== '...' ? values.ipAddress : '',
             mac: values.mac,
-            mac_address: values.macAddress !== '-----' ? values.macAddress : ''
+            mac_address: values.macAddress !== '-----' ? values.macAddress : '',
+            params: {
+              org_id: id
+            }
           });
 
           handleCancel();
@@ -106,7 +109,7 @@ const Update = ({ id, open, setOpen }) => {
 
   useEffect(() => {
     if (id) {
-      dispatchGetPlaceById(id);
+      dispatchGetPlaceById({ id });
     }
   }, [dispatchGetPlaceById, id]);
 

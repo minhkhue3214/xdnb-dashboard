@@ -1,5 +1,12 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { getAllUsersApi, requestDeleteUserApi, requestAddUserApi, requestGetUserApi, requestUpdateUserApi, requestUpdatePasswordApi } from '~/api/users';
+import {
+  getAllUsersApi,
+  requestDeleteUserApi,
+  requestAddUserApi,
+  requestGetUserApi,
+  requestUpdateUserApi,
+  requestUpdatePasswordApi
+} from '~/api/users';
 
 import {
   getAllUserRequest,
@@ -20,6 +27,7 @@ import {
   updatePasswordRequest,
   updatePasswordSuccess,
   updatePasswordFail,
+  reGetAllUserRequest
 } from '~/store/slices/rootAction';
 
 function* requestAllUsersSaga(action) {
@@ -41,8 +49,14 @@ function* requestAllUsersSaga(action) {
 
 function* requestDeleteUserSaga(action) {
   try {
+    const params = action.payload?.params;
+    if (params) {
+      delete action.payload.params;
+    }
+
     yield call(requestDeleteUserApi, action.payload);
     yield put(deleteUserSuccess(action.payload));
+    yield put(reGetAllUserRequest({ params }));
   } catch (error) {
     console.log('error', error);
     yield put(deleteFail(error?.message || 'Delete user failed!'));
@@ -51,8 +65,14 @@ function* requestDeleteUserSaga(action) {
 
 function* requestAddUserSaga(action) {
   try {
+    const params = action.payload?.params;
+    if (params) {
+      delete action.payload.params;
+    }
+
     const data = yield call(requestAddUserApi, action.payload);
     yield put(addUserSuccess(data));
+    yield put(reGetAllUserRequest({ params }));
   } catch (error) {
     console.log('error', error);
     yield put(addUserFail(error?.message || 'Add user failed!'));
@@ -80,8 +100,14 @@ function* requestGetUserSaga(action) {
 
 function* requestUpdateUserSaga(action) {
   try {
+    const params = action.payload?.params;
+    if (params) {
+      delete action.payload.params;
+    }
+
     const data = yield call(requestUpdateUserApi, action.payload);
     yield put(updateUserSuccess(data));
+    yield put(reGetAllUserRequest({ params }));
   } catch (error) {
     console.log('error', error);
     yield put(updateUserFail(error?.message || 'Update user info failed!'));
@@ -106,6 +132,5 @@ export default function* watchUsers() {
   yield takeLatest(updateUserRequest.type, requestUpdateUserSaga);
   yield takeLatest(updatePasswordRequest.type, requestUpdatePasswordSaga);
 
-  // Khi thêm user thành công hoặc xóa user thành công thì đều gọi lại requestAllUsers để cập nhật lại list user
-  yield takeLatest([deleteUserSuccess.type, addUserSuccess.type, updateUserSuccess.type], requestAllUsersSaga);
+  yield takeLatest([reGetAllUserRequest.type], requestAllUsersSaga);
 }
