@@ -3,8 +3,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import checkValidMac from '~/handlers/checkValidMac';
 
-const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}, ...restProps }) => {
-  const [octets, setOctets] = useState(['', '', '', '', '', '']);
+const initOctets = ['', '', '', '', '', ''];
+
+const MacAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}, ...restProps }) => {
+  const [octets, setOctets] = useState(initOctets);
   const counter = useRef(false);
 
   const handleOctetChange = (i, v) => {
@@ -19,7 +21,7 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
   useEffect(() => {
     if (counter && checkValidMac(value) && !counter?.current) {
       counter.current = true;
-      const octets = value?.split('-') || ['', '', '', '', '', ''];
+      const octets = value?.split('-') || initOctets;
       setOctets(octets);
     }
   }, [value, counter]);
@@ -29,6 +31,12 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
     onChange && onChange(mac);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [octets]);
+
+  useEffect(() => {
+    if (disabled) {
+      setOctets(initOctets);
+    }
+  }, [disabled]);
 
   return (
     <InputWrapper style={style}>
@@ -104,7 +112,7 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
   );
 };
 
-export default IpAddressInput;
+export default MacAddressInput;
 
 const InputWrapper = styled.div`
   display: flex;

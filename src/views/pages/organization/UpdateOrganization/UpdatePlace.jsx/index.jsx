@@ -12,6 +12,12 @@ import checkValidIp from '~/handlers/checkValidIp';
 import checkValidMac from '~/handlers/checkValidMac';
 import { usePlacesStore } from '~/hooks/places';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+// Import các plugin cần thiết
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const Update = ({ id, open, setOpen }) => {
   const { placesState, dispatchUpdatePlace, dispatchGetPlaceById } = usePlacesStore();
@@ -79,9 +85,9 @@ const Update = ({ id, open, setOpen }) => {
             time_start: dayjs(values.timeStart).unix(),
             time_end: dayjs(values.timeEnd).unix(),
             wifi: values.wifi,
-            ip_address: values.ipAddress,
+            ip_address: values.ipAddress !== '...' ? values.ipAddress : '',
             mac: values.mac,
-            mac_address: values.macAddress
+            mac_address: values.macAddress !== '-----' ? values.macAddress : ''
           });
 
           handleCancel();
@@ -113,8 +119,8 @@ const Update = ({ id, open, setOpen }) => {
       formik.setFieldValue('r', data.r || 300);
       formik.setFieldValue('address', data.address || '');
       formik.setFieldValue('name', data.name || '');
-      formik.setFieldValue('timeStart', dayjs(data.timeStart) || '');
-      formik.setFieldValue('timeEnd', dayjs(data.timeEnd) || '');
+      formik.setFieldValue('timeStart', dayjs.unix(data.timeStart).utc().utcOffset('+07:00') || '');
+      formik.setFieldValue('timeEnd', dayjs.unix(data.timeEnd).utc().utcOffset('+07:00') || '');
       formik.setFieldValue('wifi', data.wifi);
       formik.setFieldValue('ipAddress', data.ipAddress || '');
       formik.setFieldValue('mac', data.mac);

@@ -22,13 +22,13 @@ const pages = {
       url: '/users',
       icon: icons.IconUser
     },
-    {
-      id: 'shifts',
-      title: 'menu.shifts',
-      type: 'item',
-      url: '/shifts',
-      icon: icons.IconClock
-    },
+    // {
+    //   id: 'shifts',
+    //   title: 'menu.shifts',
+    //   type: 'item',
+    //   url: '/shifts',
+    //   icon: icons.IconClock
+    // },
     {
       id: 'organization',
       title: 'menu.organization',
