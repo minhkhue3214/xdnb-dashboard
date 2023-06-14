@@ -54,6 +54,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "build:https": "vite build --mode=https",
     "prepare": "husky install",
     "test": "npm run test",
     "lint": "eslint src --ext .js,.jsx",

@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import dotenv from 'dotenv';
 
-export default defineConfig(({ mode }) => {
-  const env =
-    mode === 'production' ? dotenv.config({ path: '.env.production' }).parsed : dotenv.config({ path: '.env.development' }).parsed;
+export default defineConfig((props) => {
+  console.log('props', props);
+  const { mode } = props;
+  const env = mode === 'https' ? dotenv.config({ path: '.env.production' }).parsed : dotenv.config({ path: '.env.development' }).parsed;
 
   return {
     plugins: [react()],
