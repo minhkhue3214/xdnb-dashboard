@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -170,4 +170,4 @@ TotalOrderLineChartCard.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default TotalOrderLineChartCard;
+export default memo(TotalOrderLineChartCard);

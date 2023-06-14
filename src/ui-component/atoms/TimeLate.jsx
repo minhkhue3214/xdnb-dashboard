@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Input, Select } from 'antd';
 const { Option } = Select;
 import styled from 'styled-components';
@@ -65,7 +65,7 @@ const AtomTimeLate = (props) => {
   );
 };
 
-export default AtomTimeLate;
+export default memo(AtomTimeLate);
 
 const InputWrapper = styled.div`
   display: flex;

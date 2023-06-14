@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, memo } from 'react';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { useUsersStore } from '~/hooks/users';
@@ -115,7 +115,7 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
   );
 };
 
-export default ChangePasswordModal;
+export default memo(ChangePasswordModal);
 
 const EditUserWrapper = styled.div`
   width: 100%;

@@ -10,6 +10,7 @@ import TotalIncomeCard from '~/ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import { memo } from 'react';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -96,4 +97,4 @@ TotalIncomeDarkCard.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default TotalIncomeDarkCard;
+export default memo(TotalIncomeDarkCard);

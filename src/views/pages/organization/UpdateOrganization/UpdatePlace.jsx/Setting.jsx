@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Card, Space, Switch } from 'antd';
 import { IpAddressInput, MacAddressInput } from '~/ui-component/atoms';
 import styled from 'styled-components';
@@ -75,7 +75,7 @@ const Setting = ({ formik }) => {
   );
 };
 
-export default Setting;
+export default memo(Setting);
 
 const CustomCard = styled(Card)`
   height: 100%;

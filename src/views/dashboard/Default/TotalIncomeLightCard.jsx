@@ -10,6 +10,7 @@ import TotalIncomeCard from '~/ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
+import { memo } from 'react';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -96,4 +97,4 @@ TotalIncomeLightCard.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default TotalIncomeLightCard;
+export default memo(TotalIncomeLightCard);

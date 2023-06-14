@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Input, Selector } from '~/ui-component/atoms';
 import styled from 'styled-components';
-import { useCallback } from 'react';
+import { useCallback, memo } from 'react';
 import { roles } from '~/store/constant';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { useUsersStore } from '~/hooks/users';
@@ -246,7 +246,7 @@ const AddUserModal = ({ open, setOpen }) => {
   );
 };
 
-export default AddUserModal;
+export default memo(AddUserModal);
 
 const EditUserWrapper = styled.div`
   width: 100%;

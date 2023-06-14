@@ -1,6 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import { Popconfirm } from 'antd';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, memo } from 'react';
 import { AiFillEdit, AiOutlineQrcode } from 'react-icons/ai';
 import { BiShowAlt } from 'react-icons/bi';
 import { MdDelete } from 'react-icons/md';
@@ -121,7 +121,7 @@ const TablePlace = ({ orgId, places, onFocusMarker, onChangeEditPlaceModal }) =>
   );
 };
 
-export default TablePlace;
+export default memo(TablePlace);
 
 const DataTableWrapper = styled.div`
   width: 100%;

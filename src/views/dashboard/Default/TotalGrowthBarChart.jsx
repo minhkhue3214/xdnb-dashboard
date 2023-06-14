@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useCustomizationStore } from '~/hooks/customization';
 
 // material-ui
@@ -132,4 +132,4 @@ TotalGrowthBarChart.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default TotalGrowthBarChart;
+export default memo(TotalGrowthBarChart);

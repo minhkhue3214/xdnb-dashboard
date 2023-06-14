@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Select, Tag } from 'antd';
 import styled from 'styled-components';
 
@@ -97,7 +97,7 @@ const Selector = ({
   );
 };
 
-export default Selector;
+export default memo(Selector);
 
 const SelectWrapper = styled.div`
   display: flex;

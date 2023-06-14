@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, memo } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import styled from 'styled-components';
 import { usePlacesStore } from '~/hooks/places';
@@ -118,7 +118,7 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
   );
 };
 
-export default UpdateOrganization;
+export default memo(UpdateOrganization);
 
 const Controller = styled.div`
   width: 100%;

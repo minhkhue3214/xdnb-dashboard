@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, memo } from 'react';
 import { Input, Space } from 'antd';
 import styled from 'styled-components';
 import checkValidIp from '~/handlers/checkValidIp';
@@ -100,7 +100,7 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
   );
 };
 
-export default IpAddressInput;
+export default memo(IpAddressInput);
 
 const InputWrapper = styled.div`
   display: flex;

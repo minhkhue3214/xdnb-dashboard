@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Input, Selector } from '~/ui-component/atoms';
 import styled from 'styled-components';
-import { useCallback } from 'react';
+import { useCallback, memo } from 'react';
 import { roles } from '~/store/constant';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { useUsersStore } from '~/hooks/users';
@@ -110,13 +110,13 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersState.detail]);
 
-  const handleOpenChangePassword = () => {
+  const handleOpenChangePassword = useCallback(() => {
     handleCancel();
     handleChangeEditPasswordModal({
       status: true,
       id: id
     });
-  };
+  }, [handleCancel, handleChangeEditPasswordModal, id]);
 
   return (
     <>
@@ -242,7 +242,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
   );
 };
 
-export default UpdateUserModal;
+export default memo(UpdateUserModal);
 
 const EditUserWrapper = styled.div`
   width: 100%;

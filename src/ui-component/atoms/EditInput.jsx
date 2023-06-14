@@ -1,5 +1,5 @@
 import { Input, Button } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FcCheckmark } from 'react-icons/fc';
 import { MdClose } from 'react-icons/md';
@@ -94,7 +94,7 @@ const EditInput = ({ onSave, value, onChange, onCancel, onFocus, onBlur, labelSt
   );
 };
 
-export default EditInput;
+export default memo(EditInput);
 
 const InputWrapper = styled.div`
   position: relative;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, memo } from 'react';
 import styled from 'styled-components';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { EditInput, Selector } from '~/ui-component/atoms';
@@ -125,7 +125,7 @@ const Information = ({ orgId, users }) => {
   );
 };
 
-export default Information;
+export default memo(Information);
 
 const InformationWrapper = styled.div`
   position: relative;

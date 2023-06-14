@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { IoMdPin } from 'react-icons/io';
 import { FullscreenControl, Map, Marker } from 'react-map-gl';
 import { GeocoderControl } from '~/ui-component/atoms';
@@ -41,4 +41,4 @@ function MapCustom({ initialViewState, focus, markers, ...restProps }) {
   );
 }
 
-export default MapCustom;
+export default memo(MapCustom);
