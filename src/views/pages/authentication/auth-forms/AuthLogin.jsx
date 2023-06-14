@@ -2,7 +2,6 @@ import { memo, useCallback, useState } from 'react';
 
 import {
   Box,
-  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -11,9 +10,11 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack
+  Stack,
+  Button
   // Typography
 } from '@mui/material';
+
 import { useTheme } from '@mui/material/styles';
 
 // third party
@@ -151,7 +152,16 @@ const FirebaseLogin = ({ ...others }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
+                <Button
+                  disableElevation
+                  disabled={isSubmitting}
+                  fullWidth
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                  style={{ color: 'white' }}
+                >
                   Đăng nhập
                 </Button>
               </AnimateButton>

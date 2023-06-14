@@ -14,12 +14,14 @@ import { usePlacesStore } from '~/hooks/places';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import { useTranslation } from 'react-i18next';
 
 // Import các plugin cần thiết
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const Update = ({ id, orgId, open, setOpen }) => {
+  const { t } = useTranslation();
   const { placesState, dispatchUpdatePlace, dispatchGetPlaceById } = usePlacesStore();
 
   const formik = useFormik({
@@ -37,13 +39,13 @@ const Update = ({ id, orgId, open, setOpen }) => {
       macAddress: ''
     },
     validationSchema: yup.object({
-      name: yup.string().max(200, 'Tên điểm tuần tra quá dài').required('Vui lòng nhập tên điểm tuần tra'),
-      address: yup.string().max(300, 'Địa chỉ quá dài').required('Vui lòng nhập địa chỉ'),
+      name: yup.string().max(200, t('input.error.place.placeNameTooLong')).required(t('input.error.place.pleaseEnterPlaceName')),
+      address: yup.string().max(300, t('input.error.place.addressTooLong')).required(t('input.error.place.pleaseEnterAddress')),
       lat: yup.string(),
       long: yup.string(),
-      r: yup.number().required('Vui lòng điền bán kính sai số'),
-      timeStart: yup.date().required('Vui lòng chọn thời gian bắt đầu ca trực'),
-      timeEnd: yup.date().required('Vui lòng chọn thời gian kết thúc ca trực'),
+      r: yup.number().required(t('input.error.place.pleaseEnterRadius')),
+      timeStart: yup.date().required(t('input.error.place.pleaseSelectStartTime')),
+      timeEnd: yup.date().required(t('input.error.place.pleaseSelectEndTime')),
       wifi: yup.boolean(),
       mac: yup.boolean(),
       ipAddress: yup.string(),
@@ -52,48 +54,49 @@ const Update = ({ id, orgId, open, setOpen }) => {
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
-          console.log('values', values);
-          // additional validation
-          if (!values.lat) {
-            toast('warning', 'Vui lòng nhập vĩ độ!');
-            throw new Error('validate failed!');
-          }
-
-          if (!values.long) {
-            toast('warning', 'Vui lòng nhập kinh độ!');
-            throw new Error('validate failed!');
-          }
-
-          if (values.wifi && !checkValidIp(values.ipAddress)) {
-            toast('warning', 'Địa chỉ ip không hợp lệ!');
-            throw new Error('validate failed!');
-          }
-
-          if (values.mac && !checkValidMac(values.macAddress)) {
-            toast('warning', 'Địa chỉ MAC không hợp lệ!');
-            throw new Error('validate failed!');
-          }
-
-          dispatchUpdatePlace({
-            id,
-            lat: values.lat,
-            long: values.long,
-            org_id: orgId,
-            r: values.r,
-            address: values.address,
-            name: values.name,
-            time_start: dayjs(values.timeStart).unix(),
-            time_end: dayjs(values.timeEnd).unix(),
-            wifi: values.wifi,
-            ip_address: values.ipAddress !== '...' ? values.ipAddress : '',
-            mac: values.mac,
-            mac_address: values.macAddress !== '-----' ? values.macAddress : '',
-            params: {
-              org_id: orgId
+          try {
+            // additional validation
+            if (!values.lat) {
+              throw new Error(t('input.error.place.pleaseEnterLatitude'));
             }
-          });
 
-          handleCancel();
+            if (!values.long) {
+              throw new Error(t('input.error.place.pleaseEnterLongitude'));
+            }
+
+            if (values.wifi && !checkValidIp(values.ipAddress)) {
+              throw new Error(t('input.error.place.invalidIPAddress'));
+            }
+
+            if (values.mac && !checkValidMac(values.macAddress)) {
+              throw new Error(t('input.error.place.invalidMACAddress'));
+            }
+
+            dispatchUpdatePlace({
+              id,
+              lat: values.lat,
+              long: values.long,
+              org_id: orgId,
+              r: values.r,
+              address: values.address,
+              name: values.name,
+              time_start: dayjs(values.timeStart).unix(),
+              time_end: dayjs(values.timeEnd).unix(),
+              wifi: values.wifi,
+              ip_address: values.ipAddress !== '...' ? values.ipAddress : '',
+              mac: values.mac,
+              mac_address: values.macAddress !== '-----' ? values.macAddress : '',
+              params: {
+                org_id: orgId
+              }
+            });
+
+            handleCancel();
+          } catch (exception) {
+            if (exception?.message) {
+              toast('warning', exception.message);
+            }
+          }
         } else {
           console.log(formik.errors);
         }
@@ -136,28 +139,28 @@ const Update = ({ id, orgId, open, setOpen }) => {
     <Modal
       open={open}
       onOpen={setOpen}
-      title="Cập nhật điểm tuần tra"
+      title={t('modal.place.editPlace')}
       onOk={formik.handleSubmit}
       onCancel={handleCancel}
       width="95%"
-      okText="Xác nhận"
-      cancelText="Hủy bỏ"
+      okText={t('modal.place.submitEditPlace')}
+      cancelText={t('modal.place.cancel')}
     >
       <Wrapper>
         <Cell>
-          <TitleCell>Thông tin điểm tuần tra</TitleCell>
+          <TitleCell>{t('modal.place.placeInformation')}</TitleCell>
           <Information formik={formik} />
         </Cell>
         <Cell>
-          <TitleCell>Chọn vị trí điểm tuần tra</TitleCell>
+          <TitleCell>{t('modal.place.selectPlacePosition')}</TitleCell>
           <SelectPosition formik={formik} />
         </Cell>
         <Cell>
-          <TitleCell>Cấu hình thời gian tuần tra</TitleCell>
+          <TitleCell>{t('modal.place.configTime')}</TitleCell>
           <Time formik={formik} />
         </Cell>
         <Cell>
-          <TitleCell>Cài đặt điểm tuần tra</TitleCell>
+          <TitleCell>{t('modal.place.settingPlace')}</TitleCell>
           <Setting formik={formik} />
         </Cell>
       </Wrapper>

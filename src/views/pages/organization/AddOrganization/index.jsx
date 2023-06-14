@@ -5,8 +5,10 @@ import * as yup from 'yup';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { Input } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
+import { useTranslation } from 'react-i18next';
 
 const AddOrganizationModal = ({ open, setOpen }) => {
+  const { t } = useTranslation();
   const { dispatchAddOrganization } = useOrganizationsStore();
 
   const formik = useFormik({
@@ -16,13 +18,19 @@ const AddOrganizationModal = ({ open, setOpen }) => {
       code: ''
     },
     validationSchema: yup.object({
-      fullname: yup.string().max(100, 'Tên tổ chức quá dài').required('Vui lòng nhập tên tổ chức'),
-      name: yup.string().max(50, 'Tên tổ chức rút gọn quá dài').required('Vui lòng nhập tên tổ chức rút gọn'),
+      fullname: yup
+        .string()
+        .max(100, t('input.error.organization.organizationNameTooLong'))
+        .required(t('input.error.organization.pleaseEnterOrganizationName')),
+      name: yup
+        .string()
+        .max(50, t('input.error.organization.abbreviatedNameTooLong'))
+        .required(t('input.error.organization.pleaseEnterAbbreviatedName')),
       code: yup
         .string()
-        .matches(/^[a-zA-Z0-9_]+$/, 'Mã tổ chức không được chứa ký tự đặc biệt')
-        .required('Vui lòng nhập mã tổ chức')
-        .test('no-spaces', 'Mã tổ chức không được chứa dấu cách', (value) => !/\s/.test(value))
+        .matches(/^[a-zA-Z0-9_]+$/, t('input.error.organization.specialCharactersNotAllowed'))
+        .required(t('input.error.organization.pleaseEnterOrganizationCode'))
+        .test('no-spaces', t('input.error.organization.spacesNotAllowed'), (value) => !/\s/.test(value))
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
@@ -52,16 +60,16 @@ const AddOrganizationModal = ({ open, setOpen }) => {
       <Modal
         open={open}
         onOpen={setOpen}
-        title="Thêm tổ chức"
+        title={t('modal.organization.addOrganization')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
         width="350px"
-        okText="Xác nhận"
-        cancelText="Hủy bỏ"
+        okText={t('modal.organization.submitAddOrganization')}
+        cancelText={t('modal.organization.cancel')}
       >
         <AddOrganizationWrapper>
           <Input
-            label="* Tên đầy đủ"
+            label={`* ${t('input.label.organization.fullname')}`}
             name="fullname"
             message={formik.touched.fullname ? formik.errors.fullname : ''}
             type={formik.touched.fullname && formik.errors.fullname ? 'error' : ''}
@@ -81,7 +89,7 @@ const AddOrganizationModal = ({ open, setOpen }) => {
             }}
           />
           <Input
-            label="* Tên rút gọn"
+            label={`* ${t('input.label.organization.name')}`}
             name="name"
             message={formik.touched.name ? formik.errors.name : ''}
             type={formik.touched.name && formik.errors.name ? 'error' : ''}
@@ -102,7 +110,7 @@ const AddOrganizationModal = ({ open, setOpen }) => {
             }}
           />
           <Input
-            label="* Mã tổ chức"
+            label={`* ${t('input.label.organization.code')}`}
             name="code"
             message={formik.touched.code ? formik.errors.code : ''}
             type={formik.touched.code && formik.errors.code ? 'error' : ''}

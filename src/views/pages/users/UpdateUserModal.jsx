@@ -9,8 +9,10 @@ import { roles } from '~/store/constant';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { useUsersStore } from '~/hooks/users';
 import { useAuthenticationStore } from '~/hooks/authentication';
+import { useTranslation } from 'react-i18next';
 
 const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) => {
+  const { t } = useTranslation();
   const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
   const { authenticationState } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
@@ -30,13 +32,13 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       orgIds: []
     },
     validationSchema: yup.object({
-      email: yup.string().email('Email không hợp lệ').required('Vui lòng nhập email'),
-      name: yup.string().max(100, 'Tên của bạn quá dài').required('Vui lòng nhập tên người dùng'),
-      role: yup.string().required('Vui lòng chọn role người dùng'),
+      email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
+      name: yup.string().max(100, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
+      role: yup.string().required(t('input.error.user.pleaseSelectUserRole')),
       orgIds: yup
         .array()
-        .required('Vui lòng chọn tổ chức')
-        .test('not-empty', 'Vui lòng chọn ít nhất một tổ chức', (value) => value && value.length > 0)
+        .required(t('input.error.user.pleaseSelectOrganization'))
+        .test('not-empty', t('input.error.user.pleaseSelectAtLeastOneOrganization'), (value) => value && value.length > 0)
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
@@ -121,16 +123,16 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       <Modal
         open={open}
         onOpen={setOpen}
-        title="Thêm người dùng"
+        title={t('modal.user.editUser')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
         width="350px"
-        okText="Xác nhận"
-        cancelText="Hủy bỏ"
+        okText={t('modal.user.submitEditUser')}
+        cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
           <Input
-            label="* Tên đăng nhập"
+            label={`* ${t('input.label.user.username')}`}
             name="username"
             message={formik.touched.username ? formik.errors.username : ''}
             type={formik.touched.username && formik.errors.username ? 'error' : ''}
@@ -151,7 +153,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             }}
           />
           <Input
-            label="* Email"
+            label={`* ${t('input.label.user.email')}`}
             name="email"
             message={formik.touched.email ? formik.errors.email : ''}
             type={formik.touched.email && formik.errors.email ? 'error' : ''}
@@ -172,7 +174,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             }}
           />
           <Input
-            label="* Tên đầy đủ"
+            label={`* ${t('input.label.user.name')}`}
             name="name"
             message={formik.touched.name ? formik.errors.name : ''}
             type={formik.touched.name && formik.errors.name ? 'error' : ''}
@@ -192,7 +194,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             }}
           />
           <Selector
-            label="* Quyền người dùng"
+            label={`* ${t('input.label.user.role')}`}
             name="role"
             mode=""
             labelStyle={{
@@ -213,7 +215,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             type={formik.touched.role && formik.errors.role ? 'error' : ''}
           />
           <Selector
-            label="* Tổ chức"
+            label={`* ${t('input.label.user.organization')}`}
             name="orgIds"
             mode={formik.values.role === 'manager' ? 'multiple' : ''}
             labelStyle={{
@@ -233,7 +235,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             message={formik.touched.orgIds ? formik.errors.orgIds : ''}
             type={formik.touched.orgIds && formik.errors.orgIds ? 'error' : ''}
           />
-          <EditLinkPassword onClick={handleOpenChangePassword}>Tiến hành sửa mật khẩu</EditLinkPassword>
+          <EditLinkPassword onClick={handleOpenChangePassword}>{t('modal.user.updatePasswordBtn')}</EditLinkPassword>
         </EditUserWrapper>
       </Modal>
     </>

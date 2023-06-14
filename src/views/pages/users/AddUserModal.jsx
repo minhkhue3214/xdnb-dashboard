@@ -9,8 +9,10 @@ import { roles } from '~/store/constant';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { useUsersStore } from '~/hooks/users';
 import { useAuthenticationStore } from '~/hooks/authentication';
+import { useTranslation } from 'react-i18next';
 
 const AddUserModal = ({ open, setOpen }) => {
+  const { t } = useTranslation();
   const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
   const { authenticationState } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
@@ -20,7 +22,7 @@ const AddUserModal = ({ open, setOpen }) => {
     const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
     // console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
     setNewRoles(updateRoles);
-  }, [authenticationState.role, roles]);
+  }, [authenticationState.loginInfo.role, authenticationState.role]);
 
   const formik = useFormik({
     initialValues: {
@@ -32,23 +34,23 @@ const AddUserModal = ({ open, setOpen }) => {
       orgIds: []
     },
     validationSchema: yup.object({
-      email: yup.string().email('Email không hợp lệ').required('Vui lòng nhập email'),
+      email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
       password: yup
         .string()
-        .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
-        .matches(/^(?=.*[a-z])(?=.*[0-9])/, 'Mật khẩu phải chứa ít nhất 1 chữ cái và 1 số')
-        .required('Vui lòng nhập mật khẩu'),
-      name: yup.string().max(100, 'Tên của bạn quá dài').required('Vui lòng nhập tên người dùng'),
+        .min(8, t('input.error.user.passwordMinLength'))
+        .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
+        .required(t('input.error.user.pleaseEnterPassword')),
+      name: yup.string().max(100, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
       username: yup
         .string()
-        .matches(/^[a-zA-Z0-9_]+$/, 'Tên người dùng không được chứa ký tự đặc biệt')
-        .required('Vui lòng nhập tên người dùng')
-        .test('no-spaces', 'Tên người dùng không được chứa dấu cách', (value) => !/\s/.test(value)),
-      role: yup.string().required('Vui lòng chọn role người dùng'),
+        .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
+        .required(t('input.error.user.pleaseEnterUsername'))
+        .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
+      role: yup.string().required(t('input.error.user.pleaseSelectUserRole')),
       orgIds: yup
         .array()
-        .required('Vui lòng chọn tổ chức')
-        .test('not-empty', 'Vui lòng chọn ít nhất một tổ chức', (value) => value && value.length > 0)
+        .required(t('input.error.user.pleaseSelectOrganization'))
+        .test('not-empty', t('input.error.user.pleaseSelectAtLeastOneOrganization'), (value) => value && value.length > 0)
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
@@ -107,16 +109,16 @@ const AddUserModal = ({ open, setOpen }) => {
       <Modal
         open={open}
         onOpen={setOpen}
-        title="Thêm người dùng"
+        title={t('modal.user.addUser')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
         width="350px"
-        okText="Xác nhận"
-        cancelText="Hủy bỏ"
+        okText={t('modal.user.submitAddUser')}
+        cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
           <Input
-            label="* Tên đăng nhập"
+            label={`* ${t('input.label.user.username')}`}
             name="username"
             message={formik.touched.username ? formik.errors.username : ''}
             type={formik.touched.username && formik.errors.username ? 'error' : ''}
@@ -136,7 +138,7 @@ const AddUserModal = ({ open, setOpen }) => {
             }}
           />
           <Input
-            label="* Email"
+            label={`* ${t('input.label.user.email')}`}
             name="email"
             message={formik.touched.email ? formik.errors.email : ''}
             type={formik.touched.email && formik.errors.email ? 'error' : ''}
@@ -157,7 +159,7 @@ const AddUserModal = ({ open, setOpen }) => {
             }}
           />
           <Input
-            label="* Mật khẩu"
+            label={`* ${t('input.label.user.password')}`}
             name="password"
             message={formik.touched.password ? formik.errors.password : ''}
             type={formik.touched.password && formik.errors.password ? 'error' : ''}
@@ -177,7 +179,7 @@ const AddUserModal = ({ open, setOpen }) => {
             }}
           />
           <Input
-            label="* Tên đầy đủ"
+            label={`* ${t('input.label.user.name')}`}
             name="name"
             message={formik.touched.name ? formik.errors.name : ''}
             type={formik.touched.name && formik.errors.name ? 'error' : ''}
@@ -197,7 +199,7 @@ const AddUserModal = ({ open, setOpen }) => {
             }}
           />
           <Selector
-            label="* Quyền người dùng"
+            label={`* ${t('input.label.user.role')}`}
             name="role"
             mode=""
             labelStyle={{
@@ -218,7 +220,7 @@ const AddUserModal = ({ open, setOpen }) => {
             type={formik.touched.role && formik.errors.role ? 'error' : ''}
           />
           <Selector
-            label="* Tổ chức"
+            label={`* ${t('input.label.user.organization')}`}
             name="orgIds"
             mode={formik.values.role === 'manager' || formik.values.role === 'admin' ? 'multiple' : ''}
             labelStyle={{
