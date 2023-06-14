@@ -1,13 +1,19 @@
 import IconButton from '@mui/material/IconButton';
 import { Popconfirm } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { MdDelete } from 'react-icons/md';
 import styled from 'styled-components';
 import { useUsersStore } from '~/hooks/users';
 import { DataTable } from '~/ui-component/molecules';
+import { useTranslation } from 'react-i18next';
 
-const TableUsers = ({ id: orgId, users }) => {
+const TableUsers = ({ orgId, users }) => {
+  const { t } = useTranslation();
   const { dispatchDeleteUser } = useUsersStore();
+
+  const filteredUsers = useMemo(() => {
+    return users.filter((user) => user.role !== 'manager');
+  }, [users]);
 
   const handleDelete = useCallback(
     (params) => {
@@ -22,12 +28,12 @@ const TableUsers = ({ id: orgId, users }) => {
   );
 
   const columnsUser = [
-    { field: 'username', headerName: 'User name', flex: 4, align: 'center', headerAlign: 'center' },
-    { field: 'name', headerName: 'Full name', flex: 4, align: 'center', headerAlign: 'center' },
-    { field: 'role', headerName: 'Role', flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'username', headerName: t('table.user.username'), flex: 4, align: 'center', headerAlign: 'center' },
+    { field: 'name', headerName: t('table.user.name'), flex: 4, align: 'center', headerAlign: 'center' },
+    { field: 'role', headerName: t('table.user.role'), flex: 2, align: 'center', headerAlign: 'center' },
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: t('table.user.actions'),
       renderCell: (params) => (
         <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(params)} okText="Đồng ý" cancelText="Hủy">
           <IconButton aria-label="delete" color="primary">
@@ -43,7 +49,7 @@ const TableUsers = ({ id: orgId, users }) => {
 
   return (
     <DataTableWrapper>
-      <DataTable columns={columnsUser} rows={users} checkboxSelection={false} density="compact" />
+      <DataTable columns={columnsUser} rows={filteredUsers} checkboxSelection={false} density="compact" />
     </DataTableWrapper>
   );
 };

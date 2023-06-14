@@ -1,38 +1,33 @@
-import { useState, memo, useCallback } from 'react';
+import { Switch } from 'antd';
+import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-// material-ui
-import { Button, ButtonGroup } from '@mui/material';
 
 const ChangeLanguage = () => {
   const { i18n } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const [isVietnamese, setIsVietnamese] = useState(i18n.language === 'vi');
 
-  const changeLanguage = useCallback(
-    (lng) => {
-      i18n.changeLanguage(lng);
-      setSelectedLanguage(lng);
+  const handleChangeLanguage = useCallback(
+    (status) => {
+      i18n.changeLanguage(status ? 'vi' : 'en');
+      setIsVietnamese(status);
     },
     [i18n]
   );
 
   return (
-    <ButtonGroup variant="contained" aria-label="outlined primary button group">
-      <Button
-        onClick={() => changeLanguage('en')}
-        variant={selectedLanguage === 'en' ? 'contained' : 'outlined'}
-        color={selectedLanguage === 'en' ? 'primary' : 'error'}
-      >
-        English
-      </Button>
-      <Button
-        onClick={() => changeLanguage('vi')}
-        variant={selectedLanguage === 'vi' ? 'contained' : 'outlined'}
-        color={selectedLanguage === 'vi' ? 'primary' : 'error'}
-      >
-        Tiếng Việt
-      </Button>
-    </ButtonGroup>
+    <Switch
+      checked={isVietnamese}
+      checkedChildren="vi"
+      unCheckedChildren="en"
+      size="default"
+      onChange={() => {
+        handleChangeLanguage(!isVietnamese);
+      }}
+      style={{
+        backgroundColor: !isVietnamese ? 'tomato' : '#1e88e5',
+        transition: '0.3s'
+      }}
+    />
   );
 };
 

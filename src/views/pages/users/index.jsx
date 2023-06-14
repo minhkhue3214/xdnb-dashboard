@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react';
 // project imports
-import Button from '@mui/material/Button';
 import { AiOutlineUserAdd, AiFillEdit } from 'react-icons/ai';
 import { TbTableExport } from 'react-icons/tb';
 import { MdDelete } from 'react-icons/md';
@@ -12,10 +11,12 @@ import IconButton from '@mui/material/IconButton';
 import AddUserModal from './AddUserModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import UpdateUserModal from './UpdateUserModal';
-import { Popconfirm } from 'antd';
+import { Popconfirm, Button } from 'antd';
 import { useUsersStore } from '~/hooks/users';
+import { useTranslation } from 'react-i18next';
 
 const UsersPage = () => {
+  const { t } = useTranslation();
   const { usersState, dispatchGetAllUsers, dispatchDeleteUser } = useUsersStore();
   const [page, setPage] = useState(1);
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
@@ -108,22 +109,22 @@ const UsersPage = () => {
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { field: 'username', headerName: 'Username', flex: 2, align: 'center', headerAlign: 'center' },
-    { field: 'name', headerName: 'Name', flex: 3, align: 'center', headerAlign: 'center' },
-    { field: 'email', headerName: 'Email', flex: 3, align: 'center', headerAlign: 'center' },
-    { field: 'role', headerName: 'Role', flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'username', headerName: t('table.user.username'), flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'name', headerName: t('table.user.name'), flex: 3, align: 'center', headerAlign: 'center' },
+    { field: 'email', headerName: t('table.user.email'), flex: 3, align: 'center', headerAlign: 'center' },
+    { field: 'role', headerName: t('table.user.role'), flex: 2, align: 'center', headerAlign: 'center' },
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: t('table.user.actions'),
       renderCell: (params) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(params)}>
             <AiFillEdit size={22} />
           </IconButton>
           <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(params)} okText="Đồng ý" cancelText="Hủy">
-            <Button type="text" danger>
+            <IconButton aria-label="delete">
               <MdDelete color="tomato" size={22} />
-            </Button>
+            </IconButton>
           </Popconfirm>
         </>
       ),
@@ -145,16 +146,16 @@ const UsersPage = () => {
     <MainCard>
       <ControlBar>
         <Button
-          variant="contained"
-          startIcon={<AiOutlineUserAdd />}
+          type="primary"
+          icon={<AiOutlineUserAdd />}
           onClick={() => {
             setOpenAddUserModal(true);
           }}
         >
-          Thêm người dùng
+          {t('pages.users.addUser')}
         </Button>
-        <Button variant="outlined" startIcon={<TbTableExport />}>
-          Xuất dữ liệu
+        <Button type="primary" icon={<TbTableExport />}>
+          {t('pages.users.exportUserData')}
         </Button>
       </ControlBar>
       <DataTableWrapper>

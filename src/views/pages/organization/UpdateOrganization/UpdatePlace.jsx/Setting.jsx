@@ -2,8 +2,11 @@ import React, { useCallback } from 'react';
 import { Card, Space, Switch } from 'antd';
 import { IpAddressInput, MacAddressInput } from '~/ui-component/atoms';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const Setting = ({ formik }) => {
+  const { t } = useTranslation();
+
   const handleChangeWifi = useCallback(
     (status) => {
       formik.setFieldValue('wifi', status);
@@ -34,8 +37,14 @@ const Setting = ({ formik }) => {
 
   return (
     <CustomSpace direction="vertical" style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden', flexDirection: 'row' }}>
-      <CustomCard title="Kiểm tra IP Wifi" size="small">
-        <Switch name="wifi" checked={formik.values.wifi} checkedChildren="Bật" unCheckedChildren="Tắt" onChange={handleChangeWifi} />
+      <CustomCard title={t('modal.place.checkWifi')} size="small">
+        <Switch
+          name="wifi"
+          checked={formik.values.wifi}
+          checkedChildren={t('global.enable')}
+          unCheckedChildren={t('global.disable')}
+          onChange={handleChangeWifi}
+        />
         <IpAddressInput
           id="ipAddress"
           name="ipAddress"
@@ -45,8 +54,14 @@ const Setting = ({ formik }) => {
           disabled={!formik.values.wifi}
         />
       </CustomCard>
-      <CustomCard title="Kiểm tra MAC Wifi" size="small">
-        <Switch name="mac" checked={formik.values.mac} checkedChildren="Bật" unCheckedChildren="Tắt" onChange={handleChangeMac} />
+      <CustomCard title={t('modal.place.checkMACWifi')} size="small">
+        <Switch
+          name="mac"
+          checked={formik.values.mac}
+          checkedChildren={t('global.enable')}
+          unCheckedChildren={t('global.disable')}
+          onChange={handleChangeMac}
+        />
         <MacAddressInput
           id="macAddress"
           name="macAddress"

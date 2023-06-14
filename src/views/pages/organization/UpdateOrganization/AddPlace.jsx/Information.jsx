@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import { Input } from '~/ui-component/atoms';
+import { useTranslation } from 'react-i18next';
 
 const Information = ({ formik }) => {
+  const { t } = useTranslation();
+
   return (
     <InformationWrapper>
       <Input
-        label="* Tên điểm tuần tra"
+        label={`* ${t('input.label.place.name')}`}
         name="name"
         message={formik.touched.name ? formik.errors.name : ''}
         type={formik.touched.name && formik.errors.name ? 'error' : ''}
@@ -25,7 +28,7 @@ const Information = ({ formik }) => {
         }}
       />
       <Input
-        label="* Bán kính sai số"
+        label={`* ${t('input.label.place.r')}`}
         name="r"
         message={formik.touched.r ? formik.errors.r : ''}
         type={formik.touched.r && formik.errors.r ? 'error' : ''}
@@ -44,7 +47,7 @@ const Information = ({ formik }) => {
         }}
       />
       <Input
-        label="* Địa chỉ"
+        label={`* ${t('input.label.place.address')}`}
         name="address"
         message={formik.touched.address ? formik.errors.address : ''}
         type={formik.touched.address && formik.errors.address ? 'error' : ''}
@@ -58,7 +61,7 @@ const Information = ({ formik }) => {
           padding: '2px'
         }}
         style={{
-          width: '100%',
+          width: '100%'
         }}
         inputStyle={{
           width: '100%',

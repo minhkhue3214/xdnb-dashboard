@@ -3,6 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Map } from '~/ui-component/molecules';
 import { useDebouncedCallback } from 'use-debounce';
+import { useTranslation } from 'react-i18next';
 
 const defaultPosition = {
   long: 105.85939990733658,
@@ -10,6 +11,8 @@ const defaultPosition = {
 };
 
 const SelectPosition = ({ formik }) => {
+  const { t } = useTranslation();
+
   const [focus, setFocus] = useState({});
 
   const debounced = useDebouncedCallback(({ lat, long }) => {
@@ -45,7 +48,7 @@ const SelectPosition = ({ formik }) => {
       <InputPositionWrapper>
         <Input
           name="long"
-          placeholder="longitude"
+          placeholder={`* ${t('input.label.place.long').toLowerCase()}`}
           addonAfter="°"
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
@@ -56,7 +59,7 @@ const SelectPosition = ({ formik }) => {
         />
         <Input
           name="lat"
-          placeholder="latitude"
+          placeholder={`* ${t('input.label.place.lat').toLowerCase()}`}
           addonAfter="°"
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}

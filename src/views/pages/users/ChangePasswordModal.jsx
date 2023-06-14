@@ -5,9 +5,10 @@ import * as yup from 'yup';
 import { useUsersStore } from '~/hooks/users';
 import { Input } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
+import { useTranslation } from 'react-i18next';
 
 const ChangePasswordModal = ({ id, open, setOpen }) => {
-
+  const { t } = useTranslation();
   const [errMess, setErrMess] = useState(false);
 
   const { dispatchUpdatePassword } = useUsersStore();
@@ -20,14 +21,14 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
     validationSchema: yup.object({
       password: yup
         .string()
-        .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
-        .matches(/^(?=.*[a-z])(?=.*[0-9])/, 'Mật khẩu phải chứa ít nhất 1 chữ cái và 1 số')
-        .required('Vui lòng nhập mật khẩu'),
+        .min(8, t('input.error.user.passwordMinLength'))
+        .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
+        .required(t('input.error.user.pleaseEnterPassword')),
       repassword: yup
         .string()
-        .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
-        .matches(/^(?=.*[a-z])(?=.*[0-9])/, 'Mật khẩu phải chứa ít nhất 1 chữ cái và 1 số')
-        .required('Vui lòng nhập mật khẩu')
+        .min(8, t('input.error.user.passwordMinLength'))
+        .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
+        .required(t('input.error.user.pleaseEnterPassword'))
     }),
     onSubmit: (values) => {
       console.log('compare password', values);
@@ -59,16 +60,16 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
       <Modal
         open={open}
         onOpen={setOpen}
-        title="Thêm người dùng"
+        title={t('modal.user.updatePassword')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
         width="350px"
-        okText="Xác nhận"
-        cancelText="Hủy bỏ"
+        okText={t('modal.user.submitUpdatePassword')}
+        cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
           <Input
-            label="* Nhập mật khẩu mới"
+            label={`* ${t('input.label.user.newPassword')}`}
             name="password"
             message={formik.touched.password ? formik.errors.password : ''}
             type={formik.touched.password && formik.errors.password ? 'error' : ''}
@@ -88,7 +89,7 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
             }}
           />
           <Input
-            label="* Nhập lại mật khẩu mới"
+            label={`* ${t('input.label.user.reTypeNewPassword')}`}
             name="repassword"
             message={formik.touched.repassword ? formik.errors.repassword : ''}
             type={formik.touched.repassword && formik.errors.repassword ? 'error' : ''}
@@ -107,7 +108,7 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
               width: '100%'
             }}
           />
-          {errMess && <EditLinkPassword>Mật khẩu không khớp</EditLinkPassword>}
+          {errMess && <EditLinkPassword>{t('input.error.user.passwordsDoNotMatch')}</EditLinkPassword>}
         </EditUserWrapper>
       </Modal>
     </>

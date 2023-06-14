@@ -1,15 +1,18 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 import { TimePicker } from '~/ui-component/atoms';
+import { useTranslation } from 'react-i18next';
 
 const Time = ({ formik }) => {
+  const { t } = useTranslation();
+
   const handleChangeTimeStart = useCallback(
     (value) => {
       formik.setFieldValue('timeStart', value);
     },
     [formik]
   );
- 
+
   const handleChangeTimeEnd = useCallback(
     (value) => {
       formik.setFieldValue('timeEnd', value);
@@ -20,7 +23,7 @@ const Time = ({ formik }) => {
   return (
     <TimeWrapper>
       <TimePicker
-        label="* Thời gian bắt đầu tuần tra"
+        label={`* ${t('input.label.place.timeStart')}`}
         id="timeStart"
         name="timeStart"
         message={formik.touched.timeStart ? formik.errors.timeStart : ''}
@@ -41,7 +44,7 @@ const Time = ({ formik }) => {
         }}
       />
       <TimePicker
-        label="* Thời gian kết thúc ca trực"
+        label={`* ${t('input.label.place.timeEnd')}`}
         id="timeEnd"
         name="timeEnd"
         message={formik.touched.timeEnd ? formik.errors.timeEnd : ''}

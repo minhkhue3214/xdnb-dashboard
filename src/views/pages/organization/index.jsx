@@ -3,17 +3,20 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Pagination from '@mui/material/Pagination';
 import { Button, Popconfirm } from 'antd';
-import { AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai';
+import { useTranslation } from 'react-i18next';
+import { AiFillEdit } from 'react-icons/ai';
+import { BsFillBuildingsFill } from 'react-icons/bs';
 import { MdDelete } from 'react-icons/md';
 import { TbTableExport } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import MainCard from '~/ui-component/cards/MainCard';
 import { DataTable } from '~/ui-component/molecules';
-import UpdateOrganization from './UpdateOrganization';
 import AddOrganization from './AddOrganization';
+import UpdateOrganization from './UpdateOrganization';
 
 const OrganizationPage = () => {
+  const { t } = useTranslation();
   const { organizationsState, dispatchGetAllOrganizations, dispatchDeleteOrganization } = useOrganizationsStore();
   const [page, setPage] = useState(1);
   const [openAddOrganizationModal, setOpenAddOrganizationModal] = useState(false);
@@ -66,19 +69,19 @@ const OrganizationPage = () => {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', flex: 2 },
+    { field: 'id', headerName: t('table.organization.id'), flex: 2 },
     {
       field: 'leader',
-      headerName: 'Leader',
+      headerName: t('table.organization.leader'),
       flex: 2,
       valueGetter: (params) => params?.row?.leader?.name
     },
-    { field: 'fullname', headerName: 'Full name', flex: 2 },
-    { field: 'name', headerName: 'Name', flex: 1 },
-    { field: 'code', headerName: 'Code', flex: 1 },
+    { field: 'fullname', headerName: t('table.organization.fullname'), flex: 2 },
+    { field: 'name', headerName: t('table.organization.name'), flex: 1 },
+    { field: 'code', headerName: t('table.organization.code'), flex: 1 },
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: t('table.organization.actions'),
       renderCell: (params) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEditOrganization(params)}>
@@ -108,16 +111,16 @@ const OrganizationPage = () => {
     <MainCard>
       <ControlBar>
         <Button
-          variant="contained"
-          startIcon={<AiOutlineUserAdd />}
+          type="primary"
+          icon={<BsFillBuildingsFill />}
           onClick={() => {
             setOpenAddOrganizationModal(true);
           }}
         >
-          Thêm tổ chức
+          {t('pages.organization.addOrganization')}
         </Button>
-        <Button variant="outlined" startIcon={<TbTableExport />}>
-          Xuất dữ liệu
+        <Button type="primary" icon={<TbTableExport />}>
+          {t('pages.organization.exportOrganizationData')}
         </Button>
       </ControlBar>
       <DataTableWrapper>

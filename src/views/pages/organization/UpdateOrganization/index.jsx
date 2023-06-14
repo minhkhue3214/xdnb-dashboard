@@ -11,8 +11,10 @@ import TablePlaces from './TablePlaces';
 import TableUsers from './TableUsers';
 import AddPlace from './AddPlace.jsx';
 import UpdatePlace from './UpdatePlace.jsx';
+import { useTranslation } from 'react-i18next';
 
 const UpdateOrganization = ({ id, open, setOpen }) => {
+  const { t } = useTranslation();
   const { placesState, dispatchGetAllPlaces } = usePlacesStore();
   const { usersState, dispatchGetAllUsers } = useUsersStore();
   const [openAddPlaceModal, setOpenAddPlaceModal] = useState(false);
@@ -78,17 +80,17 @@ const UpdateOrganization = ({ id, open, setOpen }) => {
     <Modal
       open={open}
       onOpen={setOpen}
-      title="Cập nhật thông tin tổ chức"
+      title={t('modal.organization.editOrganization')}
       onOk={() => setOpen(false)}
       onCancel={() => setOpen(false)}
       width="95%"
-      okText="Xác nhận"
-      cancelText="Hủy bỏ"
+      okText={t('modal.organization.submitEditOrganization')}
+      cancelText={t('modal.organization.cancel')}
       footer={null}
     >
       <Controller>
         <Button type="primary" icon={<FaMapMarkerAlt />} onClick={() => setOpenAddPlaceModal(true)}>
-          Thêm điểm tuần tra
+          {t('modal.place.addPlace')}
         </Button>
       </Controller>
       <Wrapper>

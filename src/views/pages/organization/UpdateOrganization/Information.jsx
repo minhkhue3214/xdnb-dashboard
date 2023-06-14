@@ -2,9 +2,11 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { useOrganizationsStore } from '~/hooks/organizations';
 import { EditInput, Selector } from '~/ui-component/atoms';
+import { useTranslation } from 'react-i18next';
 
-const Information = ({ id: orgId, users }) => {
+const Information = ({ orgId, users }) => {
   const { organizationsState, dispatchGetOrganization, dispatchUpdateOrganization } = useOrganizationsStore();
+  const { t } = useTranslation();
   const [fullname, setFullname] = useState('');
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
@@ -74,8 +76,8 @@ const Information = ({ id: orgId, users }) => {
         }}
       />
       <Selector
-        label="Tổ trưởng: "
-        name="role"
+        label={`* ${t('input.label.organization.leader')}`}
+        name="leader"
         mode=""
         labelStyle={{
           width: '170px',
@@ -102,7 +104,7 @@ const Information = ({ id: orgId, users }) => {
       <EditInput
         value={name}
         onSave={(value) => handleChange('name', value)}
-        label="Tên rút gọn: "
+        label={`* ${t('input.label.organization.name')}`}
         labelStyle={{
           width: '170px',
           fontWeight: '600',
@@ -112,7 +114,7 @@ const Information = ({ id: orgId, users }) => {
       <EditInput
         value={code}
         onSave={(value) => handleChange('code', value)}
-        label="Mã tổ chức: "
+        label={`* ${t('input.label.organization.code')}`}
         labelStyle={{
           width: '170px',
           fontWeight: '600',

@@ -7,8 +7,10 @@ import { MdDelete } from 'react-icons/md';
 import styled from 'styled-components';
 import { usePlacesStore } from '~/hooks/places';
 import { DataTable, QrCode } from '~/ui-component/molecules';
+import { useTranslation } from 'react-i18next';
 
-const TablePlace = ({ id: orgId, places, onFocusMarker, onChangeEditPlaceModal }) => {
+const TablePlace = ({ orgId, places, onFocusMarker, onChangeEditPlaceModal }) => {
+  const { t } = useTranslation();
   const { dispatchDeletePlace } = usePlacesStore();
   const [openQRModal, setOpenQRModal] = useState({
     status: false,
@@ -79,14 +81,14 @@ const TablePlace = ({ id: orgId, places, onFocusMarker, onChangeEditPlaceModal }
   };
 
   const columnsPlace = [
-    { field: 'name', headerName: 'Place name', flex: 2, align: 'center', headerAlign: 'center' },
-    { field: 'address', headerName: 'Address', flex: 2, align: 'center', headerAlign: 'center' },
-    { field: 'r', headerName: 'Radius', flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'lat', headerName: 'Lat', flex: 2, align: 'center', headerAlign: 'center' },
-    { field: 'long', headerName: 'Long', flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'name', headerName: t('table.place.name'), flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'address', headerName: t('table.place.address'), flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'r', headerName: t('table.place.r'), flex: 1, align: 'center', headerAlign: 'center' },
+    { field: 'lat', headerName: t('table.place.lat'), flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'long', headerName: t('table.place.long'), flex: 2, align: 'center', headerAlign: 'center' },
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: t('table.place.actions'),
       renderCell: (params) => (
         <>
           <IconButton aria-label="qrcode" color="primary" onClick={() => handleShowQrCode(params)}>
