@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
@@ -64,7 +64,7 @@ const AtomInput = (props) => {
   );
 };
 
-export default AtomInput;
+export default memo(AtomInput);
 
 const InputWrapper = styled.div`
   display: flex;

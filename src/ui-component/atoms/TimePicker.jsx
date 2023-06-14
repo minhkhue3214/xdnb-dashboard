@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { TimePicker } from 'antd';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
@@ -65,7 +65,7 @@ const AtomTimePicker = (props) => {
   );
 };
 
-export default AtomTimePicker;
+export default memo(AtomTimePicker);
 
 const InputWrapper = styled.div`
   display: flex;

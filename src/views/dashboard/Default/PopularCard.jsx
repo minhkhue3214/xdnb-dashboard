@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -306,4 +306,4 @@ PopularCard.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default PopularCard;
+export default memo(PopularCard);

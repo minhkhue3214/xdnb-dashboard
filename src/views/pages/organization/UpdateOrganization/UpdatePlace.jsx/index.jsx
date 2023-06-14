@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, memo } from 'react';
 import { Modal } from '~/ui-component/molecules';
 import styled from 'styled-components';
 import SelectPosition from './SelectPosition';
@@ -168,7 +168,7 @@ const Update = ({ id, orgId, open, setOpen }) => {
   );
 };
 
-export default Update;
+export default memo(Update);
 
 const Wrapper = styled.div`
   position: relative;

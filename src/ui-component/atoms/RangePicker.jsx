@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { DatePicker } from 'antd';
 const { RangePicker } = DatePicker;
 import styled from 'styled-components';
@@ -64,7 +64,7 @@ const AtomRangePicker = (props) => {
   );
 };
 
-export default AtomRangePicker;
+export default memo(AtomRangePicker);
 
 const InputWrapper = styled.div`
   display: flex;

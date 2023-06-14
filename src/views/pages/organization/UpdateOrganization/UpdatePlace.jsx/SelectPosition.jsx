@@ -1,5 +1,5 @@
 import { Input } from 'antd';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Map } from '~/ui-component/molecules';
 import { useDebouncedCallback } from 'use-debounce';
@@ -83,7 +83,7 @@ const SelectPosition = ({ formik }) => {
   );
 };
 
-export default SelectPosition;
+export default memo(SelectPosition);
 
 const SelectPositionWrapper = styled.div`
   display: flex;

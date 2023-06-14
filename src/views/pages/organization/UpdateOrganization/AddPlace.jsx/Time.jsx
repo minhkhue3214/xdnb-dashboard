@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import styled from 'styled-components';
 import { TimePicker } from '~/ui-component/atoms';
 import { useTranslation } from 'react-i18next';
@@ -70,7 +70,7 @@ const Time = ({ formik }) => {
   );
 };
 
-export default Time;
+export default memo(Time);
 
 const TimeWrapper = styled.div`
   width: 100%;

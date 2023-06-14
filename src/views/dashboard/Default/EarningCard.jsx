@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 // material-ui
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
@@ -186,4 +186,4 @@ EarningCard.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default EarningCard;
+export default memo(EarningCard);

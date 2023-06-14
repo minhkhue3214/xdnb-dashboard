@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Map } from '~/ui-component/molecules';
 
 const defaultPosition = {
@@ -11,4 +11,4 @@ const MapOrganization = ({ focusMarker, places }) => {
   return <Map markers={places} focus={focusMarker} initialViewState={places[0] || defaultPosition} />;
 };
 
-export default MapOrganization;
+export default memo(MapOrganization);

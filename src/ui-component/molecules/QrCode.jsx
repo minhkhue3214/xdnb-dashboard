@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import QRCode from 'react-qr-code';
 import { Modal } from '~/ui-component/molecules';
 import { Button } from 'antd';
@@ -51,7 +51,7 @@ const QrCode = ({ id, open, setOpen }) => {
   );
 };
 
-export default QrCode;
+export default memo(QrCode);
 
 const ButtonCustom = styled(Button)`
   width: 100%;

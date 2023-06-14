@@ -1,5 +1,5 @@
 import { Modal } from 'antd';
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 
 const App = (props) => {
   const { title, onConfirm, open, onOpen, style, children, ...restProps } = props;
@@ -30,4 +30,4 @@ const App = (props) => {
     </>
   );
 };
-export default App;
+export default memo(App);

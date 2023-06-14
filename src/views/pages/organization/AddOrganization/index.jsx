@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useCallback } from 'react';
+import { useCallback, memo } from 'react';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { useOrganizationsStore } from '~/hooks/organizations';
@@ -135,7 +135,7 @@ const AddOrganizationModal = ({ open, setOpen }) => {
   );
 };
 
-export default AddOrganizationModal;
+export default memo(AddOrganizationModal);
 
 const AddOrganizationWrapper = styled.div`
   width: 100%;

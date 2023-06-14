@@ -1,6 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import { Popconfirm } from 'antd';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, memo } from 'react';
 import { MdDelete } from 'react-icons/md';
 import styled from 'styled-components';
 import { useUsersStore } from '~/hooks/users';
@@ -54,7 +54,7 @@ const TableUsers = ({ orgId, users }) => {
   );
 };
 
-export default TableUsers;
+export default memo(TableUsers);
 
 const DataTableWrapper = styled.div`
   width: 100%;

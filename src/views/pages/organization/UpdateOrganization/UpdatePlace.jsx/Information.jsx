@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Input } from '~/ui-component/atoms';
 import { useTranslation } from 'react-i18next';
+import { memo } from 'react';
 
 const Information = ({ formik }) => {
   const { t } = useTranslation();
@@ -74,7 +75,7 @@ const Information = ({ formik }) => {
   );
 };
 
-export default Information;
+export default memo(Information);
 
 const InformationWrapper = styled.div`
   width: 100%;

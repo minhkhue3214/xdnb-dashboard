@@ -1,5 +1,5 @@
 import { Input, Space } from 'antd';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, memo } from 'react';
 import styled from 'styled-components';
 import checkValidMac from '~/handlers/checkValidMac';
 
@@ -112,7 +112,7 @@ const MacAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {
   );
 };
 
-export default MacAddressInput;
+export default memo(MacAddressInput);
 
 const InputWrapper = styled.div`
   display: flex;

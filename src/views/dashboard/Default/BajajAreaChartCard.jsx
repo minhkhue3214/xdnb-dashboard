@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useCustomizationStore } from '~/hooks/customization';
 
 // material-ui
@@ -60,4 +60,4 @@ const BajajAreaChartCard = () => {
   );
 };
 
-export default BajajAreaChartCard;
+export default memo(BajajAreaChartCard);

@@ -1,5 +1,5 @@
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Marker, useControl } from 'react-map-gl';
 const GeocoderControl = (props) => {
   const { onLoading = () => {}, onResults = () => {}, onResult = () => {}, onError = () => {} } = props;
@@ -76,4 +76,4 @@ const GeocoderControl = (props) => {
   return marker;
 };
 
-export default GeocoderControl;
+export default memo(GeocoderControl);
