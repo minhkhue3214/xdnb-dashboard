@@ -2,6 +2,7 @@ import React, { memo, useEffect, useRef } from 'react';
 import { IoMdPin } from 'react-icons/io';
 import { FullscreenControl, Map, Marker } from 'react-map-gl';
 import { GeocoderControl } from '~/ui-component/atoms';
+import styled from 'styled-components';
 
 function MapCustom({ initialViewState, focus, markers, ...restProps }) {
   const map = useRef();
@@ -29,7 +30,10 @@ function MapCustom({ initialViewState, focus, markers, ...restProps }) {
     >
       {markers?.map((marker, index) => (
         <Marker longitude={marker?.long} latitude={marker?.lat} anchor="bottom" key={index}>
-          <IoMdPin color="#4096ff" size={26} />
+          <MarkerWrapper>
+            <IoMdPin color="#4096ff" size={26} />
+            <MarkerLabel>{marker?.name || ''}</MarkerLabel>
+          </MarkerWrapper>
         </Marker>
       ))}
       <FullscreenControl position="top-left" />
@@ -42,3 +46,21 @@ function MapCustom({ initialViewState, focus, markers, ...restProps }) {
 }
 
 export default memo(MapCustom);
+
+const MarkerWrapper = styled.div`
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+`;
+
+const MarkerLabel = styled.span`
+  color: black;
+  font-size: 13px;
+  color: #1677ff;
+  font-weight: 500;
+  text-shadow: 0 0 5px solid white;
+  text-transform: capitalize;
+  font-smoothing: subpixel-antialiased;
+`;
