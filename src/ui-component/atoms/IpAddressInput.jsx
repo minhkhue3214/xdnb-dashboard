@@ -38,11 +38,11 @@ const IpAddressInput = ({ value, onChange, disabled, inputStyle = {}, style = {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [octets]);
 
-  useEffect(() => {
-    if (disabled) {
-      setOctets(initOctets);
-    }
-  }, [disabled]);
+  // useEffect(() => {
+  //   if (disabled) {
+  //     setOctets(initOctets);
+  //   }
+  // }, [disabled]);
 
   return (
     <InputWrapper style={style}>

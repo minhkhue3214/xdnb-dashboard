@@ -101,7 +101,7 @@
       "configTime": "Time",
       "settingPlace": "Settings",
       "checkWifi": "Check Wifi",
-      "checkMACWifi": "Check MAC Wifi"
+      "checkMAC": "Check MAC"
     },
     "organization": {
       "addOrganization": "Add Organization",
@@ -142,6 +142,7 @@
         "name": "Place Name",
         "timeStart": "Start Time",
         "timeEnd": "End Time",
+        "wifiName": "Wifi Name",
         "ipAddress": "IP Address",
         "macAddress": "MAC Address"
       }
@@ -181,6 +182,10 @@
         "pleaseSelectEndTime": "Please select end time",
         "pleaseEnterLatitude": "Please enter latitude",
         "pleaseEnterLongitude": "Please enter longitude",
+        "pleaseEnterWifiName": "Please enter wifi name",
+        "pleaseEnterIPAddress": "Please enter IP address",
+        "pleaseEnterMacAddress": "Please enter MAC address",
+        "invalidWifiName": "Invalid wifi name",
         "invalidIPAddress": "Invalid IP address",
         "invalidMACAddress": "Invalid MAC address"
       }

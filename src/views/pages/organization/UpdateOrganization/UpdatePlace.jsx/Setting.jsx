@@ -1,8 +1,8 @@
-import React, { memo, useCallback } from 'react';
 import { Card, Space, Switch } from 'antd';
-import { IpAddressInput, MacAddressInput } from '~/ui-component/atoms';
-import styled from 'styled-components';
+import React, { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
+import { Input } from '~/ui-component/atoms';
 
 const Setting = ({ formik }) => {
   const { t } = useTranslation();
@@ -21,20 +21,6 @@ const Setting = ({ formik }) => {
     [formik]
   );
 
-  const handleChangeIpAddress = useCallback(
-    (value) => {
-      formik.setFieldValue('ipAddress', value);
-    },
-    [formik]
-  );
-
-  const handleChangeMacAddress = useCallback(
-    (value) => {
-      formik.setFieldValue('macAddress', value);
-    },
-    [formik]
-  );
-
   return (
     <CustomSpace direction="vertical" style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden', flexDirection: 'row' }}>
       <CustomCard title={t('modal.place.checkWifi')} size="small">
@@ -45,16 +31,48 @@ const Setting = ({ formik }) => {
           unCheckedChildren={t('global.disable')}
           onChange={handleChangeWifi}
         />
-        <IpAddressInput
-          id="ipAddress"
+        <Input
+          label={`${t('input.label.place.ipAddress')}`}
           name="ipAddress"
+          message={formik.touched.ipAddress ? formik.errors.ipAddress : ''}
+          type={formik.touched.ipAddress && formik.errors.ipAddress ? 'error' : ''}
           value={formik.values.ipAddress}
-          onChange={handleChangeIpAddress}
-          style={{ margin: '8px 0' }}
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+          labelStyle={{
+            padding: '2px'
+          }}
+          style={{
+            width: '100%',
+            height: '70px'
+          }}
+          inputStyle={{
+            width: '100%'
+          }}
+          disabled={!formik.values.wifi}
+        />
+        <Input
+          label={`${t('input.label.place.wifiName')}`}
+          name="wifiName"
+          message={formik.touched.wifiName ? formik.errors.wifiName : ''}
+          type={formik.touched.wifiName && formik.errors.wifiName ? 'error' : ''}
+          value={formik.values.wifiName}
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+          labelStyle={{
+            padding: '2px'
+          }}
+          style={{
+            width: '100%',
+            height: '70px'
+          }}
+          inputStyle={{
+            width: '100%'
+          }}
           disabled={!formik.values.wifi}
         />
       </CustomCard>
-      <CustomCard title={t('modal.place.checkMACWifi')} size="small">
+      <CustomCard title={t('modal.place.checkMAC')} size="small">
         <Switch
           name="mac"
           checked={formik.values.mac}
@@ -62,12 +80,24 @@ const Setting = ({ formik }) => {
           unCheckedChildren={t('global.disable')}
           onChange={handleChangeMac}
         />
-        <MacAddressInput
-          id="macAddress"
+        <Input
+          label={`${t('input.label.place.macAddress')}`}
           name="macAddress"
+          message={formik.touched.macAddress ? formik.errors.macAddress : ''}
+          type={formik.touched.macAddress && formik.errors.macAddress ? 'error' : ''}
           value={formik.values.macAddress}
-          onChange={handleChangeMacAddress}
-          style={{ marginTop: '8px' }}
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+          labelStyle={{
+            padding: '2px'
+          }}
+          style={{
+            width: '100%',
+            height: '70px'
+          }}
+          inputStyle={{
+            width: '100%'
+          }}
           disabled={!formik.values.mac}
         />
       </CustomCard>
@@ -78,11 +108,13 @@ const Setting = ({ formik }) => {
 export default memo(Setting);
 
 const CustomCard = styled(Card)`
+  width: 100%;
   height: 100%;
 `;
 
 const CustomSpace = styled(Space)`
   & > * {
+    width: 100%;
     height: 100%;
   }
 `;

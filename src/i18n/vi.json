@@ -101,7 +101,7 @@
       "configTime": "Cấu hình thời gian tuần tra",
       "settingPlace": "Cài đặt điểm tuần tra",
       "checkWifi": "Kiểm tra Wifi",
-      "checkMACWifi": "Kiểm tra MAC Wifi"
+      "checkMAC": "Kiểm tra MAC"
     },
     "organization": {
       "addOrganization": "Add Organization",
@@ -142,6 +142,7 @@
         "name": "Tên điểm tuần tra",
         "timeStart": "Thời gian bắt đầu",
         "timeEnd": "Thời gian kết thúc",
+        "wifiName": "Tên Wifi",
         "ipAddress": "Địa chỉ IP",
         "macAddress": "Địa chỉ MAC"
       }
@@ -181,6 +182,10 @@
         "pleaseSelectEndTime": "Vui lòng chọn thời gian kết thúc ca trực",
         "pleaseEnterLatitude": "Vui lòng nhập vĩ độ",
         "pleaseEnterLongitude": "Vui lòng nhập kinh độ",
+        "pleaseEnterWifiName": "Vui lòng nhập tên wifi",
+        "pleaseEnterIPAddress": "Vui lòng nhập địa chỉ IP",
+        "pleaseEnterMacAddress": "Vui lòng nhập MAC Address",
+        "invalidWifiName": "Tên Wifi không hợp lệ",
         "invalidIPAddress": "Địa chỉ IP không hợp lệ",
         "invalidMACAddress": "Địa chỉ MAC không hợp lệ"
       }
