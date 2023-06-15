@@ -32,11 +32,11 @@ const Setting = ({ formik }) => {
           onChange={handleChangeWifi}
         />
         <Input
-          label={`${t('input.label.place.ipAddress')}`}
-          name="ipAddress"
-          message={formik.touched.ipAddress ? formik.errors.ipAddress : ''}
-          type={formik.touched.ipAddress && formik.errors.ipAddress ? 'error' : ''}
-          value={formik.values.ipAddress}
+          label={`${t('input.label.place.wifiName')}`}
+          name="wifiName"
+          message={formik.touched.wifiName ? formik.errors.wifiName : ''}
+          type={formik.touched.wifiName && formik.errors.wifiName ? 'error' : ''}
+          value={formik.values.wifiName}
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
           labelStyle={{
@@ -49,14 +49,15 @@ const Setting = ({ formik }) => {
           inputStyle={{
             width: '100%'
           }}
+          placeholder="XXX.XXX.XXX.XXX"
           disabled={!formik.values.wifi}
         />
         <Input
-          label={`${t('input.label.place.wifiName')}`}
-          name="wifiName"
-          message={formik.touched.wifiName ? formik.errors.wifiName : ''}
-          type={formik.touched.wifiName && formik.errors.wifiName ? 'error' : ''}
-          value={formik.values.wifiName}
+          label={`${t('input.label.place.ipAddress')}`}
+          name="ipAddress"
+          message={formik.touched.ipAddress ? formik.errors.ipAddress : ''}
+          type={formik.touched.ipAddress && formik.errors.ipAddress ? 'error' : ''}
+          value={formik.values.ipAddress}
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
           labelStyle={{
@@ -98,6 +99,7 @@ const Setting = ({ formik }) => {
           inputStyle={{
             width: '100%'
           }}
+          placeholder="XX-XX-XX-XX-XX-XX"
           disabled={!formik.values.mac}
         />
       </CustomCard>
