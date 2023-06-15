@@ -28,6 +28,7 @@ const AddPlace = ({ orgId, open, setOpen }) => {
       timeStart: '',
       timeEnd: '',
       wifi: false,
+      wifiName: '',
       ipAddress: '',
       mac: false,
       macAddress: ''
@@ -41,9 +42,35 @@ const AddPlace = ({ orgId, open, setOpen }) => {
       timeStart: yup.date().required(t('input.error.place.pleaseSelectStartTime')),
       timeEnd: yup.date().required(t('input.error.place.pleaseSelectEndTime')),
       wifi: yup.boolean(),
+      wifiName: yup.string().when('wifi', {
+        is: true,
+        then: yup.string().required(t('input.error.place.pleaseEnterWifiName'))
+      }),
       mac: yup.boolean(),
-      ipAddress: yup.string(),
-      macAddress: yup.string()
+      ipAddress: yup
+        .string()
+        .test('ipAddress', t('input.error.place.invalidIPAddress'), (value) => {
+          if (value && !checkValidIp(value)) {
+            return false;
+          }
+          return true;
+        })
+        .when('wifi', {
+          is: true,
+          then: yup.string().required(t('input.error.place.pleaseEnterIPAddress'))
+        }),
+      macAddress: yup
+        .string()
+        .test('ipAddremacAddressss', t('input.error.place.invalidMACAddress'), (value) => {
+          if (value && !checkValidMac(value)) {
+            return false;
+          }
+          return true;
+        })
+        .when('mac', {
+          is: true,
+          then: yup.string().required(t('input.error.place.pleaseEnterMacAddress'))
+        })
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
@@ -58,14 +85,6 @@ const AddPlace = ({ orgId, open, setOpen }) => {
               throw new Error(t('input.error.place.pleaseEnterLongitude'));
             }
 
-            if (values.wifi && !checkValidIp(values.ipAddress)) {
-              throw new Error(t('input.error.place.invalidIPAddress'));
-            }
-
-            if (values.mac && !checkValidMac(values.macAddress)) {
-              throw new Error(t('input.error.place.invalidMACAddress'));
-            }
-
             dispatchAddPlace({
               lat: values.lat,
               long: values.long,
@@ -76,6 +95,7 @@ const AddPlace = ({ orgId, open, setOpen }) => {
               time_start: dayjs(values.timeStart).unix(),
               time_end: dayjs(values.timeEnd).unix(),
               wifi: values.wifi,
+              wifi_name: values.wifiName,
               ip_address: values.ipAddress !== '...' ? values.ipAddress : '',
               mac: values.mac,
               mac_address: values.macAddress !== '-----' ? values.macAddress : '',

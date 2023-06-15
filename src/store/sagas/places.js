@@ -84,6 +84,7 @@ function* requestGetPlaceSaga(action) {
         time: data.time,
         id: data.id,
         wifi: data.wifi,
+        wifiName: data.wifi_name,
         mac: data.mac,
         timeStart: data.time_start,
         timeEnd: data.time_end,
