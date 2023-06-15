@@ -8,6 +8,7 @@ const defaultPosition = {
 };
 
 const MapOrganization = ({ focusMarker, places }) => {
+  console.log('places', places);
   return <Map markers={places} focus={focusMarker} initialViewState={places[0] || defaultPosition} />;
 };
 
