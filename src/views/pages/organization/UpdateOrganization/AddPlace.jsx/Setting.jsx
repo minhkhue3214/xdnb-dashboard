@@ -70,6 +70,7 @@ const Setting = ({ formik }) => {
           inputStyle={{
             width: '100%'
           }}
+          placeholder="XX-XX-XX-XX-XX-XX"
           disabled={!formik.values.wifi}
         />
       </CustomCard>
@@ -99,7 +100,6 @@ const Setting = ({ formik }) => {
           inputStyle={{
             width: '100%'
           }}
-          placeholder="XX-XX-XX-XX-XX-XX"
           disabled={!formik.values.mac}
         />
       </CustomCard>
