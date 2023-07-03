@@ -19,7 +19,14 @@ axiosClient.interceptors.request.use((config) => {
 
 axiosClient.interceptors.response.use(
   (response) => {
-    return response.data;
+    console.log("response", response);
+    if (response.status == 200 && response.data.success == true) {
+      return response.data.data;
+    } else {
+      throw new Error({
+        message: response?.data.message,
+      });
+    }
   },
   (error) => {
     throw error?.response?.data;
