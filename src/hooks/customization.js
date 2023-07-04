@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { changeMenuOpen, setMenu, setFontFamily, setBorderRadius } from '~/store/slices/customization';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeMenuOpen, setBorderRadius, setFontFamily, setMenu } from '~/store/slices/customization';
 
 const useCustomizationStore = () => {
   const dispatch = useDispatch();

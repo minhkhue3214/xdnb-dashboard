@@ -1,19 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Modal } from '~/ui-component/molecules';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { Input, Selector } from '~/ui-component/atoms';
-import styled from 'styled-components';
-import { useCallback, memo } from 'react';
-import { roles } from '~/store/constant';
-import { useOrganizationsStore } from '~/hooks/organizations';
-import { useUsersStore } from '~/hooks/users';
-import { useAuthenticationStore } from '~/hooks/authentication';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
+import * as yup from 'yup';
+import { useAuthenticationStore } from '~/hooks/authentication';
+import { useUsersStore } from '~/hooks/users';
+import { roles } from '~/store/constant';
+import { Input, Selector } from '~/ui-component/atoms';
+import { Modal } from '~/ui-component/molecules';
 
 const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) => {
   const { t } = useTranslation();
-  const { organizationsState, dispatchGetAllOrganizations } = useOrganizationsStore();
   const { authenticationState } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
   const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
@@ -28,17 +25,12 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       email: '',
       name: '',
       username: '',
-      role: 'user',
-      orgIds: []
+      role: 'user'
     },
     validationSchema: yup.object({
       email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
       name: yup.string().max(100, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
-      role: yup.string().required(t('input.error.user.pleaseSelectUserRole')),
-      orgIds: yup
-        .array()
-        .required(t('input.error.user.pleaseSelectOrganization'))
-        .test('not-empty', t('input.error.user.pleaseSelectAtLeastOneOrganization'), (value) => value && value.length > 0)
+      role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
@@ -47,8 +39,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             id,
             name: values.name,
             email: values.email,
-            role: values.role,
-            org_ids: values.orgIds
+            role: values.role
           });
 
           handleCancel();
@@ -70,27 +61,6 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
     [formik]
   );
 
-  const handleChangeOrgIds = useCallback(
-    (value) => {
-      if (!Array.isArray(value)) value = [value];
-      formik.setFieldValue('orgIds', value);
-    },
-    [formik]
-  );
-
-  const organizations = useMemo(() => {
-    return (
-      organizationsState.organizations.map((one) => ({
-        label: one.fullname,
-        value: one.id
-      })) || []
-    );
-  }, [organizationsState.organizations]);
-
-  useEffect(() => {
-    dispatchGetAllOrganizations();
-  }, [dispatchGetAllOrganizations]);
-
   useEffect(() => {
     if (id) {
       dispatchGetUserById({ id });
@@ -105,7 +75,6 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       formik.setFieldValue('name', data.name || '');
       formik.setFieldValue('username', data.username || '');
       formik.setFieldValue('role', data.role || '');
-      formik.setFieldValue('orgIds', data.orgIds || []);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersState.detail]);
@@ -213,27 +182,6 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             onChange={handleChangeRole}
             message={formik.touched.role ? formik.errors.role : ''}
             type={formik.touched.role && formik.errors.role ? 'error' : ''}
-          />
-          <Selector
-            label={`* ${t('input.label.user.organization')}`}
-            name="orgIds"
-            mode={formik.values.role === 'manager' ? 'multiple' : ''}
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            selectStyle={{
-              width: '100%'
-            }}
-            options={organizations}
-            value={formik.values.orgIds}
-            onChange={handleChangeOrgIds}
-            message={formik.touched.orgIds ? formik.errors.orgIds : ''}
-            type={formik.touched.orgIds && formik.errors.orgIds ? 'error' : ''}
           />
           <EditLinkPassword onClick={handleOpenChangePassword}>{t('modal.user.updatePasswordBtn')}</EditLinkPassword>
         </EditUserWrapper>

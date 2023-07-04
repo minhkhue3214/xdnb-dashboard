@@ -7,22 +7,29 @@ import { loginFail, loginRequest, loginSuccess } from '~/store/slices/rootAction
 function* loginRequestSaga(action) {
   try {
     const data = yield call(loginRequestApi, action.payload);
-    console.log("loginRequestSaga", data)
+    console.log('loginRequestSaga', data);
 
-    const userRole = data.user.role;
+    yield put(
+      loginSuccess({
+        accessToken: data?.accessToken,
+        refreshToken: data?.refreshToken,
+        loginInfo: data?.user
+      })
+    );
 
-    if (userRole == "admin" || userRole == "manager") {
-      yield put(
-        loginSuccess({
-          accessToken: data?.accessToken,
-          refreshToken: data?.refreshToken,
-          loginInfo: data?.user
-        })
-      );
-    } else {
-      throw new Error('Bạn không có quyền truy cập vào trang quản trị');
-    }
+    // const userRole = data.user.role;
 
+    // if (userRole == 'admin' || userRole == 'manager') {
+    //   yield put(
+    //     loginSuccess({
+    //       accessToken: data?.accessToken,
+    //       refreshToken: data?.refreshToken,
+    //       loginInfo: data?.user
+    //     })
+    //   );
+    // } else {
+    //   throw new Error('Bạn không có quyền truy cập vào trang quản trị');
+    // }
   } catch (error) {
     yield put(loginFail(error?.message || 'Login Failed!'));
   }

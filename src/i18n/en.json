@@ -6,15 +6,7 @@
   "menu": {
     "dashboard": "Dashboard",
     "users": "Users Management",
-    "organization": "Organization Management",
-    "shifts": "Shift Management",
-    "requestForm": "Request Form Management",
     "submenu": {
-      "requestForm": {
-        "leaveRequest": "Leave Request",
-        "lateAttendanceRequest": "Late Attendance Request",
-        "forgotCheckoutReport": "Forgot Checkout Report"
-      }
     }
   },
   "profile": {
@@ -27,23 +19,10 @@
       "editUser": "Edit User",
       "deleteUser": "Delete User",
       "exportUserData": "Export User Data"
-    },
-    "organization": {
-      "addOrganization": "Add Organization",
-      "editOrganization": "Edit Organization",
-      "deleteOrganization": "Delete Organization",
-      "exportOrganizationData": "Export Organization Data"
-    },
-    "shift": {
-      "addShift": "Add Shift",
-      "editShift": "Edit Shift",
-      "deleteShift": "Delete Shift"
-    },
-    "requestForm": {}
+    }
   },
   "table": {
     "user": {
-      "orgIds": "Organization IDs",
       "role": "Role",
       "name": "Fullname",
       "email": "Email",
@@ -51,32 +30,6 @@
       "id": "User ID",
       "actions": "Actions",
       "password": "Password"
-    },
-    "place": {
-      "minimumTime": "Minimum Patrol Time",
-      "status": "Patrol Status",
-      "wifi": "Wifi",
-      "mac": "MAC",
-      "lat": "Latitude",
-      "long": "Longitude",
-      "orgId": "Organization ID",
-      "r": "Radius",
-      "address": "Address",
-      "name": "Place Name",
-      "timeStart": "Start Time",
-      "timeEnd": "End Time",
-      "ipAddress": "IP Address",
-      "macAddress": "MAC Address",
-      "id": "Place ID",
-      "actions": "Actions"
-    },
-    "organization": {
-      "fullname": "Organization Name",
-      "name": "Abbreviated Name",
-      "code": "Organization Code",
-      "leader": "Leader",
-      "id": "Organization ID",
-      "actions": "Actions"
     }
   },
   "modal": {
@@ -89,26 +42,6 @@
       "submitEditUser": "Submit",
       "submitUpdatePassword": "Submit",
       "updatePasswordBtn": "Update Password"
-    },
-    "place": {
-      "addPlace": "Add Place",
-      "editPlace": "Edit Place",
-      "cancel": "Cancel",
-      "submitAddPlace": "Submit",
-      "submitEditPlace": "Submit",
-      "placeInformation": "Information",
-      "selectPlacePosition": "Position",
-      "configTime": "Time",
-      "settingPlace": "Settings",
-      "checkWifi": "Check Wifi",
-      "checkMAC": "Check MAC"
-    },
-    "organization": {
-      "addOrganization": "Add Organization",
-      "editOrganization": "Edit Organization",
-      "cancel": "Cancel",
-      "submitAddOrganization": "Submit",
-      "submitEditOrganization": "Submit"
     }
   },
   "input": {
@@ -119,32 +52,8 @@
         "password": "Password",
         "email": "Email",
         "role": "Role",
-        "organization": "Organization",
         "newPassword": "New password",
         "reTypeNewPassword": "Re-type new password"
-      },
-      "organization": {
-        "fullname": "Organization Name",
-        "name": "Abbreviated Name",
-        "code": "Organization Code",
-        "leader": "Leader"
-      },
-      "place": {
-        "minimumTime": "Minimum Patrol Time",
-        "status": "Patrol Status",
-        "wifi": "Wifi",
-        "mac": "MAC",
-        "lat": "Latitude",
-        "long": "Longitude",
-        "orgId": "Organization ID",
-        "r": "Radius",
-        "address": "Address",
-        "name": "Place Name",
-        "timeStart": "Start Time",
-        "timeEnd": "End Time",
-        "wifiName": "Wifi Name",
-        "ipAddress": "IP Address",
-        "macAddress": "MAC Address"
       }
     },
     "error": {
@@ -160,34 +69,6 @@
         "usernameNoSpecialChars": "Username must not contain special characters",
         "usernameNoSpaces": "Username must not contain spaces",
         "pleaseSelectUserRole": "Please select a user role",
-        "pleaseSelectOrganization": "Please select an organization",
-        "pleaseSelectAtLeastOneOrganization": "Please select at least one organization"
-      },
-      "organization": {
-        "organizationNameTooLong": "Organization name is too long",
-        "pleaseEnterOrganizationName": "Please enter organization name",
-        "abbreviatedNameTooLong": "Abbreviated organization name is too long",
-        "pleaseEnterAbbreviatedName": "Please enter abbreviated organization name",
-        "specialCharactersNotAllowed": "Organization code should not contain special characters",
-        "pleaseEnterOrganizationCode": "Please enter organization code",
-        "spacesNotAllowed": "Organization code should not contain spaces"
-      },
-      "place": {
-        "placeNameTooLong": "Place name is too long",
-        "pleaseEnterPlaceName": "Please enter place name",
-        "addressTooLong": "Address is too long",
-        "pleaseEnterAddress": "Please enter address",
-        "pleaseEnterRadius": "Please enter radius",
-        "pleaseSelectStartTime": "Please select start time",
-        "pleaseSelectEndTime": "Please select end time",
-        "pleaseEnterLatitude": "Please enter latitude",
-        "pleaseEnterLongitude": "Please enter longitude",
-        "pleaseEnterWifiName": "Please enter wifi name",
-        "pleaseEnterIPAddress": "Please enter IP address",
-        "pleaseEnterMacAddress": "Please enter MAC address",
-        "invalidWifiName": "Invalid wifi name",
-        "invalidIPAddress": "Invalid IP address",
-        "invalidMACAddress": "Invalid MAC address"
       }
     }
   }
