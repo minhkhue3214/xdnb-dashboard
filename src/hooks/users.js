@@ -1,6 +1,13 @@
 import { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllUserRequest, deleteUserRequest, addUserRequest, getUserRequest, updateUserRequest, updatePasswordRequest } from '~/store/slices/users';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addUserRequest,
+  deleteUserRequest,
+  getAllUserRequest,
+  getUserRequest,
+  updatePasswordRequest,
+  updateUserRequest
+} from '~/store/slices/users';
 
 const useUsersStore = () => {
   const dispatch = useDispatch();

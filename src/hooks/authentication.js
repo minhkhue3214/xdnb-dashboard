@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { loginRequest, logoutSuccess, changeRememberMe, initApp } from '~/store/slices/authentication';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeRememberMe, initApp, loginRequest, logoutSuccess } from '~/store/slices/authentication';
 
 const useAuthenticationStore = () => {
   const dispatch = useDispatch();
