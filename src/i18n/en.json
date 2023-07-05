@@ -68,7 +68,7 @@
         "pleaseEnterUsername": "Please enter a username",
         "usernameNoSpecialChars": "Username must not contain special characters",
         "usernameNoSpaces": "Username must not contain spaces",
-        "pleaseSelectUserRole": "Please select a user role",
+        "pleaseSelectUserRole": "Please select a user role"
       }
     }
   }
