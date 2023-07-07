@@ -33,6 +33,7 @@
       "name": "Fullname",
       "email": "Email",
       "username": "Username",
+      "fullname": "Fullname",
       "id": "User ID",
       "actions": "Actions",
       "password": "Password"
