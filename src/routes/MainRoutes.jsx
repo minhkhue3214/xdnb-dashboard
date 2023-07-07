@@ -9,6 +9,7 @@ import Loadable from '~/ui-component/Loadable';
 const DashboardDefault = Loadable(lazy(() => import('~/views/dashboard/Default')));
 
 const UserPage = Loadable(lazy(() => import('~/views/pages/users')));
+const PagePost = Loadable(lazy(() => import('~/views/pages/posts')));
 
 function ProtectedRoute() {
   const { authenticationState } = useAuthenticationStore();
@@ -42,6 +43,10 @@ const MainRoutes = {
     {
       path: 'users',
       element: <UserPage />
+    },
+    {
+      path: 'posts',
+      element: <PagePost />
     }
   ]
 };
