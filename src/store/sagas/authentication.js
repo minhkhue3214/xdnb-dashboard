@@ -7,7 +7,6 @@ import { loginFail, loginRequest, loginSuccess } from '~/store/slices/rootAction
 function* loginRequestSaga(action) {
   try {
     const data = yield call(loginRequestApi, action.payload);
-    console.log('loginRequestSaga', data);
 
     yield put(
       loginSuccess({

@@ -25,8 +25,11 @@ const AddUserModal = ({ open, setOpen }) => {
     initialValues: {
       email: '',
       password: '',
-      name: '',
+      fullname: '',
       username: '',
+      avatar: 'image-data-13',
+      phone: null,
+      address: '',
       role: 'user'
     },
     validationSchema: yup.object({
@@ -36,22 +39,27 @@ const AddUserModal = ({ open, setOpen }) => {
         .min(8, t('input.error.user.passwordMinLength'))
         .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
         .required(t('input.error.user.pleaseEnterPassword')),
-      name: yup.string().max(100, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
+      fullname: yup.string().max(100, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
       username: yup
         .string()
         .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
         .required(t('input.error.user.pleaseEnterUsername'))
         .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
+      avatar: yup.string().max(100, t('input.error.user.nameTooLong')),
+      address: yup.string().max(50, t('input.error.user.nameTooLong')),
       role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
           dispatchAddUser({
-            name: values.name,
-            email: values.email,
-            role: values.role,
+            fullname: values.fullname,
             username: values.username,
+            avatar: values.avatar,
+            phone: values.phone,
+            email: values.email,
+            address: values.address,
+            role: values.role,
             password: values.password
           });
 
@@ -108,6 +116,26 @@ const AddUserModal = ({ open, setOpen }) => {
             }}
           />
           <Input
+            label={`* ${t('input.label.user.fullname')}`}
+            name="fullname"
+            message={formik.touched.fullname ? formik.errors.fullname : ''}
+            type={formik.touched.fullname && formik.errors.fullname ? 'error' : ''}
+            value={formik.values.fullname}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            labelStyle={{
+              padding: '2px'
+            }}
+            style={{
+              width: '100%',
+              marginTop: '8px',
+              height: '70px'
+            }}
+            inputStyle={{
+              width: '100%'
+            }}
+          />
+          <Input
             label={`* ${t('input.label.user.email')}`}
             name="email"
             message={formik.touched.email ? formik.errors.email : ''}
@@ -129,13 +157,14 @@ const AddUserModal = ({ open, setOpen }) => {
             }}
           />
           <Input
-            label={`* ${t('input.label.user.password')}`}
-            name="password"
-            message={formik.touched.password ? formik.errors.password : ''}
-            type={formik.touched.password && formik.errors.password ? 'error' : ''}
-            value={formik.values.password}
+            label={`* ${t('input.label.user.address')}`}
+            name="address"
+            message={formik.touched.address ? formik.errors.address : ''}
+            type={formik.touched.address && formik.errors.address ? 'error' : ''}
+            value={formik.values.address}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
+            size="middle"
             labelStyle={{
               padding: '2px'
             }}
@@ -149,11 +178,11 @@ const AddUserModal = ({ open, setOpen }) => {
             }}
           />
           <Input
-            label={`* ${t('input.label.user.name')}`}
-            name="name"
-            message={formik.touched.name ? formik.errors.name : ''}
-            type={formik.touched.name && formik.errors.name ? 'error' : ''}
-            value={formik.values.name}
+            label={`* ${t('input.label.user.password')}`}
+            name="password"
+            message={formik.touched.password ? formik.errors.password : ''}
+            type={formik.touched.password && formik.errors.password ? 'error' : ''}
+            value={formik.values.password}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             labelStyle={{

@@ -32,18 +32,18 @@ import {
 
 function* requestAllUsersSaga(action) {
   try {
-    const data = yield call(getAllUsersApi, action.payload);
+    const result = yield call(getAllUsersApi, action.payload);
+    const { meta, data } = result
 
     yield put(
       getAllUserSuccess({
-        page: data?.page,
-        results: data?.results,
-        totalPages: data?.totalPages
+        results: data,
+        totalPages: meta?.total,
+        page: meta?.current_page
       })
     );
   } catch (error) {
-    console.log('error', error);
-    yield put(getAllUserFail(error?.message || 'Get all users failed!'));
+    yield put(getAllUserFail(error));
   }
 }
 
@@ -58,30 +58,32 @@ function* requestDeleteUserSaga(action) {
     yield put(deleteUserSuccess(action.payload));
     yield put(reGetAllUserRequest({ params }));
   } catch (error) {
-    console.log('error', error);
-    yield put(deleteFail(error?.message || 'Delete user failed!'));
+    yield put(deleteFail(error));
   }
 }
 
 function* requestAddUserSaga(action) {
   try {
-    const params = action.payload?.params;
-    if (params) {
-      delete action.payload.params;
-    }
+    // const params = action.payload?.params;
+    // console.log("requestAddUserSaga 1", action.payload.params);
+    // if (params) {
+    //   delete action.payload.params;
+    // }
 
-    const data = yield call(requestAddUserApi, action.payload);
-    yield put(addUserSuccess(data));
-    yield put(reGetAllUserRequest({ params }));
+    const result = yield call(requestAddUserApi, action.payload);
+    yield put(addUserSuccess(result));
+    // yield put(reGetAllUserRequest({ params }));
+    yield put(reGetAllUserRequest());
   } catch (error) {
-    console.log('error', error);
-    yield put(addUserFail(error?.message || 'Add user failed!'));
+    yield put(addUserFail(error));
   }
 }
 
 function* requestGetUserSaga(action) {
   try {
-    const data = yield call(requestGetUserApi, action.payload);
+    const result = yield call(requestGetUserApi, action.payload);
+    const { data } = result
+
     yield put(
       getUserSuccess({
         name: data.name,
@@ -93,8 +95,7 @@ function* requestGetUserSaga(action) {
       })
     );
   } catch (error) {
-    console.log('error', error);
-    yield put(getUserFail(error?.message || 'Get user info failed!'));
+    yield put(getUserFail(error));
   }
 }
 
@@ -109,8 +110,7 @@ function* requestUpdateUserSaga(action) {
     yield put(updateUserSuccess(data));
     yield put(reGetAllUserRequest({ params }));
   } catch (error) {
-    console.log('error', error);
-    yield put(updateUserFail(error?.message || 'Update user info failed!'));
+    yield put(updateUserFail(error));
   }
 }
 
@@ -119,8 +119,7 @@ function* requestUpdatePasswordSaga(action) {
     const data = yield call(requestUpdatePasswordApi, action.payload);
     yield put(updatePasswordSuccess(data));
   } catch (error) {
-    console.log('error', error);
-    yield put(updatePasswordFail(error?.message || 'Update password info failed!'));
+    yield put(updatePasswordFail(error));
   }
 }
 

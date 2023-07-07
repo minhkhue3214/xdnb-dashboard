@@ -19,13 +19,15 @@ export const users = createSlice({
     },
     getAllUserSuccess: (state, action) => {
       const { page, totalPages, results } = action.payload;
+      console.log({ page, totalPages, results });
 
-      state.users = results;
       state.pagination.currentPage = page;
       state.pagination.totalPages = totalPages;
+      state.users = results;
     },
     getAllUserFail: (_, action) => {
-      dispatchToast('error', action.payload);
+      const { message } = action.payload;
+      dispatchToast('error', message);
     },
     deleteUserRequest: () => {
       // request user
@@ -34,7 +36,8 @@ export const users = createSlice({
       dispatchToast('success', 'Deleted user!');
     },
     deleteFail: (_, action) => {
-      dispatchToast('error', action.payload);
+      const { message } = action.payload;
+      dispatchToast('error', message);
     },
     addUserRequest: () => {
       // request add user
@@ -43,17 +46,20 @@ export const users = createSlice({
       dispatchToast('success', 'Added User!');
     },
     addUserFail: (_, action) => {
-      dispatchToast('error', action.payload);
+      const { message } = action.payload;
+      dispatchToast('error', message);
     },
     getUserRequest: () => {
       // request update user
     },
     getUserSuccess: (state, action) => {
+      console.log("getUserSuccess", action.payload);
       state.detail = action.payload;
     },
     getUserFail: (_, action) => {
       state.detail = initialState.detail;
-      dispatchToast('error', action.payload);
+      const { message } = action.payload;
+      dispatchToast('error', message);
     },
     updateUserRequest: () => {
       // request update user
@@ -62,7 +68,8 @@ export const users = createSlice({
       dispatchToast('success', 'Updated User!');
     },
     updateUserFail: (_, action) => {
-      dispatchToast('error', action.payload);
+      const { message } = action.payload;
+      dispatchToast('error', message);
     },
     updatePasswordRequest: () => {
       // request update user
@@ -71,7 +78,8 @@ export const users = createSlice({
       dispatchToast('success', 'Updated password!');
     },
     updatePasswordFail: (_, action) => {
-      dispatchToast('error', action.payload);
+      const { message } = action.payload;
+      dispatchToast('error', message);
     },
     reGetAllUserRequest: () => {
       // request all user

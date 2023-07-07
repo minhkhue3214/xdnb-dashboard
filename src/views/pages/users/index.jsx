@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import AddUserModal from './AddUserModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import UpdateUserModal from './UpdateUserModal';
-import { Popconfirm, Button } from 'antd';
+import { Popconfirm, Button, Image } from 'antd';
 import { useUsersStore } from '~/hooks/users';
 import { useTranslation } from 'react-i18next';
 
@@ -20,6 +20,8 @@ const UsersPage = () => {
   const { usersState, dispatchGetAllUsers, dispatchDeleteUser } = useUsersStore();
   const [page, setPage] = useState(1);
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
+
+  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   const [openEditUserModal, setOpenEditUserModal] = useState({
     status: false,
@@ -109,10 +111,27 @@ const UsersPage = () => {
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { field: 'username', headerName: t('table.user.username'), flex: 2, align: 'center', headerAlign: 'center' },
-    { field: 'name', headerName: t('table.user.name'), flex: 3, align: 'center', headerAlign: 'center' },
-    { field: 'email', headerName: t('table.user.email'), flex: 3, align: 'center', headerAlign: 'center' },
-    { field: 'role', headerName: t('table.user.role'), flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'username', headerName: t('table.user.username'), flex: 1.3, align: 'center', headerAlign: 'center' },
+    { field: 'fullname', headerName: t('table.user.fullname'), flex: 1, align: 'center', headerAlign: 'center' },
+    // { field: 'avatar', headerName: t('table.user.fullname'), flex: 1, align: 'center', headerAlign: 'center' },
+    {
+      field: 'avatar',
+      headerName: t('table.user.avatar'),
+      renderCell: (params) => (
+        <>
+          <Image width={50} src={params.row.avatar || avatarDefault} />
+        </>
+      ),
+      flex: 1,
+      align: 'center',
+      headerAlign: 'center'
+    },
+    { field: 'email', headerName: t('table.user.email'), flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'phone', headerName: t('table.user.phone'), flex: 1.5, align: 'center', headerAlign: 'center' },
+    { field: 'address', headerName: t('table.user.address'), flex: 1.5, align: 'center', headerAlign: 'center' },
+    { field: 'role', headerName: t('table.user.role'), flex: 1.5, align: 'center', headerAlign: 'center' },
+    { field: 'create_at', headerName: t('table.user.create_at'), flex: 1.5, align: 'center', headerAlign: 'center' },
+    { field: 'update_at', headerName: t('table.user.update_at'), flex: 1.5, align: 'center', headerAlign: 'center' },
     {
       field: 'actions',
       headerName: t('table.user.actions'),
@@ -128,7 +147,7 @@ const UsersPage = () => {
           </Popconfirm>
         </>
       ),
-      flex: 2,
+      flex: 1.5,
       align: 'center',
       headerAlign: 'center'
     }

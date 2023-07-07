@@ -1,20 +1,20 @@
 import axiosClient from './axiosClient';
 const getAllUsersApi = (params) => {
-  return axiosClient.get('/users', params);
+  return axiosClient.get('/user/getUsers', params);
 };
 
 const requestDeleteUserApi = (params) => {
-  const id = params?.id || '';
-  return axiosClient.delete(`/users/${id}`);
+  // const id = params?.id || '';
+  return axiosClient.delete(`/users/deleteUser`, params);
 };
 
 const requestAddUserApi = (params) => {
-  return axiosClient.post('/users', params);
+  return axiosClient.post('/users/addUser', params);
 };
 
 const requestGetUserApi = (params) => {
-  const id = params?.id || '';
-  return axiosClient.get(`/users/${id}`);
+  // const id = params?.id || '';
+  return axiosClient.get(`/user/getUser`, params);
 };
 
 const requestUpdateUserApi = (params) => {

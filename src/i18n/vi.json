@@ -6,8 +6,7 @@
   "menu": {
     "dashboard": "Bảng thống kê",
     "users": "Quản lý người dùng",
-    "submenu": {
-    }
+    "submenu": {}
   },
   "profile": {
     "socialProfile": "Thông tin cá nhân",
@@ -23,13 +22,19 @@
   },
   "table": {
     "user": {
+      "fullname": "Tên đầy đủ",
       "role": "Quyền người dùng",
       "name": "Tên người dùng",
       "email": "Email",
       "username": "Tên đăng nhập",
       "id": "ID người dùng",
       "actions": "Thao tác",
-      "password": "Mật khẩu"
+      "password": "Mật khẩu",
+      "phone": "Số điện thoại",
+      "address": "Địa chỉ",
+      "create_at": "Ngày tạo",
+      "update_at": "Ngày chỉnh sửa",
+      "avatar": "Ảnh đại diện"
     }
   },
   "modal": {
@@ -48,9 +53,11 @@
     "label": {
       "user": {
         "username": "Tên đăng nhập",
+        "fullname": "Tên đầy đủ",
         "name": "Tên người dùng",
         "password": "Mật khẩu",
         "email": "Email",
+        "address": "Địa chỉ",
         "role": "Quyền người dùng",
         "newPassword": "Mật khẩu mới",
         "reTypeNewPassword": "Nhập lại mật khẩu mới"

@@ -19,14 +19,8 @@ axiosClient.interceptors.request.use((config) => {
 
 axiosClient.interceptors.response.use(
   (response) => {
-    console.log("response", response);
-    if (response.status == 200 && response.data.success == true) {
-      return response.data.data;
-    } else {
-      throw new Error({
-        message: response?.data.message,
-      });
-    }
+    if (!response.data.success) throw response.data;
+    else return response?.data;
   },
   (error) => {
     throw error?.response?.data;
