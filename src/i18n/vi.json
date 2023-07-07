@@ -6,8 +6,8 @@
   "menu": {
     "dashboard": "Bảng thống kê",
     "users": "Quản lý người dùng",
-    "submenu": {
-    }
+    "posts": "Quản lý bài viết",
+    "submenu": {}
   },
   "profile": {
     "socialProfile": "Thông tin cá nhân",
@@ -19,6 +19,13 @@
       "editUser": "Cập nhật thông tin người dùng",
       "deleteUser": "Xóa người dùng",
       "exportUserData": "Xuất dữ liệu"
+    },
+    "posts": {
+      "addPost": "Thêm bài viết",
+      "editPost": "Cập nhật thông tin bài viết",
+      "previewPost": "Xem thử",
+      "deletePost": "Xóa bài viết",
+      "exportPostData": "Xuất dữ liệu"
     }
   },
   "table": {
@@ -30,6 +37,14 @@
       "id": "ID người dùng",
       "actions": "Thao tác",
       "password": "Mật khẩu"
+    },
+    "post": {
+      "title": "Tiêu đề",
+      "description": "Mô tả",
+      "author": "Tác giả",
+      "priority": "Ưu tiên",
+      "publication_date": "Ngày xuất bản",
+      "actions": "Thao tác"
     }
   },
   "modal": {
@@ -42,6 +57,13 @@
       "submitEditUser": "Xác nhận",
       "submitUpdatePassword": "Xác nhận",
       "updatePasswordBtn": "Thay đổi mật khẩu"
+    },
+    "post": {
+      "addPost": "Thêm bài viết",
+      "editPost": "Thay đổi thông tin bài viết",
+      "cancel": "Hủy bỏ",
+      "submitAddPost": "Xác nhận",
+      "submitEditPost": "Xác nhận"
     }
   },
   "input": {

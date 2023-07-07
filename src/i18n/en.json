@@ -6,8 +6,8 @@
   "menu": {
     "dashboard": "Dashboard",
     "users": "Users Management",
-    "submenu": {
-    }
+    "users": "Posts Management",
+    "submenu": {}
   },
   "profile": {
     "socialProfile": "Social Profile",
@@ -19,6 +19,12 @@
       "editUser": "Edit User",
       "deleteUser": "Delete User",
       "exportUserData": "Export User Data"
+    },
+    "posts": {
+      "addPost": "Add Post",
+      "editPost": "Edit Post",
+      "deletePost": "Delete Post",
+      "exportPostData": "Export Post Data"
     }
   },
   "table": {
@@ -30,6 +36,14 @@
       "id": "User ID",
       "actions": "Actions",
       "password": "Password"
+    },
+    "post": {
+      "title": "Title",
+      "description": "Description",
+      "author": "Author",
+      "priority": "Priority",
+      "publication_date": "Publication date",
+      "actions": "Actions"
     }
   },
   "modal": {
@@ -42,6 +56,14 @@
       "submitEditUser": "Submit",
       "submitUpdatePassword": "Submit",
       "updatePasswordBtn": "Update Password"
+    },
+    "post": {
+      "addPost": "Add Post",
+      "editPost": "Edit Post",
+      "previewPost": "Preview",
+      "cancel": "Cancel",
+      "submitAddPost": "Submit",
+      "submitEditPost": "Submit"
     }
   },
   "input": {

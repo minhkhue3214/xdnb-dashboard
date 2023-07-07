@@ -1,11 +1,8 @@
-import { IconBuildingCommunity, IconClock, IconFileDescription, IconKey, IconUser } from '@tabler/icons';
+import { IconUser, IconNote } from '@tabler/icons';
 
 const icons = {
-  IconKey,
   IconUser,
-  IconClock,
-  IconBuildingCommunity,
-  IconFileDescription
+  IconNote
 };
 
 const pages = {
@@ -19,6 +16,13 @@ const pages = {
       type: 'item',
       url: '/users',
       icon: icons.IconUser
+    },
+    {
+      id: 'posts',
+      title: 'menu.posts',
+      type: 'item',
+      url: '/posts',
+      icon: icons.IconNote
     }
   ]
 };
