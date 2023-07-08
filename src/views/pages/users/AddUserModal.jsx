@@ -61,7 +61,7 @@ const AddUserModal = ({ open, setOpen }) => {
           dispatchAddUser({
             fullname: values.fullname,
             username: values.username,
-            avatar: values.avatar,
+            avatar: imageUrl,
             phone: values.phone,
             email: values.email,
             address: values.address,
@@ -300,6 +300,11 @@ export default memo(AddUserModal);
 
 const EditUserWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 80vh;
   padding: 16px 0;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0.3rem; /* Độ rộng của thanh cuộn */
+  }
 `;

@@ -88,11 +88,13 @@ function* requestGetUserSaga(action) {
 
     yield put(
       getUserSuccess({
-        name: data.name,
-        email: data.email,
-        role: data.role,
-        orgIds: data.org_ids,
+        fullname: data.fullname,
         username: data.username,
+        avatar: data.avatar,
+        phone: data.phone,
+        email: data.email,
+        address: data.address,
+        role: data.role,
         password: data.password
       })
     );
