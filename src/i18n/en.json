@@ -88,7 +88,9 @@
         "passwordMinLength": "Password must be at least 8 characters long",
         "passwordRequirements": "Password must contain at least 1 letter and 1 number",
         "nameTooLong": "Your name is too long",
+        "phoneTooLong": "Phone number is too long",
         "pleaseEnterUsername": "Please enter a username",
+        "pleaseEnterPhoneNumber": "Please enter a phone number",
         "usernameNoSpecialChars": "Username must not contain special characters",
         "usernameNoSpaces": "Username must not contain spaces",
         "pleaseSelectUserRole": "Please select a user role"

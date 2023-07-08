@@ -84,6 +84,8 @@ function* requestGetUserSaga(action) {
     const result = yield call(requestGetUserApi, action.payload);
     const { data } = result
 
+    console.log("requestGetUserSaga", data)
+
     yield put(
       getUserSuccess({
         name: data.name,

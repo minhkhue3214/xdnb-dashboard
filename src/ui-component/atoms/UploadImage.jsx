@@ -1,32 +1,15 @@
-import { message, Upload } from 'antd';
-import React from 'react';
-import styled from 'styled-components';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Upload } from 'antd';
+import React, { memo } from 'react';
+import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 // const { Option } = Select;
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-};
-
-const UploadImage = (props) => {
+const AtomUploadImage = (props) => {
   const {
     style = {}, // custom style cho wrapper
     labelStyle = {}, // custom style cho label
-    // inputStyle = {}, // custom style cho input
+    inputStyle = {}, // custom style cho input
     messageStyle = {}, // custom style cho message
     visileLabel = true, // Có hiện label hay không?
     visibleMessage = true, // Có hiện message hay không?
@@ -35,27 +18,45 @@ const UploadImage = (props) => {
     type = '', // '' | 'warning' | 'error'
     // onFocus, // onFocus
     // onBlur, // onBlur
-    // onChange, // hàm bắt sự kiện onChange
+    onChange, // hàm bắt sự kiện onChange
+    loading,
+    imageUrl,
     hiddenMode = 'hidden' // hidden || none Có 2 cách ẩn input: ẩn hoàn toàn với display = none, chỉ ẩn phần tử nhưng vẫn giữ nguyên vị trí với visibility = hidden
     // ...restProps // Tất cả những props được truyền vào khác với các props bên trên sẽ được truyền cho thẻ Input của antd
     // Có thể sử dụng các thuộc tính của thẻ Input antd như bình thường.
   } = props;
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
 
-  const handleChange = (info) => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
+  // const getBase64 = (img, callback) => {
+  //   const reader = new FileReader();
+  //   reader.addEventListener('load', () => callback(reader.result));
+  //   reader.readAsDataURL(img);
+  // };
+
+  const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
     }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
     }
+    return isJpgOrPng && isLt2M;
   };
+
+  // const handleChange = (info) => {
+  //   console.log('handleChange', info);
+  //   if (info.file.status === 'uploading') {
+  //     setLoading(true);
+  //     return;
+  //   }
+  //   // Get this url from response in real world.
+  //   getBase64(info.file.originFileObj, (url) => {
+  //     setLoading(false);
+  //     console.log('setImageUrl', url);
+  //     setImageUrl(url);
+  //   });
+  // };
 
   const uploadButton = (
     <div>
@@ -70,20 +71,25 @@ const UploadImage = (props) => {
     </div>
   );
 
+  const id = React.useMemo(() => {
+    return uuidv4();
+  }, []);
+
   return (
     <InputWrapper style={style}>
-      <Label htmlFor={id} style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} ${isFocused ? 'focused' : ''}`}>
+      <Label htmlFor={id} style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} `}>
         {label}
       </Label>
       <Upload
-        // style={inputStyle}
+        style={inputStyle}
         name="avatar"
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
+        maxCount={1}
         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
         beforeUpload={beforeUpload}
-        onChange={handleChange}
+        onChange={onChange}
       >
         {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
       </Upload>
@@ -94,7 +100,7 @@ const UploadImage = (props) => {
   );
 };
 
-export default UploadImage;
+export default memo(AtomUploadImage);
 
 const InputWrapper = styled.div`
   display: flex;

@@ -34,6 +34,7 @@ const useUsersStore = () => {
 
   const dispatchAddUser = useCallback(
     (payload) => {
+      console.log("dispatchAddUser", payload)
       dispatch(addUserRequest(payload));
 
       return true;

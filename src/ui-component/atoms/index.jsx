@@ -7,3 +7,4 @@ export { default as TimeLate } from './TimeLate';
 export { default as GeocoderControl } from './GeocoderControl';
 export { default as IpAddressInput } from './IpAddressInput';
 export { default as MacAddressInput } from './MacAddressInput';
+export { default as UploadImage } from './UploadImage';
