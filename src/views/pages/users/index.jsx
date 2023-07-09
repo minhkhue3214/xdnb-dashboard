@@ -40,9 +40,33 @@ const UsersPage = () => {
     setPage(usersState.pagination.currentPage);
   }, [usersState.pagination.currentPage]);
 
+  function convertTimestampToHour(timestamp) {
+    const date = new Date(timestamp);
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    const formattedHour = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+
+    return formattedHour;
+  }
+
   const users = useMemo(() => {
-    return usersState.users;
+    console.log('shiftsState.users', usersState.users);
+    const convertedusers = usersState.users.map((user) => {
+      const formattedHour = convertTimestampToHour(user.create_at);
+      const formattedHour1 = convertTimestampToHour(user.update_at);
+
+      return {
+        ...user,
+        create_at: formattedHour,
+        update_at: formattedHour1
+      };
+    });
+    return convertedusers;
   }, [usersState.users]);
+
+  // const users = useMemo(() => {
+  //   return usersState.users;
+  // }, [usersState.users]);
 
   const handleChangeEditUserModal = useCallback((props) => {
     if (typeof props === 'boolean') {
@@ -118,19 +142,28 @@ const UsersPage = () => {
       headerName: t('table.user.avatar'),
       renderCell: (params) => (
         <>
-          <Image width={50} src={params.row.avatar || avatarDefault} />
+          <Image
+            width={55}
+            style={{
+              cursor: 'pointer'
+            }}
+            preview={{
+              mask: false
+            }}
+            src={params.row.avatar || avatarDefault}
+          />
         </>
       ),
       flex: 1,
       align: 'center',
       headerAlign: 'center'
     },
-    { field: 'email', headerName: t('table.user.email'), flex: 2, align: 'center', headerAlign: 'center' },
+    { field: 'email', headerName: t('table.user.email'), flex: 1.5, align: 'center', headerAlign: 'center' },
     { field: 'phone', headerName: t('table.user.phone'), flex: 1.5, align: 'center', headerAlign: 'center' },
     { field: 'address', headerName: t('table.user.address'), flex: 1.5, align: 'center', headerAlign: 'center' },
-    { field: 'role', headerName: t('table.user.role'), flex: 1.5, align: 'center', headerAlign: 'center' },
-    { field: 'create_at', headerName: t('table.user.create_at'), flex: 1.5, align: 'center', headerAlign: 'center' },
-    { field: 'update_at', headerName: t('table.user.update_at'), flex: 1.5, align: 'center', headerAlign: 'center' },
+    { field: 'role', headerName: t('table.user.role'), flex: 1, align: 'center', headerAlign: 'center' },
+    { field: 'create_at', headerName: t('table.user.create_at'), flex: 1, align: 'center', headerAlign: 'center' },
+    { field: 'update_at', headerName: t('table.user.update_at'), flex: 1, align: 'center', headerAlign: 'center' },
     {
       field: 'actions',
       headerName: t('table.user.actions'),
