@@ -70,7 +70,7 @@ function* requestAddUserSaga(action) {
     //   delete action.payload.params;
     // }
 
-    
+
     const result = yield call(requestAddUserApi, action.payload);
     yield put(addUserSuccess(result));
     // yield put(reGetAllUserRequest({ params }));
@@ -104,6 +104,7 @@ function* requestGetUserSaga(action) {
 
 function* requestUpdateUserSaga(action) {
   try {
+
     const params = action.payload?.params;
     if (params) {
       delete action.payload.params;
@@ -119,6 +120,7 @@ function* requestUpdateUserSaga(action) {
 
 function* requestUpdatePasswordSaga(action) {
   try {
+    console.log("requestUpdatePasswordSaga", action.payload)
     const data = yield call(requestUpdatePasswordApi, action.payload);
     yield put(updatePasswordSuccess(data));
   } catch (error) {

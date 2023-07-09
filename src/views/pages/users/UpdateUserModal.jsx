@@ -120,155 +120,159 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
         title={t('modal.user.editUser')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
-        width="350px"
+        width="850px"
         okText={t('modal.user.submitEditUser')}
         cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
-          <Input
-            label={`* ${t('input.label.user.username')}`}
-            name="username"
-            message={formik.touched.username ? formik.errors.username : ''}
-            type={formik.touched.username && formik.errors.username ? 'error' : ''}
-            value={formik.values.username}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            disabled
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Input
-            label={`* ${t('input.label.user.fullname')}`}
-            name="fullname"
-            message={formik.touched.fullname ? formik.errors.fullname : ''}
-            type={formik.touched.fullname && formik.errors.fullname ? 'error' : ''}
-            value={formik.values.fullname}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <InputImage
-            label={`* ${t('input.label.post.avatar')}`}
-            name="avatar"
-            message={formik.touched.avatar ? formik.errors.avatar : ''}
-            type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
-            value={formik.values.avatar}
-            onBlur={formik.handleBlur}
-            onChange={handleChangeImageUrl}
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Input
-            label={`* ${t('input.label.user.email')}`}
-            name="email"
-            message={formik.touched.email ? formik.errors.email : ''}
-            type={formik.touched.email && formik.errors.email ? 'error' : ''}
-            value={formik.values.email}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            size="middle"
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Input
-            label={`* ${t('input.label.user.address')}`}
-            name="address"
-            message={formik.touched.address ? formik.errors.address : ''}
-            type={formik.touched.address && formik.errors.address ? 'error' : ''}
-            value={formik.values.address}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            size="middle"
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Input
-            label={`* ${t('input.label.user.phone')}`}
-            name="phone"
-            message={formik.touched.phone ? formik.errors.phone : ''}
-            type={formik.touched.phone && formik.errors.phone ? 'error' : ''}
-            value={formik.values.phone}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Selector
-            label={`* ${t('input.label.user.role')}`}
-            name="role"
-            mode=""
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            selectStyle={{
-              width: '100%'
-            }}
-            options={newRoles}
-            value={formik.values.role}
-            onChange={handleChangeRole}
-            message={formik.touched.role ? formik.errors.role : ''}
-            type={formik.touched.role && formik.errors.role ? 'error' : ''}
-          />
-          <EditLinkPassword onClick={handleOpenChangePassword}>{t('modal.user.updatePasswordBtn')}</EditLinkPassword>
+          <Cell>
+            <Input
+              label={`* ${t('input.label.user.username')}`}
+              name="username"
+              message={formik.touched.username ? formik.errors.username : ''}
+              type={formik.touched.username && formik.errors.username ? 'error' : ''}
+              value={formik.values.username}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              disabled
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.user.email')}`}
+              name="email"
+              message={formik.touched.email ? formik.errors.email : ''}
+              type={formik.touched.email && formik.errors.email ? 'error' : ''}
+              value={formik.values.email}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <EditLinkPassword onClick={handleOpenChangePassword}>{t('modal.user.updatePasswordBtn')}</EditLinkPassword>
+          </Cell>
+          <Cell>
+            <Input
+              label={`* ${t('input.label.user.fullname')}`}
+              name="fullname"
+              message={formik.touched.fullname ? formik.errors.fullname : ''}
+              type={formik.touched.fullname && formik.errors.fullname ? 'error' : ''}
+              value={formik.values.fullname}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <InputImage
+              label={`* ${t('input.label.user.avatar')}`}
+              name="avatar"
+              message={formik.touched.avatar ? formik.errors.avatar : ''}
+              type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
+              value={formik.values.avatar}
+              onBlur={formik.handleBlur}
+              onChange={handleChangeImageUrl}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.user.address')}`}
+              name="address"
+              message={formik.touched.address ? formik.errors.address : ''}
+              type={formik.touched.address && formik.errors.address ? 'error' : ''}
+              value={formik.values.address}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.user.phone')}`}
+              name="phone"
+              message={formik.touched.phone ? formik.errors.phone : ''}
+              type={formik.touched.phone && formik.errors.phone ? 'error' : ''}
+              value={formik.values.phone}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Selector
+              label={`* ${t('input.label.user.role')}`}
+              name="role"
+              mode=""
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              selectStyle={{
+                width: '100%'
+              }}
+              options={newRoles}
+              value={formik.values.role}
+              onChange={handleChangeRole}
+              message={formik.touched.role ? formik.errors.role : ''}
+              type={formik.touched.role && formik.errors.role ? 'error' : ''}
+            />
+          </Cell>
         </EditUserWrapper>
       </Modal>
     </>
@@ -278,9 +282,26 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
 export default memo(UpdateUserModal);
 
 const EditUserWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 55vh;
+  display: grid;
+  grid-template-rows: 1fr; /* 2 hàng bằng nhau */
+  grid-template-columns: 1.6fr 1fr; /* 2 cột bằng nhau */
+  gap: 10px; /* Khoảng cách giữa các vùng */
+`;
+
+const Cell = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
-  padding: 16px 0;
+  background-color: #f1f6f9;
+  border-radius: 8px;
+  padding: 8px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
 `;
 
 const EditLinkPassword = styled.h4`
