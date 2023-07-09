@@ -31,14 +31,12 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
         .required(t('input.error.user.pleaseEnterPassword'))
     }),
     onSubmit: (values) => {
-      console.log('compare password', values);
       if (values.password !== values.repassword) {
         setErrMess(true);
         return;
       }
       formik.validateForm().then(() => {
         if (formik.isValid) {
-          console.log('dispatchUpdatePassword', values);
           dispatchUpdatePassword({
             id,
             password: values.password

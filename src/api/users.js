@@ -18,7 +18,6 @@ const requestGetUserApi = (params) => {
 };
 
 const requestUpdateUserApi = (params) => {
-  console.log("requestUpdateUserApi", params)
   const id = params['id'];
   if (!id) throw new Error('Id is required');
 
@@ -27,7 +26,6 @@ const requestUpdateUserApi = (params) => {
 };
 
 const requestUpdatePasswordApi = (params) => {
-  console.log("requestUpdatePasswordApi", params)
   const id = params['id'];
   if (!id) throw new Error('Id is required');
 

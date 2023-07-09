@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useUsersStore } from '~/hooks/users';
 import { roles } from '~/store/constant';
-import { Input, Selector } from '~/ui-component/atoms';
+import { Input, Selector, InputImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
 const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) => {
@@ -25,7 +25,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       email: '',
       fullname: '',
       username: '',
-      avatar: 'testing',
+      avatar: '',
       phone: null,
       address: '',
       role: 'ADMIN'
@@ -105,6 +105,13 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
     });
   }, [handleCancel, handleChangeEditPasswordModal, id]);
 
+  const handleChangeImageUrl = useCallback(
+    (value) => {
+      formik.setFieldValue('avatar', value);
+    },
+    [formik]
+  );
+
   return (
     <>
       <Modal
@@ -154,6 +161,25 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
               width: '100%',
               marginTop: '8px',
               height: '70px'
+            }}
+            inputStyle={{
+              width: '100%'
+            }}
+          />
+          <InputImage
+            label={`* ${t('input.label.post.avatar')}`}
+            name="avatar"
+            message={formik.touched.avatar ? formik.errors.avatar : ''}
+            type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
+            value={formik.values.avatar}
+            onBlur={formik.handleBlur}
+            onChange={handleChangeImageUrl}
+            labelStyle={{
+              padding: '2px'
+            }}
+            style={{
+              width: '100%',
+              marginTop: '8px'
             }}
             inputStyle={{
               width: '100%'
