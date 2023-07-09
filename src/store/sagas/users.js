@@ -70,6 +70,7 @@ function* requestAddUserSaga(action) {
     //   delete action.payload.params;
     // }
 
+    
     const result = yield call(requestAddUserApi, action.payload);
     yield put(addUserSuccess(result));
     // yield put(reGetAllUserRequest({ params }));

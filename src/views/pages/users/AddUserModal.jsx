@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useUsersStore } from '~/hooks/users';
 import { roles } from '~/store/constant';
-import { Input, Selector, UploadImage } from '~/ui-component/atoms';
+import { Input, InputImage, Selector } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
 const AddUserModal = ({ open, setOpen }) => {
@@ -14,9 +14,6 @@ const AddUserModal = ({ open, setOpen }) => {
   const { authenticationState } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
   const { dispatchAddUser } = useUsersStore();
-
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
@@ -31,7 +28,7 @@ const AddUserModal = ({ open, setOpen }) => {
       password: '',
       fullname: '',
       username: '',
-      avatar: imageUrl,
+      avatar: '',
       phone: null,
       address: '',
       role: 'ADMIN'
@@ -61,7 +58,7 @@ const AddUserModal = ({ open, setOpen }) => {
           dispatchAddUser({
             fullname: values.fullname,
             username: values.username,
-            avatar: imageUrl,
+            avatar: values.avatar,
             phone: values.phone,
             email: values.email,
             address: values.address,
@@ -69,7 +66,6 @@ const AddUserModal = ({ open, setOpen }) => {
             password: values.password
           });
 
-          setImageUrl('');
           handleCancel();
         }
       });
@@ -89,25 +85,32 @@ const AddUserModal = ({ open, setOpen }) => {
     [formik]
   );
 
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
+  // const getBase64 = (img, callback) => {
+  //   const reader = new FileReader();
+  //   reader.addEventListener('load', () => callback(reader.result));
+  //   reader.readAsDataURL(img);
+  // };
 
-  const handleUploadImage = (info) => {
-    console.log('handleChange', info);
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    // Get this url from response in real world.
-    getBase64(info.file.originFileObj, (url) => {
-      setLoading(false);
-      console.log('setImageUrl', url);
-      setImageUrl(url);
-    });
-  };
+  // const handleUploadImage = (info) => {
+  //   console.log('handleChange', info);
+  //   if (info.file.status === 'uploading') {
+  //     setLoading(true);
+  //     return;
+  //   }
+  //   // Get this url from response in real world.
+  //   getBase64(info.file.originFileObj, (url) => {
+  //     setLoading(false);
+  //     console.log('setImageUrl', url);
+  //     setImageUrl(url);
+  //   });
+  // };
+
+  const handleChangeImageUrl = useCallback(
+    (value) => {
+      formik.setFieldValue('avatar', value);
+    },
+    [formik]
+  );
 
   return (
     <>
@@ -162,26 +165,20 @@ const AddUserModal = ({ open, setOpen }) => {
               width: '100%'
             }}
           />
-          <UploadImage
-            label={`* ${t('input.label.user.avatar')}`}
+          <InputImage
+            label={`* ${t('input.label.post.imageUrl')}`}
             name="avatar"
             message={formik.touched.avatar ? formik.errors.avatar : ''}
             type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
             value={formik.values.avatar}
             onBlur={formik.handleBlur}
-            onChange={(e) => {
-              handleUploadImage(e);
-            }}
-            loading={loading}
-            imageUrl={imageUrl}
+            onChange={handleChangeImageUrl}
             labelStyle={{
               padding: '2px'
             }}
             style={{
               width: '100%',
-              marginTop: '8px',
-              marginBottom: '70px',
-              height: '70px'
+              marginTop: '8px'
             }}
             inputStyle={{
               width: '100%'

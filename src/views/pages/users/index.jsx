@@ -41,7 +41,6 @@ const UsersPage = () => {
   }, [usersState.pagination.currentPage]);
 
   const users = useMemo(() => {
-    console.log('users', usersState.users);
     return usersState.users;
   }, [usersState.users]);
 

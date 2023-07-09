@@ -31,7 +31,6 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
         .required(t('input.error.user.pleaseEnterPassword'))
     }),
     onSubmit: (values) => {
-      console.log('compare password', values);
       if (values.password !== values.repassword) {
         setErrMess(true);
         return;

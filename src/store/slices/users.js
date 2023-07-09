@@ -19,7 +19,6 @@ export const users = createSlice({
     },
     getAllUserSuccess: (state, action) => {
       const { page, totalPages, results } = action.payload;
-      console.log({ page, totalPages, results });
 
       state.pagination.currentPage = page;
       state.pagination.totalPages = totalPages;
