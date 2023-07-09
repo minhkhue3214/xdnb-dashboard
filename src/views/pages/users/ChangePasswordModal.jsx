@@ -38,6 +38,7 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
       }
       formik.validateForm().then(() => {
         if (formik.isValid) {
+          console.log('dispatchUpdatePassword', values);
           dispatchUpdatePassword({
             id,
             password: values.password

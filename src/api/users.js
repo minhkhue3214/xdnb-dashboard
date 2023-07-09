@@ -18,19 +18,21 @@ const requestGetUserApi = (params) => {
 };
 
 const requestUpdateUserApi = (params) => {
+  console.log("requestUpdateUserApi", params)
   const id = params['id'];
   if (!id) throw new Error('Id is required');
 
-  delete params['id'];
-  return axiosClient.put(`/users/${id}`, params);
+  // delete params['id'];
+  return axiosClient.put(`/users/updateUser/`, params);
 };
 
 const requestUpdatePasswordApi = (params) => {
+  console.log("requestUpdatePasswordApi", params)
   const id = params['id'];
   if (!id) throw new Error('Id is required');
 
-  delete params['id'];
-  return axiosClient.put(`/users/change-password/${id}`, params);
+  // delete params['id'];
+  return axiosClient.put(`/updatePassword/`, params);
 };
 
 export { getAllUsersApi, requestDeleteUserApi, requestAddUserApi, requestGetUserApi, requestUpdateUserApi, requestUpdatePasswordApi };
