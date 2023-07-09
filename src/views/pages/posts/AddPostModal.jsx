@@ -1,61 +1,34 @@
+import { Button } from 'antd';
 import { useFormik } from 'formik';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { useAuthenticationStore } from '~/hooks/authentication';
-import { usePostsStore } from '~/hooks/posts';
-import { roles } from '~/store/constant';
-import { Input, Selector } from '~/ui-component/atoms';
+import { DatePicker, Input, InputPermalink, Tag, InputNumber, InputImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
-import { Button } from 'antd';
-
 const AddPostModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
-  const { authenticationState } = useAuthenticationStore();
-  const [newRoles, setNewRoles] = useState([]);
-  const { dispatchAddPost } = usePostsStore();
-
-  useEffect(() => {
-    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
-    // console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
-    setNewRoles(updateRoles);
-  }, [authenticationState.loginInfo.role, authenticationState.role]);
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
-      name: '',
-      postname: '',
-      role: 'post'
+      title: '',
+      type: 'blog',
+      description: '',
+      author: '',
+      publication_date: '',
+      slug: '',
+      imageUrl: '',
+      imageAlt: '',
+      content: '',
+      priority: 1,
+      tags: []
     },
-    validationSchema: yup.object({
-      email: yup.string().email(t('input.error.post.invalidEmail')).required(t('input.error.post.pleaseEnterEmail')),
-      password: yup
-        .string()
-        .min(8, t('input.error.post.passwordMinLength'))
-        .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.post.passwordRequirements'))
-        .required(t('input.error.post.pleaseEnterPassword')),
-      name: yup.string().max(100, t('input.error.post.nameTooLong')).required(t('input.error.post.pleaseEnterPostname')),
-      postname: yup
-        .string()
-        .matches(/^[a-zA-Z0-9_]+$/, t('input.error.post.postnameNoSpecialChars'))
-        .required(t('input.error.post.pleaseEnterPostname'))
-        .test('no-spaces', t('input.error.post.postnameNoSpaces'), (value) => !/\s/.test(value)),
-      role: yup.string().required(t('input.error.post.pleaseSelectPostRole'))
-    }),
+    validationSchema: yup.object({}),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
-          dispatchAddPost({
-            name: values.name,
-            email: values.email,
-            role: values.role,
-            postname: values.postname,
-            password: values.password
-          });
-
+          // logic submit
+          console.log('values', values);
           handleCancel();
         }
       });
@@ -68,9 +41,23 @@ const AddPostModal = ({ open, setOpen }) => {
     setOpen(false);
   }, [formik, setOpen]);
 
-  const handleChangeRole = useCallback(
+  const handleChangePublicationDate = useCallback(
     (value) => {
-      formik.setFieldValue('role', value);
+      formik.setFieldValue('publication_date', value);
+    },
+    [formik]
+  );
+
+  const handleChangeTags = useCallback(
+    (value) => {
+      formik.setFieldValue('tags', value);
+    },
+    [formik]
+  );
+
+  const handleChangeImageUrl = useCallback(
+    (value) => {
+      formik.setFieldValue('imageUrl', value);
     },
     [formik]
   );
@@ -94,110 +81,187 @@ const AddPostModal = ({ open, setOpen }) => {
           </Button>
         ]}
       >
-        <EditPostWrapper>
-          <Input
-            label={`* ${t('input.label.post.postname')}`}
-            name="postname"
-            message={formik.touched.postname ? formik.errors.postname : ''}
-            type={formik.touched.postname && formik.errors.postname ? 'error' : ''}
-            value={formik.values.postname}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Input
-            label={`* ${t('input.label.post.email')}`}
-            name="email"
-            message={formik.touched.email ? formik.errors.email : ''}
-            type={formik.touched.email && formik.errors.email ? 'error' : ''}
-            value={formik.values.email}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            size="middle"
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Input
-            label={`* ${t('input.label.post.password')}`}
-            name="password"
-            message={formik.touched.password ? formik.errors.password : ''}
-            type={formik.touched.password && formik.errors.password ? 'error' : ''}
-            value={formik.values.password}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Input
-            label={`* ${t('input.label.post.name')}`}
-            name="name"
-            message={formik.touched.name ? formik.errors.name : ''}
-            type={formik.touched.name && formik.errors.name ? 'error' : ''}
-            value={formik.values.name}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            inputStyle={{
-              width: '100%'
-            }}
-          />
-          <Selector
-            label={`* ${t('input.label.post.role')}`}
-            name="role"
-            mode=""
-            labelStyle={{
-              padding: '2px'
-            }}
-            style={{
-              width: '100%',
-              marginTop: '8px',
-              height: '70px'
-            }}
-            selectStyle={{
-              width: '100%'
-            }}
-            options={newRoles}
-            value={formik.values.role}
-            onChange={handleChangeRole}
-            message={formik.touched.role ? formik.errors.role : ''}
-            type={formik.touched.role && formik.errors.role ? 'error' : ''}
-          />
-        </EditPostWrapper>
+        <Wrapper>
+          <Cell>
+            <InputPermalink
+              label={`* ${t('input.label.post.slug')}`}
+              name="slug"
+              message={formik.touched.slug ? formik.errors.slug : ''}
+              type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
+              value={formik.values.slug}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Tag
+              label={`* ${t('input.label.post.tags')}`}
+              name="tags"
+              initValue={formik.values.tags}
+              onChange={handleChangeTags}
+              addTagText={t('input.label.post.addTagText')}
+            />
+            <Input
+              label={`* ${t('input.label.post.title')}`}
+              name="title"
+              message={formik.touched.title ? formik.errors.title : ''}
+              type={formik.touched.title && formik.errors.title ? 'error' : ''}
+              value={formik.values.title}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+          </Cell>
+          <Cell>
+            <WrapperImage>
+              <InputImage
+                label={`* ${t('input.label.post.imageUrl')}`}
+                name="imageUrl"
+                message={formik.touched.imageUrl ? formik.errors.imageUrl : ''}
+                type={formik.touched.imageUrl && formik.errors.imageUrl ? 'error' : ''}
+                value={formik.values.imageUrl}
+                onBlur={formik.handleBlur}
+                onChange={handleChangeImageUrl}
+                labelStyle={{
+                  padding: '2px'
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px'
+                }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+              <Input
+                label={`* ${t('input.label.post.imageAlt')}`}
+                name="imageAlt"
+                message={formik.touched.imageAlt ? formik.errors.imageAlt : ''}
+                type={formik.touched.imageAlt && formik.errors.imageAlt ? 'error' : ''}
+                value={formik.values.imageAlt}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                labelStyle={{
+                  padding: '2px'
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px'
+                }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+            </WrapperImage>
+            <Input
+              label={`* ${t('input.label.post.author')}`}
+              name="author"
+              message={formik.touched.author ? formik.errors.author : ''}
+              type={formik.touched.author && formik.errors.author ? 'error' : ''}
+              value={formik.values.author}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <DatePicker
+              label={`* ${t('input.label.post.publicationDate')}`}
+              id="publication_date"
+              name="publication_date"
+              message={formik.touched.publication_date ? formik.errors.publication_date : ''}
+              type={formik.touched.publication_date && formik.errors.publication_date ? 'error' : ''}
+              value={formik.values.publication_date}
+              onBlur={formik.handleBlur}
+              onChange={handleChangePublicationDate}
+              size="middle"
+              isTextArea={true}
+              rows={4}
+              showTime
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <InputNumber
+              label={`* ${t('input.label.post.priority')}`}
+              name="priority"
+              message={formik.touched.priority ? formik.errors.priority : ''}
+              type={formik.touched.priority && formik.errors.priority ? 'error' : ''}
+              value={formik.values.priority}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.post.description')}`}
+              name="description"
+              message={formik.touched.description ? formik.errors.description : ''}
+              type={formik.touched.description && formik.errors.description ? 'error' : ''}
+              value={formik.values.description}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              isTextArea={true}
+              rows={5}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%'
+              }}
+              inputStyle={{
+                width: '100%',
+                resize: 'none'
+              }}
+              maxLength={300}
+              showCount
+            />
+          </Cell>
+        </Wrapper>
       </Modal>
     </>
   );
@@ -205,8 +269,33 @@ const AddPostModal = ({ open, setOpen }) => {
 
 export default memo(AddPostModal);
 
-const EditPostWrapper = styled.div`
+const Wrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 80vh;
-  padding: 16px 0;
+  display: grid;
+  grid-template-rows: 1fr; /* 2 hàng bằng nhau */
+  grid-template-columns: 1.6fr 1fr; /* 2 cột bằng nhau */
+  gap: 10px; /* Khoảng cách giữa các vùng */
+`;
+
+const Cell = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f1f6f9;
+  border-radius: 8px;
+  padding: 8px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+`;
+
+const WrapperImage = styled.div`
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
 `;
