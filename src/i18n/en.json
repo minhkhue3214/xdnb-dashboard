@@ -77,6 +77,17 @@
         "role": "Role",
         "newPassword": "New password",
         "reTypeNewPassword": "Re-type new password"
+      },
+      "post": {
+        "slug": "Permalink",
+        "title": "Title",
+        "author": "Author",
+        "publicationDate": "Publication Date",
+        "priority": "Priority",
+        "description": "Description",
+        "addTagText": "Add Tag",
+        "imageUrl": "Display Image",
+        "imageAlt": "Alt Display Image"
       }
     },
     "error": {

@@ -33,7 +33,7 @@ import {
 function* requestAllUsersSaga(action) {
   try {
     const result = yield call(getAllUsersApi, action.payload);
-    const { meta, data } = result
+    const { meta, data } = result;
 
     yield put(
       getAllUserSuccess({
@@ -82,9 +82,7 @@ function* requestAddUserSaga(action) {
 function* requestGetUserSaga(action) {
   try {
     const result = yield call(requestGetUserApi, action.payload);
-    const { data } = result
-
-    console.log("requestGetUserSaga", data)
+    const { data } = result;
 
     yield put(
       getUserSuccess({

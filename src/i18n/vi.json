@@ -68,6 +68,7 @@
       "addPost": "Thêm bài viết",
       "editPost": "Thay đổi thông tin bài viết",
       "cancel": "Hủy bỏ",
+      "previewPost": "Xem thử",
       "submitAddPost": "Xác nhận",
       "submitEditPost": "Xác nhận"
     }
@@ -86,6 +87,17 @@
         "role": "Quyền người dùng",
         "newPassword": "Mật khẩu mới",
         "reTypeNewPassword": "Nhập lại mật khẩu mới"
+      },
+      "post": {
+        "slug": "Liên kết",
+        "title": "Tiêu đề bài viết",
+        "author": "Tác giả",
+        "publicationDate": "Ngày đăng",
+        "priority": "Ưu tiên hiển thị",
+        "description": "Mô tả",
+        "addTagText": "Thêm tag",
+        "imageUrl": "Ảnh đại diện",
+        "imageAlt": "Alt ảnh đại diện"
       }
     },
     "error": {
