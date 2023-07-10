@@ -16,7 +16,6 @@ const useAuthenticationStore = () => {
 
   const dispatchLogin = useCallback(
     (payload) => {
-      // console.log("dispatchLogin", payload)
       dispatch(loginRequest(payload));
 
       return true;

@@ -27,6 +27,7 @@ const UsersPage = () => {
     status: false,
     id: ''
   });
+
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState({
     status: false,
     id: ''

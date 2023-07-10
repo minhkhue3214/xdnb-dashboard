@@ -105,12 +105,18 @@ const AddUserModal = ({ open, setOpen }) => {
   //   });
   // };
 
-  const handleChangeImageUrl = useCallback(
-    (value) => {
-      formik.setFieldValue('avatar', value);
-    },
-    [formik]
-  );
+  const handleChangeImageUrl = (value) => {
+    console.log('value', value);
+    formik.setFieldValue('avatar', value);
+  };
+
+  // const handleChangeImageUrl = useCallback(
+  //   (value) => {
+  //     console.log('value', value);
+  //     formik.setFieldValue('avatar', value);
+  //   },
+  //   [formik]
+  // );
 
   return (
     <>

@@ -2,6 +2,7 @@ import React, { memo, useCallback, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { FiTrash } from 'react-icons/fi';
 import toDataURL from '~/handlers/toDataURL';
 
 const AtomInput = (props) => {
@@ -58,6 +59,10 @@ const AtomInput = (props) => {
     [onChange]
   );
 
+  const handleDeleteImage = () => {
+    onChange('');
+  };
+
   return (
     <InputWrapper style={style}>
       <Label style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} ${isFocused ? 'focused' : ''}`}>
@@ -79,18 +84,20 @@ const AtomInput = (props) => {
           />
           {!value && (
             <OverlayUpload>
-              <AiOutlinePlus />
+              <StyledPlusIcon />
               <span>Upload</span>
             </OverlayUpload>
           )}
-          {value && (
-            <OverlayPreview>
-              <AiOutlinePlus />
-              <span>Upload</span>
-              <Img src={value} alt="file" />
-            </OverlayPreview>
-          )}
         </UploadWrapper>
+        {value && (
+          <OverlayPreview>
+            <GroupIcon>
+              <StyledPlusIcon />
+              <StyledTrashIcon onClick={handleDeleteImage} />
+            </GroupIcon>
+            <Img src={value} alt="file" />
+          </OverlayPreview>
+        )}
       </InputSubWrapper>
       <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
         {message}
@@ -100,6 +107,38 @@ const AtomInput = (props) => {
 };
 
 export default memo(AtomInput);
+
+const StyledPlusIcon = styled(AiOutlinePlus)`
+  /* margin-right: 5px; */
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 100;
+
+  &:hover {
+    color: #0000ff58;
+
+    Img {
+      transition: 0.3s;
+      opacity: 0;
+    }
+  }
+`;
+
+const StyledTrashIcon = styled(FiTrash)`
+  margin-left: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 100;
+
+  &:hover {
+    color: #0000ff58;
+
+    Img {
+      transition: 0.3s;
+      opacity: 0;
+    }
+  }
+`;
 
 const InputWrapper = styled.div`
   display: flex;
@@ -163,6 +202,7 @@ const UploadWrapper = styled.label`
   align-items: center;
   border: 1px solid gray;
   cursor: pointer;
+  z-index: 20;
 
   &:hover {
     border: 1px solid #1677ff;
@@ -198,7 +238,7 @@ const OverlayPreview = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: absolute;
 `;
 
 const Img = styled.img`
@@ -210,4 +250,9 @@ const Img = styled.img`
   object-fit: cover;
   overflow: hidden;
   border-radius: 2px;
+`;
+
+const GroupIcon = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
