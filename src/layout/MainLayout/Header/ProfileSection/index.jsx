@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useCustomizationStore } from '~/hooks/customization';
+import UserProfileModal from './UserProfileModal';
 
 // material-ui
 import {
@@ -29,7 +30,7 @@ import MainCard from '~/ui-component/cards/MainCard';
 import Transitions from '~/ui-component/extended/Transitions';
 
 // assets
-import { IconLogout, IconSettings } from '@tabler/icons';
+import { IconLogout, IconSettings, IconUserSearch } from '@tabler/icons';
 
 const selectedIndex = -1;
 
@@ -42,6 +43,7 @@ const ProfileSection = () => {
   // const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
+  const [openUserProfile, setOpenUserProfile] = useState(false);
 
   const prevOpen = useRef(open);
   const anchorRef = useRef(null);
@@ -177,6 +179,35 @@ const ProfileSection = () => {
                       <ListItemButton
                         sx={{ borderRadius: `${customizationState.borderRadius}px` }}
                         selected={selectedIndex === 4}
+                        onClick={() => {
+                          setOpenUserProfile(true);
+                        }}
+                      >
+                        <ListItemIcon>
+                          <IconUserSearch stroke={1.5} size="1.3rem" />
+                        </ListItemIcon>
+                        <ListItemText primary={<Typography variant="body2">{t('profile.socialProfile')}</Typography>} />
+                      </ListItemButton>
+                    </List>
+                    <List
+                      component="nav"
+                      sx={{
+                        width: '100%',
+                        maxWidth: 350,
+                        minWidth: 300,
+                        backgroundColor: theme.palette.background.paper,
+                        borderRadius: '10px',
+                        [theme.breakpoints.down('md')]: {
+                          minWidth: '100%'
+                        },
+                        '& .MuiListItemButton-root': {
+                          mt: 0.5
+                        }
+                      }}
+                    >
+                      <ListItemButton
+                        sx={{ borderRadius: `${customizationState.borderRadius}px` }}
+                        selected={selectedIndex === 4}
                         onClick={handleLogout}
                       >
                         <ListItemIcon>
@@ -192,6 +223,7 @@ const ProfileSection = () => {
           </Transitions>
         )}
       </Popper>
+      <UserProfileModal open={openUserProfile} setOpen={setOpenUserProfile} />
     </>
   );
 };

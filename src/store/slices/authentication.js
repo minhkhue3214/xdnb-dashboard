@@ -28,6 +28,7 @@ export const authentication = createSlice({
       // request login
     },
     loginSuccess: (state, action) => {
+      console.log("action.payload", action.payload)
       const { accessToken, refreshToken, loginInfo } = action.payload;
       state.accessToken = accessToken;
       state.refreshToken = refreshToken;
