@@ -87,7 +87,8 @@
         "description": "Description",
         "addTagText": "Add Tag",
         "imageUrl": "Display Image",
-        "imageAlt": "Alt Display Image"
+        "imageAlt": "Alt Display Image",
+        "type": "Post Type"
       }
     },
     "error": {
@@ -105,6 +106,17 @@
         "usernameNoSpecialChars": "Username must not contain special characters",
         "usernameNoSpaces": "Username must not contain spaces",
         "pleaseSelectUserRole": "Please select a user role"
+      },
+      "post": {
+        "pleaseEnterTitle": "Please enter an title",
+        "pleaseEnterType": "Please enter an type",
+        "pleaseEnterAuthor": "Please enter an author",
+        "pleaseEnterDescription": "Please enter an description",
+        "pleaseEnterPublicationDate": "Please enter an publication date",
+        "pleaseEnterSlug": "Please enter an slug",
+        "pleaseEnterContent": "Please enter an content",
+        "pleaseEnterPriority": "Please enter an priority",
+        "slugNotValid": "permalink is not valid"
       }
     }
   }

@@ -76,7 +76,9 @@ const AtomTag = ({ style = {}, tagStyle = {}, tagInputStyle = {}, initValue = []
   const tagPlusStyle = useMemo(
     () => ({
       background: token.colorBgContainer,
-      borderStyle: 'dashed'
+      borderStyle: 'dashed',
+      fontSize: '14px',
+      fontWeight: '600'
     }),
     [token.colorBgContainer]
   );
@@ -147,7 +149,7 @@ const AtomTag = ({ style = {}, tagStyle = {}, tagInputStyle = {}, initValue = []
         />
       ) : (
         <Tag style={tagPlusStyle} onClick={showInput}>
-          <PlusOutlined /> {addTagText || 'New Tag'}
+          <PlusOutlined size={12}/> {addTagText || 'New Tag'}
         </Tag>
       )}
     </Space>

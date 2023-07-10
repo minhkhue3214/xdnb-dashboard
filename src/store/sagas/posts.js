@@ -46,8 +46,8 @@ function* requestAddPostSaga(action) {
       delete action.payload.params;
     }
 
-    const data = yield call(addPostApi, action.payload);
-    yield put(addPostSuccess(data));
+    const results = yield call(addPostApi, action.payload);
+    yield put(addPostSuccess(results));
     yield put(reGetPostsRequest({ params }));
   } catch (error) {
     yield put(addPostFail(error));
@@ -61,8 +61,8 @@ function* requestUpdatePostSaga(action) {
       delete action.payload.params;
     }
 
-    const data = yield call(updatePostApi, action.payload);
-    yield put(updatePostSuccess(data));
+    const results = yield call(updatePostApi, action.payload);
+    yield put(updatePostSuccess(results));
     yield put(reGetPostsRequest({ params }));
   } catch (error) {
     yield put(updatePostFail(error));
