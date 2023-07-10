@@ -97,7 +97,8 @@
         "description": "Mô tả",
         "addTagText": "Thêm tag",
         "imageUrl": "Ảnh đại diện",
-        "imageAlt": "Alt ảnh đại diện"
+        "imageAlt": "Alt ảnh đại diện",
+        "type": "Loại bài viết"
       }
     },
     "error": {
@@ -114,6 +115,17 @@
         "usernameNoSpecialChars": "Tên người dùng không được chứa ký tự đặc biệt",
         "usernameNoSpaces": "Tên người dùng không được chứa dấu cách",
         "pleaseSelectUserRole": "Vui lòng chọn role người dùng"
+      },
+      "post": {
+        "pleaseEnterTitle": "Vui lòng nhập tiêu đề bài viết",
+        "pleaseEnterType": "Vui lòng chọn loại bài viết",
+        "pleaseEnterAuthor": "Vui lòng nhập tác giả",
+        "pleaseEnterDescription": "Vui lòng nhập mô tả",
+        "pleaseEnterPublicationDate": "Vui lòng chọn ngày xuất bản",
+        "pleaseEnterSlug": "Vui lòng nhập permalink",
+        "pleaseEnterContent": "Vui lòng nhập nội dung bài viết",
+        "pleaseEnterPriority": "Vui lòng nhập độ ưu tiên",
+        "slugNotValid": "permalink không hợp lệ"
       }
     }
   }

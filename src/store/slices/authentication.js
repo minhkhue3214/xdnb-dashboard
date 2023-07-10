@@ -2,14 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import dispatchToast from '~/handlers/toast';
 
 const initialState = {
-  accessToken: {
-    token: '',
-    expires: ''
-  },
-  refreshToken: {
-    token: '',
-    expires: ''
-  },
+  token: '',
   loginInfo: null,
   rememberMe: true
 };
@@ -28,53 +21,39 @@ export const authentication = createSlice({
       // request login
     },
     loginSuccess: (state, action) => {
-      const { accessToken, refreshToken, loginInfo } = action.payload;
-      state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
-      state.loginInfo = loginInfo;
+      const { data, message } = action.payload;
 
-      dispatchToast('success', 'Welcome back!');
+      const { token, user } = data;
+
+      state.token = token;
+      state.loginInfo = user;
+
+      dispatchToast('success', message);
     },
     loginFail: (_, action) => {
-      dispatchToast('error', action.payload);
+      const { message } = action.payload;
+
+      dispatchToast('error', message);
     },
     logoutRequest: () => {
       // request logout
     },
     logoutSuccess: (state) => {
-      state.accessToken = initialState.accessToken;
-      state.refreshToken = initialState.refreshToken;
+      const { message } = action.payload;
+
+      state.token = initialState.token;
       state.loginInfo = initialState.loginInfo;
-      dispatchToast('success', 'Good bye!');
+      dispatchToast('success', message);
     },
     logoutFail: (_, action) => {
-      dispatchToast('error', action.payload);
-    },
-    refreshTokenSuccess: (state, action) => {
-      const { accessToken, refreshToken } = action.payload;
-      state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
-    },
-    refreshTokenFail: (state, action) => {
-      state.accessToken = initialState.accessToken;
-      state.refreshToken = initialState.refreshToken;
-      state.loginInfo = initialState.loginInfo;
-      dispatchToast('error', action.payload);
+      const { message } = action.payload;
+
+      dispatchToast('error', message);
     }
   }
 });
 
-export const {
-  initApp,
-  changeRememberMe,
-  loginRequest,
-  loginSuccess,
-  logoutRequest,
-  logoutSuccess,
-  loginFail,
-  logoutFail,
-  refreshTokenSuccess,
-  refreshTokenFail
-} = authentication.actions;
+export const { initApp, changeRememberMe, loginRequest, loginSuccess, logoutRequest, logoutSuccess, loginFail, logoutFail } =
+  authentication.actions;
 
 export default authentication.reducer;

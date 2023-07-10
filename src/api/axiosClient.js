@@ -4,12 +4,12 @@ import { store } from '~/store';
 
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  headers: { 'content-type': 'application/json' },
+  headers: { 'content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
   paramsSerializer: (params) => queryString.stringify(params)
 });
 
 axiosClient.interceptors.request.use((config) => {
-  const token = store.getState()?.authentication?.accessToken?.token;
+  const token = store.getState()?.authentication?.token;
 
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;

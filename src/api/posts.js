@@ -9,7 +9,7 @@ const getPostApi = (params) => {
 };
 
 const addPostApi = (params) => {
-  return axiosClient.post('/product/addPost', params);
+  return axiosClient.post('/post/addPost', params);
 };
 
 const updatePostApi = (params) => {
