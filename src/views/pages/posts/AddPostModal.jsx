@@ -4,10 +4,14 @@ import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { DatePicker, Input, InputPermalink, Tag, InputNumber, InputImage } from '~/ui-component/atoms';
+import { DatePicker, Input, InputPermalink, Tag, InputNumber, InputImage, Editor, Selector } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
+import { usePostsStore } from '~/hooks/posts';
+import dayjs from 'dayjs';
+
 const AddPostModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
+  const { dispatchAddPost } = usePostsStore();
 
   const formik = useFormik({
     initialValues: {
@@ -15,7 +19,7 @@ const AddPostModal = ({ open, setOpen }) => {
       type: 'blog',
       description: '',
       author: '',
-      publication_date: '',
+      publicationDate: '',
       slug: '',
       imageUrl: '',
       imageAlt: '',
@@ -23,12 +27,41 @@ const AddPostModal = ({ open, setOpen }) => {
       priority: 1,
       tags: []
     },
-    validationSchema: yup.object({}),
+    validationSchema: yup.object({
+      title: yup.string().required(t('input.error.post.pleaseEnterTitle')),
+      type: yup.string().required(t('input.error.post.pleaseEnterType')),
+      author: yup.string().required(t('input.error.post.pleaseEnterAuthor')),
+      description: yup.string().required(t('input.error.post.pleaseEnterDescription')),
+      publicationDate: yup.date().required(t('input.error.post.pleaseEnterPublicationDate')),
+      slug: yup
+        .string()
+        .matches(/^[a-z0-9-]+$/, t('input.error.post.slugNotValid'))
+        .required(t('input.error.post.pleaseEnterSlug')),
+      // content: yup.string().required(t('input.error.post.pleaseEnterContent')),
+      priority: yup.string().required(t('input.error.post.pleaseEnterPriority'))
+    }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
+        const { title, type, description, author, publicationDate, slug, imageUrl, imageAlt, content, priority, tags } = values;
+
+        console.log('values', values);
         if (formik.isValid) {
           // logic submit
-          console.log('values', values);
+          dispatchAddPost({
+            title,
+            type,
+            description,
+            author,
+            publication_date: dayjs(publicationDate).toISOString(),
+            slug,
+            image: {
+              alt: imageAlt,
+              url: imageUrl
+            },
+            content,
+            priority,
+            tags
+          });
           handleCancel();
         }
       });
@@ -43,7 +76,7 @@ const AddPostModal = ({ open, setOpen }) => {
 
   const handleChangePublicationDate = useCallback(
     (value) => {
-      formik.setFieldValue('publication_date', value);
+      formik.setFieldValue('publicationDate', value);
     },
     [formik]
   );
@@ -62,13 +95,28 @@ const AddPostModal = ({ open, setOpen }) => {
     [formik]
   );
 
+  const handleChangeContent = useCallback(
+    (value) => {
+      formik.setFieldValue('content', value);
+    },
+    [formik]
+  );
+
+  const handleChangeType = useCallback(
+    (value) => {
+      console.log('type', value);
+      formik.setFieldValue('type', value);
+    },
+    [formik]
+  );
+
   return (
     <>
       <Modal
         title={t('modal.post.addPost')}
         open={open}
         onOpen={setOpen}
-        width="90%"
+        width="95%"
         footer={[
           <Button key="3" ghost type="primary">
             {t('modal.post.previewPost')}
@@ -83,33 +131,50 @@ const AddPostModal = ({ open, setOpen }) => {
       >
         <Wrapper>
           <Cell>
-            <InputPermalink
-              label={`* ${t('input.label.post.slug')}`}
-              name="slug"
-              message={formik.touched.slug ? formik.errors.slug : ''}
-              type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
-              value={formik.values.slug}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Tag
-              label={`* ${t('input.label.post.tags')}`}
-              name="tags"
-              initValue={formik.values.tags}
-              onChange={handleChangeTags}
-              addTagText={t('input.label.post.addTagText')}
-            />
+            <WrapperImage1>
+              <InputPermalink
+                label={`* ${t('input.label.post.slug')}`}
+                name="slug"
+                message={formik.touched.slug ? formik.errors.slug : ''}
+                type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
+                value={formik.values.slug}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                labelStyle={{
+                  padding: '2px'
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px',
+                  height: '70px'
+                }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+              <Selector
+                label={`* ${t('input.label.post.type')}`}
+                name="type"
+                mode=""
+                labelStyle={{
+                  padding: '2px'
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px',
+                  height: '70px'
+                }}
+                selectStyle={{
+                  width: '100%'
+                }}
+                options={[
+                  { key: 'blog', value: 'blog' },
+                  { key: 'project', value: 'project' }
+                ]}
+                value={formik.values.type}
+                onChange={handleChangeType}
+              />
+            </WrapperImage1>
             <Input
               label={`* ${t('input.label.post.title')}`}
               name="title"
@@ -130,9 +195,10 @@ const AddPostModal = ({ open, setOpen }) => {
                 width: '100%'
               }}
             />
+            <Editor onChange={handleChangeContent} />
           </Cell>
           <Cell>
-            <WrapperImage>
+            <WrapperImage2>
               <InputImage
                 label={`* ${t('input.label.post.imageUrl')}`}
                 name="imageUrl"
@@ -150,6 +216,10 @@ const AddPostModal = ({ open, setOpen }) => {
                 }}
                 inputStyle={{
                   width: '100%'
+                }}
+                uploadStyle={{
+                  width: '133px',
+                  height: '100px'
                 }}
               />
               <Input
@@ -171,7 +241,7 @@ const AddPostModal = ({ open, setOpen }) => {
                   width: '100%'
                 }}
               />
-            </WrapperImage>
+            </WrapperImage2>
             <Input
               label={`* ${t('input.label.post.author')}`}
               name="author"
@@ -194,16 +264,16 @@ const AddPostModal = ({ open, setOpen }) => {
             />
             <DatePicker
               label={`* ${t('input.label.post.publicationDate')}`}
-              id="publication_date"
-              name="publication_date"
-              message={formik.touched.publication_date ? formik.errors.publication_date : ''}
-              type={formik.touched.publication_date && formik.errors.publication_date ? 'error' : ''}
-              value={formik.values.publication_date}
+              id="publicationDate"
+              name="publicationDate"
+              message={formik.touched.publicationDate ? formik.errors.publicationDate : ''}
+              type={formik.touched.publicationDate && formik.errors.publicationDate ? 'error' : ''}
+              value={formik.values.publicationDate}
               onBlur={formik.handleBlur}
               onChange={handleChangePublicationDate}
               size="middle"
               isTextArea={true}
-              rows={4}
+              rows={3}
               showTime
               labelStyle={{
                 padding: '2px'
@@ -246,7 +316,7 @@ const AddPostModal = ({ open, setOpen }) => {
               onChange={formik.handleChange}
               size="middle"
               isTextArea={true}
-              rows={5}
+              rows={3}
               labelStyle={{
                 padding: '2px'
               }}
@@ -257,8 +327,17 @@ const AddPostModal = ({ open, setOpen }) => {
                 width: '100%',
                 resize: 'none'
               }}
-              maxLength={300}
+              maxLength={150}
               showCount
+            />
+            <Tag
+              name="tags"
+              initValue={formik.values.tags}
+              onChange={handleChangeTags}
+              addTagText={t('input.label.post.addTagText')}
+              style={{
+                marginTop: '10px'
+              }}
             />
           </Cell>
         </Wrapper>
@@ -275,7 +354,7 @@ const Wrapper = styled.div`
   height: 80vh;
   display: grid;
   grid-template-rows: 1fr; /* 2 hàng bằng nhau */
-  grid-template-columns: 1.6fr 1fr; /* 2 cột bằng nhau */
+  grid-template-columns: 2fr 1fr; /* 2 cột bằng nhau */
   gap: 10px; /* Khoảng cách giữa các vùng */
 `;
 
@@ -292,10 +371,22 @@ const Cell = styled.div`
   flex-direction: column;
 `;
 
-const WrapperImage = styled.div`
+const WrapperImage1 = styled.div`
   position: relative;
   width: 100%;
-  height: fit-content;
-  display: flex;
+  display: grid;
+  grid-template-rows: 1fr; /* 2 hàng bằng nhau */
+  grid-template-columns: 1.8fr 1fr; /* 2 cột bằng nhau */
   flex-direction: row;
+  gap: 10px; /* Khoảng cách giữa các vùng */
+`;
+
+const WrapperImage2 = styled.div`
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 1fr; /* 2 hàng bằng nhau */
+  grid-template-columns: 1fr 1.4fr; /* 2 cột bằng nhau */
+  flex-direction: row;
+  gap: 10px; /* Khoảng cách giữa các vùng */
 `;

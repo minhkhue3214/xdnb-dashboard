@@ -13,6 +13,7 @@ import MainCard from '~/ui-component/cards/MainCard';
 import { DataTable } from '~/ui-component/molecules';
 import AddPostModal from './AddPostModal';
 import UpdatePostModal from './UpdatePostModal';
+import dayjs from 'dayjs';
 
 const PagePost = () => {
   const { t } = useTranslation();
@@ -76,7 +77,14 @@ const PagePost = () => {
     { field: 'description', headerName: t('table.post.description'), flex: 3, align: 'center', headerAlign: 'center' },
     { field: 'author', headerName: t('table.post.author'), flex: 3, align: 'center', headerAlign: 'center' },
     { field: 'priority', headerName: t('table.post.priority'), flex: 2, align: 'center', headerAlign: 'center' },
-    { field: 'publication_date', headerName: t('table.post.publication_date'), flex: 2, align: 'center', headerAlign: 'center' },
+    {
+      field: 'publication_date',
+      headerName: t('table.post.publication_date'),
+      flex: 2,
+      align: 'center',
+      headerAlign: 'center',
+      valueGetter: (params) => dayjs(params.row.publication_date).format('YYYY-MM-DD HH:mm:ss')
+    },
     {
       field: 'actions',
       headerName: t('table.post.actions'),
