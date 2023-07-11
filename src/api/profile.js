@@ -8,8 +8,8 @@ const updateProfileInfoApi = (params) => {
     return axiosClient.put('/profile/updateProfileInfo', params);
 };
 
-const updatePassword = (params) => {
-    return axiosClient.post('/profile/updatePassword', params);
+const updatePasswordApi = (params) => {
+    return axiosClient.put('/profile/updatePassword', params);
 };
 
-export { getProfileInfoApi, updateProfileInfoApi, updatePassword };
+export { getProfileInfoApi, updateProfileInfoApi, updatePasswordApi };
