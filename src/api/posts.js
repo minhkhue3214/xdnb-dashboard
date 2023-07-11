@@ -5,7 +5,7 @@ const getPostsApi = (params) => {
 };
 
 const getPostApi = (params) => {
-  return axiosClient.get('/post/getPosts', params);
+  return axiosClient.get('/post/getPost', params);
 };
 
 const addPostApi = (params) => {
