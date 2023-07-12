@@ -50,10 +50,10 @@ const ProfileSection = () => {
 
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState(false);
 
-  useEffect(() => {
-    console.log('dispatchGetProfile');
-    dispatchGetProfile();
-  }, [dispatchGetProfile]);
+  // useEffect(() => {
+  //   console.log('dispatchGetProfile');
+  //   dispatchGetProfile();
+  // }, [dispatchGetProfile]);
 
   const prevOpen = useRef(open);
   const anchorRef = useRef(null);
@@ -83,6 +83,8 @@ const ProfileSection = () => {
   // console.log(handleListItemClick);
 
   const handleToggle = useCallback(() => {
+    console.log('handleToggle');
+    dispatchGetProfile();
     setOpen((prevOpen) => !prevOpen);
   }, []);
 

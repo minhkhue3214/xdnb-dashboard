@@ -1,7 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {
     getProfileInfoApi,
-    updatePasswordApi
+    updatePasswordApi,
+    updateProfileInfoApi
 } from '~/api/profile';
 
 import {
@@ -11,6 +12,9 @@ import {
     updatePasswordProfileRequest,
     updatePasswordProfileSuccess,
     updatePasswordProfileFail,
+    updateProfileRequest,
+    updateProfileSuccess,
+    updateProfileFail
 } from '~/store/slices/rootAction';
 
 function* requestProfileSaga(action) {
@@ -45,8 +49,23 @@ function* requestUpdatePasswordSaga(action) {
     }
 }
 
+function* requestUpdateProfileSaga(action) {
+    try {
+        const { params } = action.payload;
+        if (params) {
+            delete action.payload.params;
+        }
+
+        const results = yield call(updateProfileInfoApi, action.payload);
+        yield put(updateProfileSuccess(results));
+    } catch (error) {
+        yield put(updateProfileFail(error));
+    }
+}
+
 export default function* watchProfile() {
     yield takeLatest(updatePasswordProfileRequest.type, requestUpdatePasswordSaga);
     yield takeLatest(getProfileRequest.type, requestProfileSaga);
+    yield takeLatest(updateProfileRequest.type, requestUpdateProfileSaga);
 }
 

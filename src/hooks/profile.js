@@ -2,7 +2,8 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getProfileRequest,
-    updatePasswordProfileRequest
+    updatePasswordProfileRequest,
+    updateProfileRequest
 } from '~/store/slices/profile';
 
 const useProfileStore = () => {
@@ -12,6 +13,7 @@ const useProfileStore = () => {
 
     const dispatchGetProfile = useCallback(
         (payload) => {
+            // console.log("dispatchGetProfile hook", payload);
             dispatch(getProfileRequest(payload));
 
             return true;
@@ -28,9 +30,19 @@ const useProfileStore = () => {
         [dispatch]
     );
 
+    const dispatchUpdateProfile = useCallback(
+        (payload) => {
+            dispatch(updateProfileRequest(payload));
+
+            return true;
+        },
+        [dispatch]
+    );
+
     return {
         dispatchGetProfile,
         dispatchUpdateProfilePassword,
+        dispatchUpdateProfile,
         profileState
     };
 };

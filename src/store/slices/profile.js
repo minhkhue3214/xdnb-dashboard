@@ -30,6 +30,19 @@ export const profile = createSlice({
             const { message } = action.payload;
             dispatchToast('error', message);
         },
+        updateProfileRequest: () => {
+            //
+        },
+        updateProfileSuccess: (_, action) => {
+            const { message } = action.payload;
+
+            dispatchToast('success', message);
+        },
+        updateProfileFail: (_, action) => {
+            const { message } = action.payload;
+
+            dispatchToast('error', message);
+        },
     }
 });
 
@@ -39,7 +52,10 @@ export const {
     getProfileFail,
     updatePasswordProfileRequest,
     updatePasswordProfileSuccess,
-    updatePasswordProfileFail
+    updatePasswordProfileFail,
+    updateProfileRequest,
+    updateProfileSuccess,
+    updateProfileFail
 } = profile.actions;
 
 export default profile.reducer;

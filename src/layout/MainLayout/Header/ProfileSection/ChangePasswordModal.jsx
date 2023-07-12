@@ -2,7 +2,8 @@ import { useFormik } from 'formik';
 import { useCallback, useState, memo } from 'react';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { useUsersStore } from '~/hooks/users';
+import { useProfileStore } from '~/hooks/profile';
+import { useAuthenticationStore } from '~/hooks/authentication';
 import { Input } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +12,8 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
   const { t } = useTranslation();
   const [errMess, setErrMess] = useState(false);
 
-  const { dispatchUpdatePassword } = useUsersStore();
+  const { dispatchLogout } = useAuthenticationStore();
+  const { dispatchUpdateProfilePassword } = useProfileStore();
 
   const formik = useFormik({
     initialValues: {
@@ -37,12 +39,13 @@ const ChangePasswordModal = ({ id, open, setOpen }) => {
       }
       formik.validateForm().then(() => {
         if (formik.isValid) {
-          dispatchUpdatePassword({
+          dispatchUpdateProfilePassword({
             id,
             password: values.password
           });
           setErrMess(false);
           handleCancel();
+          dispatchLogout();
         }
       });
     },
