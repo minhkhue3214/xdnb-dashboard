@@ -3,7 +3,9 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useCustomizationStore } from '~/hooks/customization';
+import { useProfileStore } from '~/hooks/profile';
 import UserProfileModal from './UserProfileModal';
+import ChangePasswordModal from './ChangePasswordModal';
 
 // material-ui
 import {
@@ -38,12 +40,20 @@ const ProfileSection = () => {
   const theme = useTheme();
   const { customizationState } = useCustomizationStore();
   const { authenticationState, dispatchLogout } = useAuthenticationStore();
+  const { profileState, dispatchGetProfile } = useProfileStore();
   const { t } = useTranslation();
 
   // const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const [openUserProfile, setOpenUserProfile] = useState(false);
+
+  const [openEditPasswordModal, setOpenEditPasswordModal] = useState(false);
+
+  // useEffect(() => {
+  //   console.log('dispatchGetProfile');
+  //   dispatchGetProfile();
+  // }, [dispatchGetProfile]);
 
   const prevOpen = useRef(open);
   const anchorRef = useRef(null);
@@ -73,6 +83,8 @@ const ProfileSection = () => {
   // console.log(handleListItemClick);
 
   const handleToggle = useCallback(() => {
+    console.log('handleToggle');
+    dispatchGetProfile();
     setOpen((prevOpen) => !prevOpen);
   }, []);
 
@@ -83,6 +95,12 @@ const ProfileSection = () => {
 
     prevOpen.current = open;
   }, [open]);
+
+  const handleChangeEditPasswordModal = (status) => {
+    console.log('handleChangeEditPasswordModal', status);
+    setOpenEditPasswordModal(status);
+    setOpenUserProfile(false);
+  };
 
   return (
     <>
@@ -181,6 +199,7 @@ const ProfileSection = () => {
                         selected={selectedIndex === 4}
                         onClick={() => {
                           setOpenUserProfile(true);
+                          setOpen(false);
                         }}
                       >
                         <ListItemIcon>
@@ -223,7 +242,8 @@ const ProfileSection = () => {
           </Transitions>
         )}
       </Popper>
-      <UserProfileModal open={openUserProfile} setOpen={setOpenUserProfile} />
+      <UserProfileModal open={openUserProfile} setOpen={setOpenUserProfile} handleChangeEditPasswordModal={handleChangeEditPasswordModal} />
+      <ChangePasswordModal id={profileState.profile?.id} open={openEditPasswordModal} setOpen={handleChangeEditPasswordModal} />
     </>
   );
 };

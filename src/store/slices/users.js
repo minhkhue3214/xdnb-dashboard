@@ -32,7 +32,9 @@ export const users = createSlice({
       // request user
     },
     deleteUserSuccess: () => {
-      dispatchToast('success', 'Deleted user!');
+      // const { message } = action.payload;
+
+      dispatchToast('success', "delete user success");
     },
     deleteFail: (_, action) => {
       const { message } = action.payload;
@@ -41,8 +43,10 @@ export const users = createSlice({
     addUserRequest: () => {
       // request add user
     },
-    addUserSuccess: () => {
-      dispatchToast('success', 'Added User!');
+    addUserSuccess: (_, action) => {
+      const { message } = action.payload;
+
+      dispatchToast('success', message);
     },
     addUserFail: (_, action) => {
       const { message } = action.payload;
@@ -55,15 +59,16 @@ export const users = createSlice({
       state.detail = action.payload;
     },
     getUserFail: (_, action) => {
-      state.detail = initialState.detail;
+      // state.detail = initialState.detail;
       const { message } = action.payload;
       dispatchToast('error', message);
     },
     updateUserRequest: () => {
       // request update user
     },
-    updateUserSuccess: () => {
-      dispatchToast('success', 'Updated User!');
+    updateUserSuccess: (_, action) => {
+      const { message } = action.payload;
+      dispatchToast('success', message);
     },
     updateUserFail: (_, action) => {
       const { message } = action.payload;
@@ -72,8 +77,9 @@ export const users = createSlice({
     updatePasswordRequest: () => {
       // request update user
     },
-    updatePasswordSuccess: () => {
-      dispatchToast('success', 'Updated password!');
+    updatePasswordSuccess: (_, action) => {
+      const { message } = action.payload;
+      dispatchToast('success', message);
     },
     updatePasswordFail: (_, action) => {
       const { message } = action.payload;
