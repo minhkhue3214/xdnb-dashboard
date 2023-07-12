@@ -14,6 +14,11 @@ import { DataTable } from '~/ui-component/molecules';
 import AddPostModal from './AddPostModal';
 import UpdatePostModal from './UpdatePostModal';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const PagePost = () => {
   const { t } = useTranslation();
@@ -83,7 +88,7 @@ const PagePost = () => {
       flex: 2,
       align: 'center',
       headerAlign: 'center',
-      valueGetter: (params) => dayjs(params.row.publication_date).format('YYYY-MM-DD HH:mm:ss')
+      valueGetter: (params) => dayjs(params.row.publication_date).utcOffset(7).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       field: 'actions',
@@ -141,12 +146,7 @@ const PagePost = () => {
         />
       </PaginationWrapper>
       <AddPostModal open={openAddPostModal} setOpen={setOpenAddPostModal} />
-      <UpdatePostModal
-        id={openEditPostModal.id}
-        open={openEditPostModal.status}
-        setOpen={handleChangeEditPostModal}
-        handleChangeEditPasswordModal={() => {}}
-      />
+      <UpdatePostModal id={openEditPostModal.id} open={openEditPostModal.status} setOpen={handleChangeEditPostModal} />
     </MainCard>
   );
 };
