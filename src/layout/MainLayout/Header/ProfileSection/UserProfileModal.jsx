@@ -13,6 +13,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   const { t } = useTranslation();
   const { dispatchAddUser } = useUsersStore();
   const { profileState, dispatchGetProfile } = useProfileStore();
+  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   useEffect(() => {
     console.log('dispatchGetProfile');
@@ -25,7 +26,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
       console.log('profileState', data);
       formik.setFieldValue('username', data.username || '');
       formik.setFieldValue('fullname', data.fullname || '');
-      formik.setFieldValue('avatar', data.avatar || '');
+      formik.setFieldValue('avatar', data.avatar || avatarDefault);
       formik.setFieldValue('phone', data.phone || '');
       formik.setFieldValue('email', data.email || '');
       formik.setFieldValue('address', data.address || '');
