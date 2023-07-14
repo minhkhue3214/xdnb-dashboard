@@ -1,14 +1,12 @@
 import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Modal } from '~/ui-component/molecules';
 
 const galleryItemsModal = ({ open, setOpen }) => {
-    const { t } = useTranslation();
 
   return (
     <>
-      <Modal open={open} onOpen={setOpen} title={t('table.products.gallery_items')} width="850px" footer={null}>
+      <Modal open={open} onOpen={setOpen} title="gallery" width="850px" footer={null}>
         <EditUserWrapper>
           <h1>Testing</h1>
         </EditUserWrapper>
