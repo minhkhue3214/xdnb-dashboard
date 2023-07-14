@@ -1,9 +1,10 @@
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Modal } from '~/ui-component/molecules';
 
 const galleryItemsModal = ({ open, setOpen }) => {
-  //   const { t } = useTranslation();
+    const { t } = useTranslation();
 
   return (
     <>
