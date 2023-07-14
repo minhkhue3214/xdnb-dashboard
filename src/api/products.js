@@ -4,4 +4,9 @@ const getAllProductsApi = (params) => {
   return axiosClient.get('/product/getProducts', params);
 };
 
-export { getAllProductsApi };
+const getProductApi = (params) => {
+  console.log("getProductApi", params);
+  return axiosClient.get('/product/getProduct', params);
+};
+
+export { getAllProductsApi, getProductApi };
