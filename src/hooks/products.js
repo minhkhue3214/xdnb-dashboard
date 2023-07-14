@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getAllProductsRequest,
+    getProductRequest
 } from '~/store/slices/products';
 
 const useProductsStore = () => {
@@ -18,9 +19,19 @@ const useProductsStore = () => {
         [dispatch]
     );
 
+    const dispatchGetProductById = useCallback(
+        (payload) => {
+            dispatch(getProductRequest(payload));
+
+            return true;
+        },
+        [dispatch]
+    );
+
 
     return {
         dispatchGetAllProducts,
+        dispatchGetProductById,
         productsState
     };
 };

@@ -27,7 +27,19 @@ export const products = createSlice({
         getAllProductsFail: (_, action) => {
             const { message } = action.payload;
             dispatchToast('error', message);
-        }
+        },
+        getProductRequest: () => {
+            // request update user
+        },
+        getProductSuccess: (state, action) => {
+            console.log("getProductSuccess", action.payload.data);
+            state.detail = action.payload.data;
+        },
+        getProductFail: (_, action) => {
+            // state.detail = initialState.detail;
+            const { message } = action.payload;
+            dispatchToast('error', message);
+        },
     }
 });
 
@@ -35,6 +47,9 @@ export const {
     getAllProductsRequest,
     getAllProductsSuccess,
     getAllProductsFail,
-  } = products.actions;
-  
-  export default products.reducer;
+    getProductRequest,
+    getProductSuccess,
+    getProductFail
+} = products.actions;
+
+export default products.reducer;

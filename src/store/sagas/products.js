@@ -1,12 +1,16 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import {
     getAllProductsApi,
+    getProductApi
 } from '~/api/products';
 
 import {
     getAllProductsRequest,
     getAllProductsSuccess,
     getAllProductsFail,
+    getProductRequest,
+    getProductSuccess,
+    getProductFail
 } from '~/store/slices/rootAction';
 
 function* requestAllProductsSaga(action) {
@@ -27,6 +31,16 @@ function* requestAllProductsSaga(action) {
     }
 }
 
+function* requestGetProductSaga(action) {
+    try {
+        const result = yield call(getProductApi, action.payload);
+        yield put(getProductSuccess(result));
+    } catch (error) {
+        yield put(getProductFail(error));
+    }
+}
+
 export default function* watchProducts() {
     yield takeLatest(getAllProductsRequest.type, requestAllProductsSaga);
+    yield takeLatest(getProductRequest.type, requestGetProductSaga);
 }
