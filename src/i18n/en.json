@@ -6,7 +6,8 @@
   "menu": {
     "dashboard": "Dashboard",
     "users": "Users Management",
-    "users": "Posts Management",
+    "posts": "Posts Management",
+    "products": "Products Management",
     "submenu": {}
   },
   "profile": {
@@ -25,6 +26,16 @@
       "editPost": "Edit Post",
       "deletePost": "Delete Post",
       "exportPostData": "Export Post Data"
+    },
+    "products": {
+      "name": "Product name",
+      "discounted_price": "Discounted price",
+      "original_price": "Original price",
+      "long_description": "Long description",
+      "short_description": "Short description",
+      "priority": "Priority",
+      "quantity": "Quantity",
+      "supplier": "Supplier"
     }
   },
   "table": {
@@ -45,6 +56,17 @@
       "priority": "Priority",
       "publication_date": "Publication date",
       "actions": "Actions"
+    },
+    "products": {
+      "name": "Product name",
+      "discounted_price": "Discounted price",
+      "original_price": "Original price",
+      "long_description": "Long description",
+      "short_description": "Short description",
+      "priority": "Priority",
+      "quantity": "Quantity",
+      "supplier": "Supplier",
+      "gallery_items": "Gallery items"
     }
   },
   "modal": {

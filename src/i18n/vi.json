@@ -7,6 +7,7 @@
     "dashboard": "Bảng thống kê",
     "users": "Quản lý người dùng",
     "posts": "Quản lý bài viết",
+    "products": "Quản lý sản phẩm",
     "submenu": {}
   },
   "profile": {
@@ -26,6 +27,16 @@
       "previewPost": "Xem thử",
       "deletePost": "Xóa bài viết",
       "exportPostData": "Xuất dữ liệu"
+    },
+    "products": {
+      "name": "Tên sản phẩm",
+      "discounted_price": "Giá giảm",
+      "original_price": "Giá gốc",
+      "long_description": "Mô tả dài",
+      "short_description": "Mô tả ngắn",
+      "priority": "Mức độ ưu tiên",
+      "quantity": "Số lượng",
+      "supplier": "Nhà cung cấp"
     }
   },
   "table": {
@@ -51,6 +62,17 @@
       "priority": "Ưu tiên",
       "publication_date": "Ngày xuất bản",
       "actions": "Thao tác"
+    },
+    "products": {
+      "name": "Tên sản phẩm",
+      "discounted_price": "Giá giảm",
+      "original_price": "Giá gốc",
+      "long_description": "Mô tả dài",
+      "short_description": "Mô tả ngắn",
+      "priority": "Mức độ ưu tiên",
+      "quantity": "Số lượng",
+      "supplier": "Nhà cung cấp",
+      "gallery_items": "Danh sách ảnh"
     }
   },
   "modal": {

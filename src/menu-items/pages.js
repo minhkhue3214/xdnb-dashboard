@@ -23,6 +23,13 @@ const pages = {
       type: 'item',
       url: '/posts',
       icon: icons.IconNote
+    },
+    {
+      id: 'products',
+      title: 'menu.products',
+      type: 'item',
+      url: '/products',
+      icon: icons.IconNote
     }
   ]
 };
