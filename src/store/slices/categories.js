@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import dispatchToast from '~/handlers/toast';
 
 const initialState = {
-  posts: [],
+  categories: [],
   pagination: {
     currentPage: 1,
     totalPages: 1
@@ -10,73 +10,74 @@ const initialState = {
   detail: null
 };
 
-export const posts = createSlice({
-  name: 'posts',
+export const categories = createSlice({
+  name: 'categories',
   initialState,
   reducers: {
-    getPostsRequest: () => {
+    getCategoriesRequest: () => {
       //
     },
-    reGetPostsRequest: () => {
+    reGetCategoriesRequest: () => {
       //
     },
-    getPostsSuccess: (state, action) => {
+    getCategoriesSuccess: (state, action) => {
       const { meta, data } = action.payload;
+      console.log('getCategoriesSuccess', action.payload);
 
-      state.posts = data;
+      state.categories = data;
       state.pagination.currentPage = meta.current_page;
       state.pagination.totalPages = meta.total;
     },
-    getPostsFail: (_, action) => {
+    getCategoriesFail: (_, action) => {
       dispatchToast('error', action.payload);
     },
-    getPostRequest: () => {
+    getCategoryRequest: () => {
       //
     },
-    getPostSuccess: (state, action) => {
+    getCategorySuccess: (state, action) => {
       const { data } = action.payload;
       state.detail = data;
     },
-    getPostFail: () => {
+    getCategoryFail: () => {
       const { message } = action.payload;
 
       dispatchToast('error', message);
     },
-    addPostRequest: () => {
+    addCategoryRequest: () => {
       //
     },
-    addPostSuccess: (_, action) => {
+    addCategorySuccess: (_, action) => {
       const { message } = action.payload;
 
       dispatchToast('success', message);
     },
-    addPostFail: (_, action) => {
+    addCategoryFail: (_, action) => {
       const { message } = action.payload;
 
       dispatchToast('error', message);
     },
-    updatePostRequest: () => {
+    updateCategoryRequest: () => {
       //
     },
-    updatePostSuccess: (_, action) => {
+    updateCategorySuccess: (_, action) => {
       const { message } = action.payload;
 
       dispatchToast('success', message);
     },
-    updatePostFail: (_, action) => {
+    updateCategoryFail: (_, action) => {
       const { message } = action.payload;
 
       dispatchToast('error', message);
     },
-    deletePostRequest: () => {
+    deleteCategoryRequest: () => {
       //
     },
-    deletePostSuccess: (_, action) => {
+    deleteCategorySuccess: (_, action) => {
       const { message } = action.payload;
 
       dispatchToast('success', message);
     },
-    deletePostFail: (_, action) => {
+    deleteCategoryFail: (_, action) => {
       const { message } = action.payload;
 
       dispatchToast('error', message);
@@ -85,22 +86,22 @@ export const posts = createSlice({
 });
 
 export const {
-  getPostsRequest,
-  reGetPostsRequest,
-  getPostsSuccess,
-  getPostsFail,
-  getPostRequest,
-  getPostSuccess,
-  getPostFail,
-  addPostRequest,
-  addPostSuccess,
-  addPostFail,
-  updatePostRequest,
-  updatePostSuccess,
-  updatePostFail,
-  deletePostRequest,
-  deletePostSuccess,
-  deletePostFail
-} = posts.actions;
+  getCategoriesRequest,
+  reGetCategoriesRequest,
+  getCategoriesSuccess,
+  getCategoriesFail,
+  getCategoryRequest,
+  getCategorySuccess,
+  getCategoryFail,
+  addCategoryRequest,
+  addCategorySuccess,
+  addCategoryFail,
+  updateCategoryRequest,
+  updateCategorySuccess,
+  updateCategoryFail,
+  deleteCategoryRequest,
+  deleteCategorySuccess,
+  deleteCategoryFail
+} = categories.actions;
 
-export default posts.reducer;
+export default categories.reducer;

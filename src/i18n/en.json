@@ -6,7 +6,8 @@
   "menu": {
     "dashboard": "Dashboard",
     "users": "Users Management",
-    "users": "Posts Management",
+    "posts": "Posts Management",
+    "categories": "Categories Management",
     "submenu": {}
   },
   "profile": {
@@ -25,6 +26,12 @@
       "editPost": "Edit Post",
       "deletePost": "Delete Post",
       "exportPostData": "Export Post Data"
+    },
+    "categories": {
+      "addCategory": "Add Category",
+      "editCategory": "Edit Category",
+      "deleteCategory": "Delete Category",
+      "exportCategoryData": "Export Category Data"
     }
   },
   "table": {
@@ -44,6 +51,12 @@
       "author": "Author",
       "priority": "Priority",
       "publication_date": "Publication date",
+      "actions": "Actions"
+    },
+    "category": {
+      "name": "Category",
+      "icon": "Icon",
+      "path": "Path",
       "actions": "Actions"
     }
   },
@@ -65,6 +78,13 @@
       "cancel": "Cancel",
       "submitAddPost": "Submit",
       "submitEditPost": "Submit"
+    },
+    "category": {
+      "addCategory": "Add Category",
+      "editCategory": "Edit Category",
+      "cancel": "Cancel",
+      "submitAddCategory": "Submit",
+      "submitEditCategory": "Submit"
     }
   },
   "input": {

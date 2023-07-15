@@ -1,9 +1,4 @@
-import { IconUser, IconNote } from '@tabler/icons';
-
-const icons = {
-  IconUser,
-  IconNote
-};
+import { IconUser, IconNote, IconCategory } from '@tabler/icons';
 
 const pages = {
   id: 'pages',
@@ -15,14 +10,21 @@ const pages = {
       title: 'menu.users',
       type: 'item',
       url: '/users',
-      icon: icons.IconUser
+      icon: IconUser
     },
     {
       id: 'posts',
       title: 'menu.posts',
       type: 'item',
       url: '/posts',
-      icon: icons.IconNote
+      icon: IconNote
+    },
+    {
+      id: 'categories',
+      title: 'menu.categories',
+      type: 'item',
+      url: '/categories',
+      icon: IconCategory
     }
   ]
 };
