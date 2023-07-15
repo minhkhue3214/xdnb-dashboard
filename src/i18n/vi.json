@@ -30,9 +30,9 @@
       "exportPostData": "Xuất dữ liệu"
     },
     "categories": {
-      "addCategory": "Thêm bài viết",
-      "editCategory": "Cập nhật thông tin bài viết",
-      "deleteCategory": "Xóa bài viết",
+      "addCategory": "Thêm danh mục",
+      "editCategory": "Cập nhật thông tin danh mục",
+      "deleteCategory": "Xóa danh mục",
       "exportCategoryData": "Xuất dữ liệu"
     },
     "products": {
