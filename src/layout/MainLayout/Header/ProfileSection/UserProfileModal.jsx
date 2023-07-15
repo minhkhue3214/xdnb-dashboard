@@ -1,20 +1,43 @@
+import { Image } from 'antd';
 import { useFormik } from 'formik';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
+import { useProfileStore } from '~/hooks/profile';
 import { useUsersStore } from '~/hooks/users';
-import { Input, InputImage } from '~/ui-component/atoms';
+import { Input } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
-const AddUserModal = ({ open, setOpen }) => {
+const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   const { t } = useTranslation();
   const { dispatchAddUser } = useUsersStore();
+  const { profileState, dispatchGetProfile } = useProfileStore();
+  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+
+  useEffect(() => {
+    console.log('dispatchGetProfile');
+    dispatchGetProfile();
+  }, [dispatchGetProfile]);
+
+  useEffect(() => {
+    const data = profileState.profile;
+    if (data) {
+      console.log('profileState', data);
+      formik.setFieldValue('username', data.username || '');
+      formik.setFieldValue('fullname', data.fullname || '');
+      formik.setFieldValue('avatar', data.avatar || avatarDefault);
+      formik.setFieldValue('phone', data.phone || '');
+      formik.setFieldValue('email', data.email || '');
+      formik.setFieldValue('address', data.address || '');
+      formik.setFieldValue('role', data.role || '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileState.profile]);
 
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
       fullname: '',
       username: '',
       avatar: '',
@@ -56,31 +79,34 @@ const AddUserModal = ({ open, setOpen }) => {
         open={open}
         onOpen={setOpen}
         title={t('profile.socialProfile')}
-        onOk={formik.handleSubmit}
+        onOk={() => {
+          handleChangeEditPasswordModal(true);
+        }}
         onCancel={handleCancel}
         width="400px"
-        okText={t('modal.user.submitAddUser')}
+        okText={t('modal.user.updatePasswordBtn')}
         cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
-          <InputImage
-            label={`* ${t('input.label.post.imageUrl')}`}
-            name="avatar"
-            value={formik.values.avatar}
-            labelStyle={{
-              padding: '2px'
-            }}
+          <Image
+            width={90}
             style={{
               width: '100%',
-              marginTop: '8px'
+              marginTop: '8px',
+              position: 'relative',
+              left: 130,
+              border: '2px solid #c1c3c7c5',
+              borderRadius: '50px'
             }}
-            inputStyle={{
-              width: '100%'
+            preview={{
+              mask: false
             }}
+            src={formik.values.avatar}
           />
           <Input
             label={`* ${t('input.label.user.username')}`}
             name="username"
+            disabled="true"
             value={formik.values.username}
             labelStyle={{
               padding: '2px'
@@ -96,6 +122,7 @@ const AddUserModal = ({ open, setOpen }) => {
           />
           <Input
             label={`* ${t('input.label.user.email')}`}
+            disabled="true"
             name="email"
             value={formik.values.email}
             size="middle"
@@ -113,6 +140,7 @@ const AddUserModal = ({ open, setOpen }) => {
           />
           <Input
             label={`* ${t('input.label.user.fullname')}`}
+            disabled="true"
             name="fullname"
             value={formik.values.fullname}
             labelStyle={{
@@ -129,6 +157,7 @@ const AddUserModal = ({ open, setOpen }) => {
           />
           <Input
             label={`* ${t('input.label.user.phone')}`}
+            disabled="true"
             name="phone"
             value={formik.values.phone}
             labelStyle={{
@@ -145,6 +174,7 @@ const AddUserModal = ({ open, setOpen }) => {
           />
           <Input
             label={`* ${t('input.label.user.address')}`}
+            disabled="true"
             name="address"
             value={formik.values.address}
             size="middle"
@@ -162,6 +192,7 @@ const AddUserModal = ({ open, setOpen }) => {
           />
           <Input
             label={`* ${t('input.label.user.role')}`}
+            disabled="true"
             name="role"
             value={formik.values.role}
             size="middle"
@@ -183,7 +214,7 @@ const AddUserModal = ({ open, setOpen }) => {
   );
 };
 
-export default memo(AddUserModal);
+export default memo(UserProfileModal);
 
 const EditUserWrapper = styled.div`
   position: relative;
@@ -197,4 +228,3 @@ const EditUserWrapper = styled.div`
     width: 0px; /* Chiều rộng thanh cuộn ngang */
   }
 `;
-

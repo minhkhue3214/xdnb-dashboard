@@ -49,10 +49,12 @@ function* requestAllUsersSaga(action) {
 
 function* requestDeleteUserSaga(action) {
   try {
-    const params = action.payload?.params;
+    const { params } = action.payload;
     if (params) {
       delete action.payload.params;
     }
+
+    console.log("requestDeleteUserSaga", action.payload)
 
     yield call(requestDeleteUserApi, action.payload);
     yield put(deleteUserSuccess(action.payload));
@@ -64,11 +66,11 @@ function* requestDeleteUserSaga(action) {
 
 function* requestAddUserSaga(action) {
   try {
-    // const params = action.payload?.params;
-    // console.log("requestAddUserSaga 1", action.payload.params);
-    // if (params) {
-    //   delete action.payload.params;
-    // }
+    const { params } = action.payload;
+    console.log("requestAddUserSaga 1", action.payload.params);
+    if (params) {
+      delete action.payload.params;
+    }
 
 
     const result = yield call(requestAddUserApi, action.payload);
@@ -105,7 +107,7 @@ function* requestGetUserSaga(action) {
 function* requestUpdateUserSaga(action) {
   try {
 
-    const params = action.payload?.params;
+    const { params } = action.payload;
     if (params) {
       delete action.payload.params;
     }
