@@ -2,7 +2,8 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getAllProductsRequest,
-    getProductRequest
+    getProductRequest,
+    deleteProductRequest
 } from '~/store/slices/products';
 
 const useProductsStore = () => {
@@ -13,6 +14,15 @@ const useProductsStore = () => {
     const dispatchGetAllProducts = useCallback(
         (payload) => {
             dispatch(getAllProductsRequest(payload));
+
+            return true;
+        },
+        [dispatch]
+    );
+
+    const dispatchDeleteProduct = useCallback(
+        (payload) => {
+            dispatch(deleteProductRequest(payload));
 
             return true;
         },
@@ -32,6 +42,7 @@ const useProductsStore = () => {
     return {
         dispatchGetAllProducts,
         dispatchGetProductById,
+        dispatchDeleteProduct,
         productsState
     };
 };

@@ -19,7 +19,7 @@ import UpdateProductModal from './UpdateProductModal';
 
 const ProductsPage = () => {
   const { t } = useTranslation();
-  const { productsState, dispatchGetAllProducts } = useProductsStore();
+  const { productsState, dispatchGetAllProducts, dispatchDeleteProduct } = useProductsStore();
   const [page, setPage] = useState(1);
   const [openAddProductModal, setOpenAddProductModal] = useState(false);
 
@@ -141,11 +141,11 @@ const ProductsPage = () => {
     });
   };
 
-  const handleDelete = () => {
-    // dispatchDeleteUser({
-    //   id: params?.id || ''
-    // });
-    // setPage(1)
+  const handleDelete = (params) => {
+    dispatchDeleteProduct({
+      id: params?.id || ''
+    });
+    setPage(1);
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
@@ -226,11 +226,7 @@ const ProductsPage = () => {
         setOpen={handleChangeEditProductModal}
         handleChangeEditPasswordModal={handleChangeEditPasswordModal}
       />
-      <GalleryItem
-        id={openGalleryItemsModal.id}
-        open={openGalleryItemsModal.status}
-        setOpen={handleChangeGalleryItemsModal}
-      />
+      <GalleryItem id={openGalleryItemsModal.id} open={openGalleryItemsModal.status} setOpen={handleChangeGalleryItemsModal} />
       <ChangePasswordModal id={openEditPasswordModal.id} open={openEditPasswordModal.status} setOpen={handleChangeEditPasswordModal} />
     </MainCard>
   );

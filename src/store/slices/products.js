@@ -28,6 +28,18 @@ export const products = createSlice({
             const { message } = action.payload;
             dispatchToast('error', message);
         },
+        deleteProductRequest: () => {
+            // request product
+        },
+        deleteProductSuccess: () => {
+            // const { message } = action.payload;
+
+            dispatchToast('success', "delete product success");
+        },
+        deleteProductFail: (_, action) => {
+            const { message } = action.payload;
+            dispatchToast('error', message);
+        },
         getProductRequest: () => {
             // request update user
         },
@@ -49,7 +61,10 @@ export const {
     getAllProductsFail,
     getProductRequest,
     getProductSuccess,
-    getProductFail
+    getProductFail,
+    deleteProductRequest,
+    deleteProductSuccess,
+    deleteProductFail
 } = products.actions;
 
 export default products.reducer;

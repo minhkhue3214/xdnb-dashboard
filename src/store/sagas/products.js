@@ -1,7 +1,8 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import {
     getAllProductsApi,
-    getProductApi
+    getProductApi,
+    deleteProductApi
 } from '~/api/products';
 
 import {
@@ -10,7 +11,10 @@ import {
     getAllProductsFail,
     getProductRequest,
     getProductSuccess,
-    getProductFail
+    getProductFail,
+    deleteProductRequest,
+    deleteProductSuccess,
+    deleteProductFail
 } from '~/store/slices/rootAction';
 
 function* requestAllProductsSaga(action) {
@@ -40,7 +44,17 @@ function* requestGetProductSaga(action) {
     }
 }
 
+function* requestDeleteProductSaga(action) {
+    try {
+        const result = yield call(deleteProductApi, action.payload);
+        yield put(deleteProductSuccess(result));
+    } catch (error) {
+        yield put(deleteProductFail(error));
+    }
+}
+
 export default function* watchProducts() {
     yield takeLatest(getAllProductsRequest.type, requestAllProductsSaga);
     yield takeLatest(getProductRequest.type, requestGetProductSaga);
+    yield takeLatest(deleteProductRequest.type, requestDeleteProductSaga);
 }

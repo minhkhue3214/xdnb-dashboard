@@ -1,37 +1,26 @@
 import { useFormik } from 'formik';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { useAuthenticationStore } from '~/hooks/authentication';
 import { useUsersStore } from '~/hooks/users';
-import { roles } from '~/store/constant';
-import { Input, InputImage, Selector } from '~/ui-component/atoms';
+import { Input, InputNumber, Switch, UploadMultipleImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
 const AddUserModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
-  const { authenticationState } = useAuthenticationStore();
-  const [newRoles, setNewRoles] = useState([]);
   const { dispatchAddUser } = useUsersStore();
-
-  useEffect(() => {
-    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
-    console.log('updateRoles', updateRoles);
-    // console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
-    setNewRoles(updateRoles);
-  }, [authenticationState.loginInfo.role, authenticationState.role]);
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
-      fullname: '',
-      username: '',
-      avatar: '',
-      phone: null,
-      address: '',
-      role: 'ADMIN'
+      category_id: 'category123',
+      name: '',
+      slug: '',
+      hot: false,
+      short_description: '',
+      long_description: '',
+      priority: 1,
+      gallery_items: []
     },
     validationSchema: yup.object({
       email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
@@ -78,66 +67,26 @@ const AddUserModal = ({ open, setOpen }) => {
     setOpen(false);
   }, [formik, setOpen]);
 
-  const handleChangeRole = useCallback(
-    (value) => {
-      formik.setFieldValue('role', value);
-    },
-    [formik]
-  );
-
-  // const getBase64 = (img, callback) => {
-  //   const reader = new FileReader();
-  //   reader.addEventListener('load', () => callback(reader.result));
-  //   reader.readAsDataURL(img);
-  // };
-
-  // const handleUploadImage = (info) => {
-  //   console.log('handleChange', info);
-  //   if (info.file.status === 'uploading') {
-  //     setLoading(true);
-  //     return;
-  //   }
-  //   // Get this url from response in real world.
-  //   getBase64(info.file.originFileObj, (url) => {
-  //     setLoading(false);
-  //     console.log('setImageUrl', url);
-  //     setImageUrl(url);
-  //   });
-  // };
-
-  const handleChangeImageUrl = (value) => {
-    console.log('value', value);
-    formik.setFieldValue('avatar', value);
-  };
-
-  // const handleChangeImageUrl = useCallback(
-  //   (value) => {
-  //     console.log('value', value);
-  //     formik.setFieldValue('avatar', value);
-  //   },
-  //   [formik]
-  // );
-
   return (
     <>
       <Modal
         open={open}
         onOpen={setOpen}
-        title={t('modal.user.addUser')}
+        title={t('modal.product.addProduct')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
-        width="850px"
+        width="85%"
         okText={t('modal.user.submitAddUser')}
         cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
-          <Cell>
+          <CellLeft>
             <Input
-              label={`* ${t('input.label.user.username')}`}
-              name="username"
-              message={formik.touched.username ? formik.errors.username : ''}
-              type={formik.touched.username && formik.errors.username ? 'error' : ''}
-              value={formik.values.username}
+              label={`* ${t('input.label.product.category_id')}`}
+              name="category_id"
+              message={formik.touched.category_id ? formik.errors.category_id : ''}
+              type={formik.touched.category_id && formik.errors.category_id ? 'error' : ''}
+              value={formik.values.category_id}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               labelStyle={{
@@ -153,113 +102,11 @@ const AddUserModal = ({ open, setOpen }) => {
               }}
             />
             <Input
-              label={`* ${t('input.label.user.email')}`}
-              name="email"
-              message={formik.touched.email ? formik.errors.email : ''}
-              type={formik.touched.email && formik.errors.email ? 'error' : ''}
-              value={formik.values.email}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label={`* ${t('input.label.user.password')}`}
-              name="password"
-              message={formik.touched.password ? formik.errors.password : ''}
-              type={formik.touched.password && formik.errors.password ? 'error' : ''}
-              value={formik.values.password}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-          </Cell>
-          <Cell>
-            <Input
-              label={`* ${t('input.label.user.fullname')}`}
-              name="fullname"
-              message={formik.touched.fullname ? formik.errors.fullname : ''}
-              type={formik.touched.fullname && formik.errors.fullname ? 'error' : ''}
-              value={formik.values.fullname}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <InputImage
-              label={`* ${t('input.label.post.imageUrl')}`}
-              name="avatar"
-              message={formik.touched.avatar ? formik.errors.avatar : ''}
-              type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
-              value={formik.values.avatar}
-              onBlur={formik.handleBlur}
-              onChange={handleChangeImageUrl}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label={`* ${t('input.label.user.phone')}`}
-              name="phone"
-              message={formik.touched.phone ? formik.errors.phone : ''}
-              type={formik.touched.phone && formik.errors.phone ? 'error' : ''}
-              value={formik.values.phone}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label={`* ${t('input.label.user.address')}`}
-              name="address"
-              message={formik.touched.address ? formik.errors.address : ''}
-              type={formik.touched.address && formik.errors.address ? 'error' : ''}
-              value={formik.values.address}
+              label={`* ${t('input.label.product.name')}`}
+              name="name"
+              message={formik.touched.name ? formik.errors.name : ''}
+              type={formik.touched.name && formik.errors.name ? 'error' : ''}
+              value={formik.values.name}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               size="middle"
@@ -275,10 +122,14 @@ const AddUserModal = ({ open, setOpen }) => {
                 width: '100%'
               }}
             />
-            <Selector
-              label={`* ${t('input.label.user.role')}`}
-              name="role"
-              mode=""
+            <Input
+              label={`* ${t('input.label.product.slug')}`}
+              name="slug"
+              message={formik.touched.slug ? formik.errors.slug : ''}
+              type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
+              value={formik.values.slug}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
               labelStyle={{
                 padding: '2px'
               }}
@@ -287,16 +138,182 @@ const AddUserModal = ({ open, setOpen }) => {
                 marginTop: '8px',
                 height: '70px'
               }}
-              selectStyle={{
+              inputStyle={{
                 width: '100%'
               }}
-              options={newRoles}
-              value={formik.values.role}
-              onChange={handleChangeRole}
-              message={formik.touched.role ? formik.errors.role : ''}
-              type={formik.touched.role && formik.errors.role ? 'error' : ''}
             />
-          </Cell>
+            <InputNumber
+              label={`* ${t('input.label.product.priority')}`}
+              name="priority"
+              message={formik.touched.priority ? formik.errors.priority : ''}
+              type={formik.touched.priority && formik.errors.priority ? 'error' : ''}
+              value={formik.values.priority}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '20%'
+              }}
+            />
+            <Switch
+              label="* True"
+              name="priority"
+              message={formik.touched.priority ? formik.errors.priority : ''}
+              type={formik.touched.priority && formik.errors.priority ? 'error' : ''}
+              value={formik.values.priority}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px',
+                width: '20%'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '6%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.product.short_description')}`}
+              name="short_description"
+              message={formik.touched.short_description ? formik.errors.short_description : ''}
+              type={formik.touched.short_description && formik.errors.short_description ? 'error' : ''}
+              value={formik.values.short_description}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              isTextArea={true}
+              rows={2}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%'
+              }}
+              inputStyle={{
+                width: '100%',
+                resize: 'none'
+              }}
+              maxLength={20}
+              showCount
+            />
+            <Input
+              label={`* ${t('input.label.product.long_description')}`}
+              name="long_description"
+              message={formik.touched.long_description ? formik.errors.long_description : ''}
+              type={formik.touched.long_description && formik.errors.long_description ? 'error' : ''}
+              value={formik.values.long_description}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              isTextArea={true}
+              rows={5}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%'
+              }}
+              inputStyle={{
+                width: '100%',
+                resize: 'none'
+              }}
+              maxLength={2000}
+              showCount
+            />
+          </CellLeft>
+          <CellRight>
+            <Input
+              label={`* ${t('input.label.product.image_name')}`}
+              name="image_name"
+              message={formik.touched.image_name ? formik.errors.image_name : ''}
+              type={formik.touched.image_name && formik.errors.image_name ? 'error' : ''}
+              value={formik.values.image_name}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label="alt"
+              name="alt"
+              message={formik.touched.alt ? formik.errors.alt : ''}
+              type={formik.touched.alt && formik.errors.alt ? 'error' : ''}
+              value={formik.values.alt}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <InputNumber
+              label={`* ${t('input.label.product.image_priority')}`}
+              name="image_priority"
+              message={formik.touched.image_priority ? formik.errors.image_priority : ''}
+              type={formik.touched.image_priority && formik.errors.image_priority ? 'error' : ''}
+              value={formik.values.image_priority}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '20%'
+              }}
+            />
+            <UploadMultipleImage
+              label={`* ${t('input.label.product.image_priority')}`}
+              name="image_priority"
+              message={formik.touched.image_priority ? formik.errors.image_priority : ''}
+              type={formik.touched.image_priority && formik.errors.image_priority ? 'error' : ''}
+              value={formik.values.image_priority}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '20%'
+              }}
+            />
+          </CellRight>
         </EditUserWrapper>
       </Modal>
     </>
@@ -308,14 +325,26 @@ export default memo(AddUserModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 55vh;
+  height: 72vh;
   display: grid;
   grid-template-rows: 1fr; /* 2 hàng bằng nhau */
-  grid-template-columns: 1.6fr 1fr; /* 2 cột bằng nhau */
-  gap: 10px; /* Khoảng cách giữa các vùng */
+  grid-template-columns: 1.5fr 1fr; /* 2 cột bằng nhau */
+  gap: 12px; /* Khoảng cách giữa các vùng */
 `;
 
-const Cell = styled.div`
+const CellLeft = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f1f6f9;
+  border-radius: 8px;
+  padding: 8px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+`;
+const CellRight = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
