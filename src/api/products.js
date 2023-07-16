@@ -9,4 +9,9 @@ const getProductApi = (params) => {
   return axiosClient.get('/product/getProduct', params);
 };
 
-export { getAllProductsApi, getProductApi };
+const deleteProductApi = (params) => {
+  // console.log("getProductApi", params);
+  return axiosClient.delete('/product/deleteProduct', params);
+};
+
+export { getAllProductsApi, getProductApi, deleteProductApi };
