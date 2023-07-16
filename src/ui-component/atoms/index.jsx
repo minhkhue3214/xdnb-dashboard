@@ -10,3 +10,4 @@ export { default as Tag } from './Tag';
 export { default as InputNumber } from './InputNumber';
 export { default as InputImage } from './InputImage';
 export { default as Editor } from './Editor';
+export { default as Switch } from './Switch';

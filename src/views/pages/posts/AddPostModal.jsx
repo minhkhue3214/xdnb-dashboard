@@ -135,6 +135,7 @@ const AddPostModal = ({ open, setOpen }) => {
               <InputPermalink
                 label={`* ${t('input.label.post.slug')}`}
                 name="slug"
+                addonBefore="https://xuongdaninhbinh.com/post/"
                 message={formik.touched.slug ? formik.errors.slug : ''}
                 type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
                 value={formik.values.slug}
