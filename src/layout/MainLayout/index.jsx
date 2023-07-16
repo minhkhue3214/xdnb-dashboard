@@ -20,6 +20,7 @@ import { IconChevronRight } from '@tabler/icons';
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
   ...theme.typography.mainContent,
+  overflow: 'hidden',
   borderBottomLeftRadius: 0,
   borderBottomRightRadius: 0,
   transition: theme.transitions.create(
