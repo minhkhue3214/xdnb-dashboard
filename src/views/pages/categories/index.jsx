@@ -114,19 +114,24 @@ const PageCategory = () => {
       width: '30%'
     },
     {
-      title: t('table.category.icon'),
-      dataIndex: 'icon',
-      width: '20%'
+      title: t('table.category.slug'),
+      dataIndex: 'slug',
+      width: '35%'
     },
     {
-      title: t('table.category.path'),
-      dataIndex: 'path',
-      width: '35%'
+      title: t('table.category.visible'),
+      dataIndex: 'visible',
+      width: '10%'
+    },
+    {
+      title: t('table.category.priority'),
+      dataIndex: 'priority',
+      width: '10%'
     },
     {
       title: t('table.category.actions'),
       dataIndex: 'action',
-      width: '25%',
+      width: '15%',
       render: (_, record) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>

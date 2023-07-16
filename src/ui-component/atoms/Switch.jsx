@@ -50,7 +50,18 @@ const AtomSwitch = (props) => {
       <Label htmlFor={id} style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} ${isFocused ? 'focused' : ''}`}>
         {label}
       </Label>
-      <Switch id={id} status={type} style={inputStyle} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} {...restProps} checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} defaultChecked />
+      <Switch
+        id={id}
+        status={type}
+        style={inputStyle}
+        onChange={onChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...restProps}
+        checkedChildren={<CheckOutlined />}
+        unCheckedChildren={<CloseOutlined />}
+        defaultChecked
+      />
       <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
         {message}
       </Message>

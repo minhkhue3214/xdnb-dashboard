@@ -73,7 +73,9 @@
     "category": {
       "name": "Danh mục",
       "icon": "Icon",
-      "path": "Đường dẫn",
+      "slug": "Slug",
+      "visible": "Hiển thị",
+      "priority": "Ưu tiên",
       "actions": "Thao tác"
     },
     "products": {
@@ -147,6 +149,16 @@
         "imageAlt": "Alt ảnh đại diện",
         "type": "Loại bài viết"
       },
+      "category": {
+        "slug": "Liên kết",
+        "name": "Tên danh mục",
+        "priority": "Ưu tiên hiển thị",
+        "description": "Mô tả",
+        "addTagText": "Thêm tag",
+        "parentId": "Danh mục cha",
+        "visible": "Hiển thị danh mục",
+        "visibleChildren": "Hiển thị danh mục con"
+      },
       "product":{
         "category_id":"Mã loại sản phẩm",
         "name":"Tên sản phẩm",
@@ -181,6 +193,12 @@
         "pleaseEnterPublicationDate": "Vui lòng chọn ngày xuất bản",
         "pleaseEnterSlug": "Vui lòng nhập permalink",
         "pleaseEnterContent": "Vui lòng nhập nội dung bài viết",
+        "pleaseEnterPriority": "Vui lòng nhập độ ưu tiên",
+        "slugNotValid": "permalink không hợp lệ"
+      },
+      "category": {
+        "pleaseEnterName": "Vui lòng nhập tiêu đề bài viết",
+        "pleaseEnterSlug": "Vui lòng nhập permalink",
         "pleaseEnterPriority": "Vui lòng nhập độ ưu tiên",
         "slugNotValid": "permalink không hợp lệ"
       }
