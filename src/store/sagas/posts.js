@@ -76,8 +76,10 @@ function* requestDeletePostSaga(action) {
       delete action.payload.params;
     }
 
-    yield call(deletePostApi, action.payload);
-    yield put(deletePostSuccess(action.payload));
+    const results = yield call(deletePostApi, action.payload);
+
+    console.log('results', results);
+    yield put(deletePostSuccess(results));
     yield put(reGetPostsRequest({ params }));
   } catch (error) {
     yield put(deletePostFail(error));

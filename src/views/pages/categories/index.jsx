@@ -8,11 +8,11 @@ import { AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai';
 import { MdDelete } from 'react-icons/md';
 import { TbTableExport } from 'react-icons/tb';
 import styled from 'styled-components';
-import { usePostsStore } from '~/hooks/posts';
+import { useCategoriesStore } from '~/hooks/categories';
 import MainCard from '~/ui-component/cards/MainCard';
 import { AntdTable } from '~/ui-component/molecules';
-import AddPostModal from './AddPostModal';
-import UpdatePostModal from './UpdatePostModal';
+import AddCategoryModal from './AddCategoryModal';
+import UpdateCategoryModal from './UpdateCategoryModal';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -20,27 +20,56 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const PagePost = () => {
+const PageCategory = () => {
   const { t } = useTranslation();
-  const { postsState, dispatchGetPosts, dispatchDeletePost } = usePostsStore();
-  const [openAddPostModal, setOpenAddPostModal] = useState(false);
+  const { categoriesState, dispatchGetCategories, dispatchDeleteCategory } = useCategoriesStore();
+  const [openAddCategoryModal, setOpenAddCategoryModal] = useState(false);
 
-  const [openEditPostModal, setOpenEditPostModal] = useState({
+  const [openEditCategoryModal, setOpenEditCategoryModal] = useState({
     status: false,
     id: ''
   });
 
   useEffect(() => {
-    dispatchGetPosts();
-  }, [dispatchGetPosts]);
+    dispatchGetCategories();
+  }, [dispatchGetCategories]);
 
-  const posts = useMemo(() => {
-    return postsState.posts;
-  }, [postsState.posts]);
+  const categories = useMemo(() => {
+    const data = JSON.parse(JSON.stringify(categoriesState.categories));
 
-  const handleChangeEditPostModal = useCallback((props) => {
+    return data?.map((one) => {
+      one.key = one.id;
+      if (one.children) {
+        if (one.children.length === 0) {
+          one.children = null;
+        } else {
+          one.children = one.children.map((two) => {
+            two.key = two.id;
+            if (two.children.length === 0) {
+              two.children = null;
+            } else {
+              two.children = two.children.map((three) => {
+                three.key = three.id;
+                if (three.children.length === 0) {
+                  three.children = null;
+                }
+
+                return three;
+              });
+            }
+
+            return two;
+          });
+        }
+      }
+
+      return one;
+    });
+  }, [categoriesState]);
+
+  const handleChangeEditCategoryModal = useCallback((props) => {
     if (typeof props === 'boolean') {
-      setOpenEditPostModal({
+      setOpenEditCategoryModal({
         status: props,
         id: ''
       });
@@ -51,12 +80,12 @@ const PagePost = () => {
     const { status, id } = props;
 
     if (!id) {
-      setOpenEditPostModal({
+      setOpenEditCategoryModal({
         status: false,
         id: ''
       });
     } else {
-      setOpenEditPostModal({
+      setOpenEditCategoryModal({
         status,
         id
       });
@@ -64,33 +93,40 @@ const PagePost = () => {
   }, []);
 
   const handleEdit = (params) => {
-    handleChangeEditPostModal({
+    console.log('params', params);
+    handleChangeEditCategoryModal({
       status: true,
       id: params?.id
     });
   };
 
   const handleDelete = (params) => {
-    dispatchDeletePost({
+    dispatchDeleteCategory({
       id: params?.id || ''
     });
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { dataIndex: 'title', title: t('table.post.title'), width: '15%' },
-    { dataIndex: 'description', title: t('table.post.description'), width: '25%' },
-    { dataIndex: 'author', title: t('table.post.author'), width: '20%' },
-    { dataIndex: 'priority', title: t('table.post.priority'), width: '15%' },
     {
-      dataIndex: 'publication_date',
-      title: t('table.post.publication_date'),
-      width: '15%',
-      render: (_, record) => dayjs(record.publication_date).utcOffset(7).format('YYYY-MM-DD HH:mm:ss')
+      title: t('table.category.name'),
+      dataIndex: 'name',
+      width: '30%'
     },
     {
-      dataIndex: 'actions',
-      title: t('table.post.actions'),
+      title: t('table.category.icon'),
+      dataIndex: 'icon',
+      width: '20%'
+    },
+    {
+      title: t('table.category.path'),
+      dataIndex: 'path',
+      width: '35%'
+    },
+    {
+      title: t('table.category.actions'),
+      dataIndex: 'action',
+      width: '25%',
       render: (_, record) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>
@@ -102,16 +138,15 @@ const PagePost = () => {
             </IconButton>
           </Popconfirm>
         </>
-      ),
-      width: '10%'
+      )
     }
   ];
 
   const handleChangePage = useCallback(
     (event, value) => {
-      dispatchGetPosts({ params: { page: value } });
+      dispatchGetCategories({ params: { page: value } });
     },
-    [dispatchGetPosts]
+    [dispatchGetCategories]
   );
 
   return (
@@ -121,33 +156,34 @@ const PagePost = () => {
           type="primary"
           icon={<AiOutlineUserAdd />}
           onClick={() => {
-            setOpenAddPostModal(true);
+            setOpenAddCategoryModal(true);
           }}
         >
-          {t('pages.posts.addPost')}
+          {t('pages.categories.addCategory')}
         </Button>
         <Button type="primary" icon={<TbTableExport />}>
-          {t('pages.posts.exportPostData')}
+          {t('pages.categories.exportCategoryData')}
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <AntdTable columns={columns} dataSource={posts} checkboxSelection={false} />
+        {/* <DataTable columns={columns} rows={categories} checkboxSelection={false} treeData getTreeDataPath={getTreeDataPath} /> */}
+        <AntdTable columns={columns} dataSource={categories} rowkey={(record) => record.key} sticky={true} />
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination
-          count={postsState.pagination.totalPages}
-          page={postsState.pagination.currentPage}
+          count={categoriesState.pagination.totalPages}
+          page={categoriesState.pagination.currentPage}
           onChange={handleChangePage}
           color="primary"
         />
       </PaginationWrapper>
-      <AddPostModal open={openAddPostModal} setOpen={setOpenAddPostModal} />
-      <UpdatePostModal id={openEditPostModal.id} open={openEditPostModal.status} setOpen={handleChangeEditPostModal} />
+      <AddCategoryModal open={openAddCategoryModal} setOpen={setOpenAddCategoryModal} />
+      <UpdateCategoryModal id={openEditCategoryModal.id} open={openEditCategoryModal.status} setOpen={handleChangeEditCategoryModal} />
     </MainCard>
   );
 };
 
-export default memo(PagePost);
+export default memo(PageCategory);
 
 const ControlBar = styled.div`
   width: 100%;

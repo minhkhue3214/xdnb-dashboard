@@ -10,6 +10,7 @@ const DashboardDefault = Loadable(lazy(() => import('~/views/dashboard/Default')
 
 const UserPage = Loadable(lazy(() => import('~/views/pages/users')));
 const PagePost = Loadable(lazy(() => import('~/views/pages/posts')));
+const PageCategory = Loadable(lazy(() => import('~/views/pages/categories')));
 const PageProduct = Loadable(lazy(() => import('~/views/pages/products')));
 
 function ProtectedRoute() {
@@ -48,6 +49,10 @@ const MainRoutes = {
     {
       path: 'posts',
       element: <PagePost />
+    },
+    {
+      path: 'categories',
+      element: <PageCategory />
     },
     {
       path: 'products',

@@ -7,6 +7,7 @@
     "dashboard": "Dashboard",
     "users": "Users Management",
     "posts": "Posts Management",
+    "categories": "Categories Management",
     "products": "Products Management",
     "submenu": {}
   },
@@ -26,6 +27,12 @@
       "editPost": "Edit Post",
       "deletePost": "Delete Post",
       "exportPostData": "Export Post Data"
+    },
+    "categories": {
+      "addCategory": "Add Category",
+      "editCategory": "Edit Category",
+      "deleteCategory": "Delete Category",
+      "exportCategoryData": "Export Category Data"
     },
     "products": {
       "name": "Product name",
@@ -55,6 +62,12 @@
       "author": "Author",
       "priority": "Priority",
       "publication_date": "Publication date",
+      "actions": "Actions"
+    },
+    "category": {
+      "name": "Category",
+      "icon": "Icon",
+      "path": "Path",
       "actions": "Actions"
     },
     "products": {
@@ -87,6 +100,13 @@
       "cancel": "Cancel",
       "submitAddPost": "Submit",
       "submitEditPost": "Submit"
+    },
+    "category": {
+      "addCategory": "Add Category",
+      "editCategory": "Edit Category",
+      "cancel": "Cancel",
+      "submitAddCategory": "Submit",
+      "submitEditCategory": "Submit"
     }
   },
   "input": {

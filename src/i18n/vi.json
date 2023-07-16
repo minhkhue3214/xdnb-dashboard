@@ -7,6 +7,7 @@
     "dashboard": "Bảng thống kê",
     "users": "Quản lý người dùng",
     "posts": "Quản lý bài viết",
+    "categories": "Quản lý danh mục",
     "products": "Quản lý sản phẩm",
     "submenu": {}
   },
@@ -27,6 +28,12 @@
       "previewPost": "Xem thử",
       "deletePost": "Xóa bài viết",
       "exportPostData": "Xuất dữ liệu"
+    },
+    "categories": {
+      "addCategory": "Thêm danh mục",
+      "editCategory": "Cập nhật thông tin danh mục",
+      "deleteCategory": "Xóa danh mục",
+      "exportCategoryData": "Xuất dữ liệu"
     },
     "products": {
       "name": "Tên sản phẩm",
@@ -61,6 +68,12 @@
       "author": "Tác giả",
       "priority": "Ưu tiên",
       "publication_date": "Ngày xuất bản",
+      "actions": "Thao tác"
+    },
+    "category": {
+      "name": "Danh mục",
+      "icon": "Icon",
+      "path": "Đường dẫn",
       "actions": "Thao tác"
     },
     "products": {
@@ -98,6 +111,13 @@
     },
     "product": {
       "addProduct": "Thêm sản phẩm"
+    },
+    "category": {
+      "addCategory": "Thêm danh mục sản phẩm",
+      "editCategory": "Thay đổi thông tin danh mục sản phẩm",
+      "cancel": "Hủy bỏ",
+      "submitAddCategory": "Xác nhận",
+      "submitEditCategory": "Xác nhận"
     }
   },
   "input": {
