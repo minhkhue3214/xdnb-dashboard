@@ -87,7 +87,9 @@
       "priority": "Mức độ ưu tiên",
       "quantity": "Số lượng",
       "supplier": "Nhà cung cấp",
-      "gallery_items": "Danh sách ảnh"
+      "gallery_items": "Danh sách ảnh",
+      "image_name": "Tên ảnh",
+      "image_priority": "Độ ưu tiên"
     }
   },
   "modal": {
@@ -108,6 +110,9 @@
       "previewPost": "Xem thử",
       "submitAddPost": "Xác nhận",
       "submitEditPost": "Xác nhận"
+    },
+    "product": {
+      "addProduct": "Thêm sản phẩm"
     },
     "category": {
       "addCategory": "Thêm danh mục sản phẩm",
@@ -153,6 +158,16 @@
         "parentId": "Danh mục cha",
         "visible": "Hiển thị danh mục",
         "visibleChildren": "Hiển thị danh mục con"
+      },
+      "product":{
+        "category_id":"Mã loại sản phẩm",
+        "name":"Tên sản phẩm",
+        "slug":"Slug",
+        "priority":"Ưu tiên hiển thị",
+        "short_description":"Mô tả ngắn",
+        "long_description":"Mô tả dài",
+        "image_name": "Tên ảnh",
+        "image_priority": "Độ ưu tiên"
       }
     },
     "error": {
