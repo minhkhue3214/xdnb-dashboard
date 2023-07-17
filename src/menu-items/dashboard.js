@@ -1,8 +1,5 @@
 // assets
-import { IconDashboard } from '@tabler/icons';
-
-// constant
-const icons = { IconDashboard };
+import { IconFileReport } from '@tabler/icons';
 
 const dashboard = {
   id: 'dashboard',
@@ -10,12 +7,11 @@ const dashboard = {
   type: 'group',
   children: [
     {
-      id: 'default',
-      title: 'menu.dashboard',
+      id: 'requests',
+      title: 'menu.consultationRequests',
       type: 'item',
-      url: '/dashboard/default',
-      icon: icons.IconDashboard,
-      breadcrumbs: false
+      url: '/requests',
+      icon: IconFileReport
     }
   ]
 };
