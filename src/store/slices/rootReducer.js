@@ -6,6 +6,7 @@ import { default as posts } from './posts';
 import { default as categories } from './categories';
 import { default as profile } from './profile';
 import { default as products } from './products';
+import { default as consultationRequests } from './consultationRequests';
 export * from './authentication';
 export * from './customization';
 export * from './users';
@@ -13,6 +14,7 @@ export * from './posts';
 export * from './categories';
 export * from './profile';
 export * from './products';
+export * from './consultationRequests';
 
 const rootReducer = combineReducers({
   authentication,
@@ -21,7 +23,8 @@ const rootReducer = combineReducers({
   posts,
   categories,
   profile,
-  products
+  products,
+  consultationRequests
 });
 
 export default rootReducer;

@@ -4,11 +4,12 @@
     "disable": "Tắt"
   },
   "menu": {
-    "dashboard": "Bảng thống kê",
+    "dashboard": "Thống kê",
     "users": "Quản lý người dùng",
     "posts": "Quản lý bài viết",
     "categories": "Quản lý danh mục",
     "products": "Quản lý sản phẩm",
+    "consultationRequests": "Yêu cầu tư vấn",
     "submenu": {}
   },
   "profile": {
@@ -44,6 +45,9 @@
       "priority": "Mức độ ưu tiên",
       "quantity": "Số lượng",
       "supplier": "Nhà cung cấp"
+    },
+    "consultationRequests": {
+      "exportConsultationRequestData": "Xuất dữ liệu"
     }
   },
   "table": {
@@ -90,6 +94,16 @@
       "gallery_items": "Danh sách ảnh",
       "image_name": "Tên ảnh",
       "image_priority": "Độ ưu tiên"
+    },
+    "consultationRequest": {
+      "name": "Tên khách hàng",
+      "phone": "Số điện thoại",
+      "email": "Địa chỉ email",
+      "note": "Ghi chú",
+      "status": "Trạng thái",
+      "actions": "Thao tác",
+      "statusSuccess": "Đã tư vấn",
+      "statusNone": "Chưa tư vấn"
     }
   },
   "modal": {
