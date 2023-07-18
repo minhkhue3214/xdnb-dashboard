@@ -125,7 +125,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
         width="95%"
         footer={[
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
-            {t('modal.category.addCategory')}
+            {t('modal.category.submitAddCategory')}
           </Button>,
           <Button key="2" danger onClick={handleCancel}>
             {t('modal.category.cancel')}

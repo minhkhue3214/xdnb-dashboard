@@ -101,6 +101,7 @@
       "email": "Địa chỉ email",
       "note": "Ghi chú",
       "status": "Trạng thái",
+      "result": "Kết quả tư vấn",
       "actions": "Thao tác",
       "statusSuccess": "Đã tư vấn",
       "statusNone": "Chưa tư vấn"
@@ -134,6 +135,11 @@
       "cancel": "Hủy bỏ",
       "submitAddCategory": "Xác nhận",
       "submitEditCategory": "Xác nhận"
+    },
+    "consultationRequest": {
+      "editConsultationRequest": "Cập nhật trạng thái đơn",
+      "cancel": "Hủy bỏ",
+      "submitEditConsultationRequest": "Xác nhận"
     }
   },
   "input": {
@@ -182,6 +188,10 @@
         "long_description":"Mô tả dài",
         "image_name": "Tên ảnh",
         "image_priority": "Độ ưu tiên"
+      },
+      "consultationRequest": {
+        "status": "Tình trạng",
+        "result": "Kết quả tư vấn"
       }
     },
     "error": {

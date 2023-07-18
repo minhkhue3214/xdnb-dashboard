@@ -144,7 +144,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
         width="95%"
         footer={[
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
-            {t('modal.category.editCategory')}
+            {t('modal.category.submitEditCategory')}
           </Button>,
           <Button key="2" danger onClick={handleCancel}>
             {t('modal.category.cancel')}
@@ -233,13 +233,15 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
                 onBlur={formik.handleBlur}
                 onChange={handleChangeVisible}
                 labelStyle={{
-                  padding: '2px'
+                  padding: '2px',
+                  paddingRight: '10px'
                 }}
                 style={{
                   width: '100%',
                   marginTop: '8px',
                   display: 'flex',
                   flexDirection: 'row',
+                  alignItems: 'center',
                   height: '40px'
                 }}
                 switchStyle={{
@@ -255,13 +257,15 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
                 onBlur={formik.handleBlur}
                 onChange={handleChangeVisibleChildren}
                 labelStyle={{
-                  padding: '2px'
+                  padding: '2px',
+                  paddingRight: '10px'
                 }}
                 style={{
                   width: '100%',
                   marginTop: '8px',
                   display: 'flex',
                   flexDirection: 'row',
+                  alignItems: 'center',
                   height: '40px'
                 }}
                 switchStyle={{

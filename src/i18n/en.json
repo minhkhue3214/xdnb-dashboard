@@ -93,6 +93,7 @@
       "email": "Email Address",
       "note": "Note",
       "status": "Status",
+      "result": "Consultation Results",
       "actions": "Actions",
       "statusSuccess": "Consulted",
       "statusNone": "Not consulted yet"
@@ -123,6 +124,11 @@
       "cancel": "Cancel",
       "submitAddCategory": "Submit",
       "submitEditCategory": "Submit"
+    },
+    "consultationRequest": {
+      "editConsultationRequest": "Update Consultation Request Status",
+      "cancel": "Cancel",
+      "submitEditConsultationRequest": "Submit"
     }
   },
   "input": {
@@ -156,6 +162,10 @@
         "parentId": "Parent Category",
         "visible": "Visible",
         "visibleChildren": "Visible Children Categories"
+      },
+      "consultationRequest": {
+        "status": "Status",
+        "result": "Consultation Results"
       }
     },
     "error": {

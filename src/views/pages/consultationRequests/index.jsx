@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 // project imports
 import IconButton from '@mui/material/IconButton';
 import Pagination from '@mui/material/Pagination';
@@ -8,11 +8,13 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { useTranslation } from 'react-i18next';
 import { MdDelete } from 'react-icons/md';
+import { AiFillEdit } from 'react-icons/ai';
 import { TbTableExport } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useConsultationRequestsStore } from '~/hooks/consultationRequests';
 import MainCard from '~/ui-component/cards/MainCard';
 import { AntdTable } from '~/ui-component/molecules';
+import UpdateConsultationRequestModal from './UpdateConsultationRequestModal';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -20,6 +22,11 @@ dayjs.extend(timezone);
 const PageConsultationRequest = () => {
   const { t } = useTranslation();
   const { consultationRequestsState, dispatchGetConsultationRequests, dispatchDeleteConsultationRequest } = useConsultationRequestsStore();
+
+  const [openEditConsultationRequestModal, setOpenEditConsultationRequestModal] = useState({
+    status: false,
+    id: ''
+  });
 
   useEffect(() => {
     dispatchGetConsultationRequests();
@@ -29,22 +36,60 @@ const PageConsultationRequest = () => {
     return consultationRequestsState.consultationRequests;
   }, [consultationRequestsState.consultationRequests]);
 
-  const handleDelete = (params) => {
-    dispatchDeleteConsultationRequest({
-      id: params?.id || ''
-    });
-  };
+  const handleChangeEditConsultationRequestModal = useCallback((props) => {
+    if (typeof props === 'boolean') {
+      setOpenEditConsultationRequestModal({
+        status: props,
+        id: ''
+      });
+    } else if (typeof props !== 'object') {
+      return undefined;
+    }
+
+    const { status, id } = props;
+
+    if (!id) {
+      setOpenEditConsultationRequestModal({
+        status: false,
+        id: ''
+      });
+    } else {
+      setOpenEditConsultationRequestModal({
+        status,
+        id
+      });
+    }
+  }, []);
+
+  const handleEdit = useCallback(
+    (params) => {
+      handleChangeEditConsultationRequestModal({
+        status: true,
+        id: params?.id
+      });
+    },
+    [handleChangeEditConsultationRequestModal]
+  );
+
+  const handleDelete = useCallback(
+    (params) => {
+      dispatchDeleteConsultationRequest({
+        id: params?.id || ''
+      });
+    },
+    [dispatchDeleteConsultationRequest]
+  );
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { dataIndex: 'name', title: t('table.consultationRequest.name'), width: '15%' },
-    { dataIndex: 'phone', title: t('table.consultationRequest.phone'), width: '15%' },
-    { dataIndex: 'email', title: t('table.consultationRequest.email'), width: '20%' },
-    { dataIndex: 'note', title: t('table.consultationRequest.note'), width: '25%' },
+    { dataIndex: 'name', title: t('table.consultationRequest.name'), width: '13%' },
+    { dataIndex: 'phone', title: t('table.consultationRequest.phone'), width: '10%' },
+    { dataIndex: 'email', title: t('table.consultationRequest.email'), width: '15%' },
+    { dataIndex: 'note', title: t('table.consultationRequest.note'), width: '20%' },
     {
       dataIndex: 'status',
       title: t('table.consultationRequest.status'),
-      width: '15%',
+      width: '12%',
       render: (_, record) => (
         <Badge
           status={record.status ? 'success' : 'default'}
@@ -53,14 +98,24 @@ const PageConsultationRequest = () => {
       )
     },
     {
+      dataIndex: 'result',
+      title: t('table.consultationRequest.result'),
+      width: '20%'
+    },
+    {
       dataIndex: 'actions',
       title: t('table.consultationRequest.actions'),
       render: (_, record) => (
-        <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(record)} okText="Đồng ý" cancelText="Hủy">
-          <IconButton aria-label="delete">
-            <MdDelete color="tomato" size={22} />
+        <>
+          <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>
+            <AiFillEdit size={22} />
           </IconButton>
-        </Popconfirm>
+          <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(record)} okText="Đồng ý" cancelText="Hủy">
+            <IconButton aria-label="delete">
+              <MdDelete color="tomato" size={22} />
+            </IconButton>
+          </Popconfirm>
+        </>
       ),
       width: '10%'
     }
@@ -91,6 +146,11 @@ const PageConsultationRequest = () => {
           color="primary"
         />
       </PaginationWrapper>
+      <UpdateConsultationRequestModal
+        id={openEditConsultationRequestModal.id}
+        open={openEditConsultationRequestModal.status}
+        setOpen={handleChangeEditConsultationRequestModal}
+      />
     </MainCard>
   );
 };
