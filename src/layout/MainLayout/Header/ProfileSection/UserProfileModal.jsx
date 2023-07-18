@@ -1,11 +1,11 @@
-import { Image, Button } from 'antd';
+import { Button } from 'antd';
 import { useFormik } from 'formik';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { useProfileStore } from '~/hooks/profile';
-import { Input } from '~/ui-component/atoms';
+import { Input, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
 const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
@@ -13,6 +13,29 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   const { profileState, dispatchGetProfile, dispatchUpdateProfile } = useProfileStore();
   const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
   const [id, setId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const [disableButton, setDisableButton] = useState(true);
+
+  const getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+  };
+
+  const handleImageChange = (info) => {
+    if (info.file.status === 'uploading') {
+      setLoading(true);
+      return;
+    }
+    // Get this url from response in real world.
+    getBase64(info.file.originFileObj, (url) => {
+      setLoading(false);
+      setImageUrl(url);
+      setDisableButton(false);
+      formik.setFieldValue('avatar', url);
+    });
+  };
 
   useEffect(() => {
     console.log('dispatchGetProfile');
@@ -57,6 +80,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
     if (data) {
       console.log('profileState', data);
       setId(data.id);
+      setImageUrl(data.avatar || avatarDefault);
       formik.setFieldValue('username', data.username || '');
       formik.setFieldValue('fullname', data.fullname || '');
       formik.setFieldValue('avatar', data.avatar || avatarDefault);
@@ -71,9 +95,11 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
+    setDisableButton(true);
   }, [formik, setOpen]);
 
   const handleChange = (event) => {
+    setDisableButton(false);
     // Xử lý sự kiện thay đổi giá trị
     formik.handleChange(event);
     // Các hành động khác bạn muốn thực hiện khi có sự thay đổi giá trị
@@ -103,7 +129,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
           >
             {t('modal.user.updatePasswordBtn')}
           </Button>,
-          <Button key="update" type="primary" onClick={formik.handleSubmit}>
+          <Button disabled={disableButton} key="update" type="primary" onClick={formik.handleSubmit}>
             Thay đổi thông tin
           </Button>
         ]}
@@ -112,20 +138,28 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
         cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
-          <Image
-            width={90}
+          <UploadImage
+            name="avatar"
+            disabled="true"
+            value={formik.values.avatar}
+            onChange={handleImageChange}
+            loading={loading}
+            imageUrl={imageUrl}
+            labelStyle={{
+              padding: '2px'
+            }}
             style={{
               width: '100%',
               marginTop: '8px',
-              position: 'relative',
-              left: 180,
-              border: '2px solid #c1c3c7c5',
-              borderRadius: '50px'
+              // marginLeft: '40%',
+              // position: 'relative',
+              // borderRadius: '50px',
+              // overflow: "hidden",
             }}
-            preview={{
-              mask: false
+            inputStyle={{
+              // position: 'relative',
+              width: '100%'
             }}
-            src={formik.values.avatar}
           />
           <Input
             label={`* ${t('input.label.user.username')}`}
