@@ -59,21 +59,21 @@ function* requestDeleteProductSaga(action) {
 
 function* requestAddProductSaga(action) {
     try {
-      const { params } = action.payload;
-      console.log("requestAddProductSaga 1", action.payload.params);
-      if (params) {
-        delete action.payload.params;
-      }
-  
-  
-      const result = yield call(addProductApi, action.payload);
-      yield put(addProductSuccess(result));
-      // yield put(reGetAllUserRequest({ params }));
-    //   yield put(reGetAllUserRequest());
+        const { params } = action.payload;
+        console.log("requestAddProductSaga 1", action.payload.params);
+        if (params) {
+            delete action.payload.params;
+        }
+
+
+        const result = yield call(addProductApi, action.payload);
+        yield put(addProductSuccess(result));
+        // yield put(reGetAllUserRequest({ params }));
+        //   yield put(reGetAllUserRequest());
     } catch (error) {
-      yield put(addProductFail(error));
+        yield put(addProductFail(error));
     }
-  }
+}
 
 export default function* watchProducts() {
     yield takeLatest(getAllProductsRequest.type, requestAllProductsSaga);

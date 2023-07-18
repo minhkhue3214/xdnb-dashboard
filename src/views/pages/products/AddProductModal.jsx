@@ -1,25 +1,18 @@
+import { Button } from 'antd';
 import { useFormik } from 'formik';
-import { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 import { useProductsStore } from '~/hooks/products';
-import { Input, InputNumber, Selector, Switch, UploadMultipleImage } from '~/ui-component/atoms';
+import { Input, InputNumber, Selector, Switch, UploadProductImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
-// import { v4 as uuidv4 } from 'uuid';
 
 const AddUserModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
-  // const { dispatchAddUser } = useUsersStore();
   const { dispatchAddProduct } = useProductsStore();
-  const [imageName, setImageName] = useState('');
-  const [altImage, setAltImage] = useState('');
-  const [imagePriority, setImagePriority] = useState(1);
-
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState([]);
-  const [gallery, setGallery] = useState([]);
+  const [imageProduct, setImageProduct] = useState([]);
+  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   const formik = useFormik({
     initialValues: {
@@ -30,7 +23,7 @@ const AddUserModal = ({ open, setOpen }) => {
       short_description: '',
       long_description: '',
       priority: 1,
-      gallery_items: gallery
+      gallery_items: imageProduct
     },
     onSubmit: (values) => {
       formik.validateForm().then(() => {
@@ -44,10 +37,11 @@ const AddUserModal = ({ open, setOpen }) => {
             short_description: values.short_description,
             long_description: values.long_description,
             priority: values.priority,
-            gallery_items: values.gallery_items,
+            gallery_items: imageProduct
           });
 
           handleCancel();
+          setImageProduct([]);
         }
       });
     },
@@ -59,56 +53,75 @@ const AddUserModal = ({ open, setOpen }) => {
     setOpen(false);
   }, [formik, setOpen]);
 
-  const handleNameChange = (e) => setImageName(e.target.value);
-  const handleAltChange = (e) => setAltImage(e.target.value);
-  const handlePriorityChange = (e) => setImagePriority(e.target.value);
+  const id = React.useMemo(() => {
+    return uuidv4();
+  }, []);
 
-  const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+  const handleProductName = (id, e) => {
+    // console.log('handleProductName', id, e.target.value);
+    setImageProduct((prevImageProduct) => {
+      return prevImageProduct.map((image) => {
+        if (image.id === id) {
+          return { ...image, name: e.target.value };
+        }
+        return image;
+      });
     });
-
-  const handleCancelPreview = () => setPreviewOpen(false);
-
-  const handleImageBase64 = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    return file.url || file.preview;
   };
 
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    console.log('handlePreview', file);
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+  const handleProductAlt = (id, e) => {
+    // console.log('handleProductName', id, e.target.value);
+    setImageProduct((prevImageProduct) => {
+      return prevImageProduct.map((image) => {
+        if (image.id === id) {
+          return { ...image, alt: e.target.value };
+        }
+        return image;
+      });
+    });
   };
 
-  const handleChange = ({ fileList: newFileList }) => {
-    let imageFile = newFileList[newFileList.length - 1];
-    if (imageName == '' || altImage == '') {
-      return;
-    }
-    console.log('imageFile', imageFile);
-    setFileList(newFileList);
-    if (imageFile.status === 'done') {
-      console.log('imageFile status done', imageFile);
-      let sourceImage = handleImageBase64(imageFile);
-      let newImage = { imageName, altImage, imagePriority, source: sourceImage };
-      console.log('newImage', newImage);
-      gallery.push(newImage);
+  const handleProductPriority = (id, e) => {
+    // console.log('handleProductName', id, e.target.value);
+    setImageProduct((prevImageProduct) => {
+      return prevImageProduct.map((image) => {
+        if (image.id === id) {
+          return { ...image, priority: e.target.value };
+        }
+        return image;
+      });
+    });
+  };
 
-      setGallery([...gallery, newImage]);
-      console.log('gallery', gallery);
-      setImageName('');
-      setAltImage('');
-    }
+  const handleProductSource = (id, url) => {
+    setImageProduct((prevImageProduct) => {
+      return prevImageProduct.map((image) => {
+        if (image.id === id) {
+          return { ...image, source: url };
+        }
+        return image;
+      });
+    });
+  };
+
+  const handleAddModal = () => {
+    console.log('handleAddModal');
+    setImageProduct((prevImageProduct) => {
+      const newImage = {
+        id: uuidv4(),
+        name: 'Gallery Item 1',
+        alt: 'Alt text for Gallery Item 1',
+        source: avatarDefault,
+        priority: 1
+      };
+      return [...prevImageProduct, newImage];
+    });
+  };
+
+  const handleDeleteModal = (id) => {
+    console.log('handleDeleteModal', id);
+    const newListImage = imageProduct.filter((image) => image.id !== id);
+    setImageProduct(newListImage);
   };
 
   return (
@@ -278,98 +291,26 @@ const AddUserModal = ({ open, setOpen }) => {
             />
           </CellLeft>
           <CellRight>
-            <Input
-              label={`* ${t('input.label.product.image_name')}`}
-              name="image_name"
-              message={formik.touched.image_name ? formik.errors.image_name : ''}
-              type={formik.touched.image_name && formik.errors.image_name ? 'error' : ''}
-              value={imageName}
-              onBlur={formik.handleBlur}
-              onChange={(e) => {
-                handleNameChange(e);
-              }}
-              labelStyle={{
-                padding: '2px'
-              }}
+            <Button
+              type="primary"
               style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
+                width: '30%'
               }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label="alt"
-              name="alt"
-              message={formik.touched.alt ? formik.errors.alt : ''}
-              type={formik.touched.alt && formik.errors.alt ? 'error' : ''}
-              value={altImage}
-              onBlur={formik.handleBlur}
-              onChange={(e) => {
-                handleAltChange(e);
-              }}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <InputNumber
-              label={`* ${t('input.label.product.image_priority')}`}
-              name="image_priority"
-              message={formik.touched.image_priority ? formik.errors.image_priority : ''}
-              type={formik.touched.image_priority && formik.errors.image_priority ? 'error' : ''}
-              value={imagePriority}
-              onBlur={formik.handleBlur}
-              onChange={(e) => {
-                handlePriorityChange(e);
-              }}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '20%'
-              }}
-            />
-            <UploadMultipleImage
-              label={`* ${t('input.label.product.gallery_items')}`}
-              name="image_priority"
-              message={formik.touched.image_priority ? formik.errors.image_priority : ''}
-              type={formik.touched.image_priority && formik.errors.image_priority ? 'error' : ''}
-              value={formik.values.image_priority}
-              onBlur={formik.handleBlur}
-              onChange={handleChange}
-              previewOpen={previewOpen}
-              previewImage={previewImage}
-              previewTitle={previewTitle}
-              fileList={fileList}
-              handleCancelPreview={handleCancelPreview}
-              handlePreview={handlePreview}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '20%'
-              }}
-            />
+              onClick={handleAddModal}
+            >
+              Add Modal
+            </Button>
+            {imageProduct.map((ProductInfo) => (
+              <UploadProductImage
+                key={id}
+                handleProductName={handleProductName}
+                handleDeleteModal={handleDeleteModal}
+                handleProductAlt={handleProductAlt}
+                handleProductPriority={handleProductPriority}
+                handleProductSource={handleProductSource}
+                ProductInfo={ProductInfo}
+              />
+            ))}
           </CellRight>
         </EditUserWrapper>
       </Modal>
