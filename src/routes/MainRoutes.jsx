@@ -12,6 +12,7 @@ const UserPage = Loadable(lazy(() => import('~/views/pages/users')));
 const PagePost = Loadable(lazy(() => import('~/views/pages/posts')));
 const PageCategory = Loadable(lazy(() => import('~/views/pages/categories')));
 const PageProduct = Loadable(lazy(() => import('~/views/pages/products')));
+const PageConsultationRequest = Loadable(lazy(() => import('~/views/pages/consultationRequests')));
 
 function ProtectedRoute() {
   const { authenticationState } = useAuthenticationStore();
@@ -57,6 +58,10 @@ const MainRoutes = {
     {
       path: 'products',
       element: <PageProduct />
+    },
+    {
+      path: 'requests',
+      element: <PageConsultationRequest />
     }
   ]
 };

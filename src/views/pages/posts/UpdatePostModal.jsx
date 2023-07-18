@@ -108,7 +108,6 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
 
   const handleChangeType = useCallback(
     (value) => {
-      console.log('type', value);
       formik.setFieldValue('type', value);
     },
     [formik]
@@ -150,7 +149,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
             {t('modal.post.previewPost')}
           </Button>,
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
-            {t('modal.post.editPost')}
+            {t('modal.post.submitEditPost')}
           </Button>,
           <Button key="2" danger onClick={handleCancel}>
             {t('modal.post.cancel')}
@@ -163,6 +162,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
               <InputPermalink
                 label={`* ${t('input.label.post.slug')}`}
                 name="slug"
+                addonBefore="https://xuongdaninhbinh.com/post/"
                 message={formik.touched.slug ? formik.errors.slug : ''}
                 type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
                 value={formik.values.slug}

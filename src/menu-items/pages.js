@@ -1,4 +1,4 @@
-import { IconUser, IconNote, IconCategory } from '@tabler/icons';
+import { IconUser, IconNote, IconCategory, IconBrandProducthunt } from '@tabler/icons';
 
 const pages = {
   id: 'pages',
@@ -31,7 +31,7 @@ const pages = {
       title: 'menu.products',
       type: 'item',
       url: '/products',
-      icon: IconNote
+      icon: IconBrandProducthunt
     }
   ]
 };

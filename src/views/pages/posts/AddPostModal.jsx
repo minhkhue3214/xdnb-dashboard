@@ -122,7 +122,7 @@ const AddPostModal = ({ open, setOpen }) => {
             {t('modal.post.previewPost')}
           </Button>,
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
-            {t('modal.post.addPost')}
+            {t('modal.post.submitAddPost')}
           </Button>,
           <Button key="2" danger onClick={handleCancel}>
             {t('modal.post.cancel')}
@@ -135,6 +135,7 @@ const AddPostModal = ({ open, setOpen }) => {
               <InputPermalink
                 label={`* ${t('input.label.post.slug')}`}
                 name="slug"
+                addonBefore="https://xuongdaninhbinh.com/post/"
                 message={formik.touched.slug ? formik.errors.slug : ''}
                 type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
                 value={formik.values.slug}

@@ -17,7 +17,7 @@ const updatePostApi = (params) => {
 };
 
 const deletePostApi = (params) => {
-  return axiosClient.delete('/product/deletePost', params);
+  return axiosClient.delete('/post/deletePost', params);
 };
 
 export { getPostsApi, getPostApi, addPostApi, updatePostApi, deletePostApi };

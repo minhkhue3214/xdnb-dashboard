@@ -49,16 +49,7 @@ const AtomInput = (props) => {
       <Label htmlFor={id} style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} ${isFocused ? 'focused' : ''}`}>
         {label}
       </Label>
-      <Input
-        addonBefore="https://xuongdaninhbinh.com/post/"
-        id={id}
-        status={type}
-        style={inputStyle}
-        onChange={onChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        {...restProps}
-      />
+      <Input id={id} status={type} style={inputStyle} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} {...restProps} />
       <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
         {message}
       </Message>

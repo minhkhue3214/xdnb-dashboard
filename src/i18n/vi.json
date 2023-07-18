@@ -4,11 +4,12 @@
     "disable": "Tắt"
   },
   "menu": {
-    "dashboard": "Bảng thống kê",
+    "dashboard": "Thống kê",
     "users": "Quản lý người dùng",
     "posts": "Quản lý bài viết",
     "categories": "Quản lý danh mục",
     "products": "Quản lý sản phẩm",
+    "consultationRequests": "Yêu cầu tư vấn",
     "submenu": {}
   },
   "profile": {
@@ -44,6 +45,9 @@
       "priority": "Mức độ ưu tiên",
       "quantity": "Số lượng",
       "supplier": "Nhà cung cấp"
+    },
+    "consultationRequests": {
+      "exportConsultationRequestData": "Xuất dữ liệu"
     }
   },
   "table": {
@@ -73,7 +77,9 @@
     "category": {
       "name": "Danh mục",
       "icon": "Icon",
-      "path": "Đường dẫn",
+      "slug": "Slug",
+      "visible": "Hiển thị",
+      "priority": "Ưu tiên",
       "actions": "Thao tác"
     },
     "products": {
@@ -88,6 +94,17 @@
       "gallery_items": "Danh sách ảnh",
       "image_name": "Tên ảnh",
       "image_priority": "Độ ưu tiên"
+    },
+    "consultationRequest": {
+      "name": "Tên khách hàng",
+      "phone": "Số điện thoại",
+      "email": "Địa chỉ email",
+      "note": "Ghi chú",
+      "status": "Trạng thái",
+      "result": "Kết quả tư vấn",
+      "actions": "Thao tác",
+      "statusSuccess": "Đã tư vấn",
+      "statusNone": "Chưa tư vấn"
     }
   },
   "modal": {
@@ -118,6 +135,11 @@
       "cancel": "Hủy bỏ",
       "submitAddCategory": "Xác nhận",
       "submitEditCategory": "Xác nhận"
+    },
+    "consultationRequest": {
+      "editConsultationRequest": "Cập nhật trạng thái đơn",
+      "cancel": "Hủy bỏ",
+      "submitEditConsultationRequest": "Xác nhận"
     }
   },
   "input": {
@@ -147,16 +169,30 @@
         "imageAlt": "Alt ảnh đại diện",
         "type": "Loại bài viết"
       },
-      "product":{
-        "category_id":"Mã loại sản phẩm",
-        "name":"Tên sản phẩm",
-        "slug":"Slug",
-        "priority":"Ưu tiên hiển thị",
-        "short_description":"Mô tả ngắn",
-        "long_description":"Mô tả dài",
+      "category": {
+        "slug": "Liên kết",
+        "name": "Tên danh mục",
+        "priority": "Ưu tiên hiển thị",
+        "description": "Mô tả",
+        "addTagText": "Thêm tag",
+        "parentId": "Danh mục cha",
+        "visible": "Hiển thị danh mục",
+        "visibleChildren": "Hiển thị danh mục con"
+      },
+      "product": {
+        "category_id": "Mã loại sản phẩm",
+        "name": "Tên sản phẩm",
+        "slug": "Slug",
+        "priority": "Ưu tiên hiển thị",
+        "short_description": "Mô tả ngắn",
+        "long_description": "Mô tả dài",
         "image_name": "Tên ảnh",
         "image_priority": "Độ ưu tiên",
         "gallery_items": "Danh sách ảnh"
+      },
+      "consultationRequest": {
+        "status": "Tình trạng",
+        "result": "Kết quả tư vấn"
       }
     },
     "error": {
@@ -182,6 +218,12 @@
         "pleaseEnterPublicationDate": "Vui lòng chọn ngày xuất bản",
         "pleaseEnterSlug": "Vui lòng nhập permalink",
         "pleaseEnterContent": "Vui lòng nhập nội dung bài viết",
+        "pleaseEnterPriority": "Vui lòng nhập độ ưu tiên",
+        "slugNotValid": "permalink không hợp lệ"
+      },
+      "category": {
+        "pleaseEnterName": "Vui lòng nhập tiêu đề bài viết",
+        "pleaseEnterSlug": "Vui lòng nhập permalink",
         "pleaseEnterPriority": "Vui lòng nhập độ ưu tiên",
         "slugNotValid": "permalink không hợp lệ"
       }

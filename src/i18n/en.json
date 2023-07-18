@@ -9,6 +9,7 @@
     "posts": "Posts Management",
     "categories": "Categories Management",
     "products": "Products Management",
+    "consultationRequests": "Consultation Requests",
     "submenu": {}
   },
   "profile": {
@@ -43,6 +44,9 @@
       "priority": "Priority",
       "quantity": "Quantity",
       "supplier": "Supplier"
+    },
+    "consultationRequests": {
+      "exportConsultationRequestData": "Export Consultation Request Data"
     }
   },
   "table": {
@@ -67,7 +71,9 @@
     "category": {
       "name": "Category",
       "icon": "Icon",
-      "path": "Path",
+      "slug": "Slug",
+      "visible": "Visible",
+      "priority": "Priority",
       "actions": "Actions"
     },
     "products": {
@@ -80,6 +86,17 @@
       "quantity": "Quantity",
       "supplier": "Supplier",
       "gallery_items": "Gallery items"
+    },
+    "consultationRequest": {
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email Address",
+      "note": "Note",
+      "status": "Status",
+      "result": "Consultation Results",
+      "actions": "Actions",
+      "statusSuccess": "Consulted",
+      "statusNone": "Not consulted yet"
     }
   },
   "modal": {
@@ -107,6 +124,11 @@
       "cancel": "Cancel",
       "submitAddCategory": "Submit",
       "submitEditCategory": "Submit"
+    },
+    "consultationRequest": {
+      "editConsultationRequest": "Update Consultation Request Status",
+      "cancel": "Cancel",
+      "submitEditConsultationRequest": "Submit"
     }
   },
   "input": {
@@ -131,6 +153,19 @@
         "imageUrl": "Display Image",
         "imageAlt": "Alt Display Image",
         "type": "Post Type"
+      },
+      "category": {
+        "slug": "Permalink",
+        "name": "Category Name",
+        "priority": "Priority",
+        "addTagText": "Add Tag",
+        "parentId": "Parent Category",
+        "visible": "Visible",
+        "visibleChildren": "Visible Children Categories"
+      },
+      "consultationRequest": {
+        "status": "Status",
+        "result": "Consultation Results"
       }
     },
     "error": {
@@ -155,10 +190,16 @@
         "pleaseEnterAuthor": "Please enter an author",
         "pleaseEnterDescription": "Please enter an description",
         "pleaseEnterPublicationDate": "Please enter an publication date",
-        "pleaseEnterSlug": "Please enter an slug",
+        "pleaseEnterSlug": "Please enter an permalink",
         "pleaseEnterContent": "Please enter an content",
         "pleaseEnterPriority": "Please enter an priority",
-        "slugNotValid": "permalink is not valid"
+        "slugNotValid": "Permalink is not valid"
+      },
+      "category": {
+        "pleaseEnterName": "Please enter an name",
+        "pleaseEnterSlug": "Please enter an permalink",
+        "pleaseEnterPriority": "Please enter an priority",
+        "slugNotValid": "Permalink is not valid"
       }
     }
   }
