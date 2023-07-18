@@ -1,22 +1,13 @@
-import React, { memo, useState } from 'react';
-import { Modal, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Modal, Upload } from 'antd';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
 
 const AtomUploadMultiple = (props) => {
   const {
     style = {}, // custom style cho wrapper
     labelStyle = {}, // custom style cho label
-    inputStyle = {}, // custom style cho input
     messageStyle = {}, // custom style cho message
     visileLabel = true, // Có hiện label hay không?
     visibleMessage = true, // Có hiện message hay không?
@@ -25,29 +16,18 @@ const AtomUploadMultiple = (props) => {
     type = '', // '' | 'warning' | 'error'
     hiddenMode = 'hidden', // hidden || none Có 2 cách ẩn input: ẩn hoàn toàn với display = none, chỉ ẩn phần tử nhưng vẫn giữ nguyên vị trí với visibility = hidden
     // Có thể sử dụng các thuộc tính của thẻ Input antd như bình thường.
+    onChange,
+    previewOpen,
+    previewImage,
+    previewTitle,
+    fileList,
+    handleCancelPreview,
+    handlePreview
   } = props;
 
   const id = React.useMemo(() => {
     return uuidv4();
   }, []);
-
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState([
-  ]);
-
-  const handleCancel = () => setPreviewOpen(false);
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
-  };
-
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
   const uploadButton = (
     <div>
@@ -67,21 +47,17 @@ const AtomUploadMultiple = (props) => {
       <Label htmlFor={id} style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode}`}>
         {label}
       </Label>
-      {/* {isTextArea ? (
-        <TextArea id={id} status={type} style={inputStyle} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} {...restProps} />
-      ) : (
-        <Input id={id} status={type} style={inputStyle} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} {...restProps} />
-      )} */}
       <Upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        action={'http://localhost:3000/upload'}
+        // disabled={true}
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
-        onChange={handleChange}
+        onChange={onChange}
       >
         {fileList.length >= 8 ? null : uploadButton}
       </Upload>
-      <Modal id={id} status={type} style={inputStyle} open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+      <Modal id={id} open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancelPreview}>
         <img
           alt="example"
           style={{

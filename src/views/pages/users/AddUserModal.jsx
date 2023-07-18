@@ -133,69 +133,6 @@ const AddUserModal = ({ open, setOpen }) => {
         <EditUserWrapper>
           <Cell>
             <Input
-              label={`* ${t('input.label.user.username')}`}
-              name="username"
-              message={formik.touched.username ? formik.errors.username : ''}
-              type={formik.touched.username && formik.errors.username ? 'error' : ''}
-              value={formik.values.username}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label={`* ${t('input.label.user.email')}`}
-              name="email"
-              message={formik.touched.email ? formik.errors.email : ''}
-              type={formik.touched.email && formik.errors.email ? 'error' : ''}
-              value={formik.values.email}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label={`* ${t('input.label.user.password')}`}
-              name="password"
-              message={formik.touched.password ? formik.errors.password : ''}
-              type={formik.touched.password && formik.errors.password ? 'error' : ''}
-              value={formik.values.password}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-          </Cell>
-          <Cell>
-            <Input
               label={`* ${t('input.label.user.fullname')}`}
               name="fullname"
               message={formik.touched.fullname ? formik.errors.fullname : ''}
@@ -263,6 +200,69 @@ const AddUserModal = ({ open, setOpen }) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+          </Cell>
+          <Cell>
+            <Input
+              label={`* ${t('input.label.user.username')}`}
+              name="username"
+              message={formik.touched.username ? formik.errors.username : ''}
+              type={formik.touched.username && formik.errors.username ? 'error' : ''}
+              value={formik.values.username}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.user.email')}`}
+              name="email"
+              message={formik.touched.email ? formik.errors.email : ''}
+              type={formik.touched.email && formik.errors.email ? 'error' : ''}
+              value={formik.values.email}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.user.password')}`}
+              name="password"
+              message={formik.touched.password ? formik.errors.password : ''}
+              type={formik.touched.password && formik.errors.password ? 'error' : ''}
+              value={formik.values.password}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
               labelStyle={{
                 padding: '2px'
               }}

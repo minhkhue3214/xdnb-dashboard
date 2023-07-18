@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 // project imports
 import IconButton from '@mui/material/IconButton';
 import Pagination from '@mui/material/Pagination';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai';
 import { GrGallery } from 'react-icons/gr';
@@ -11,7 +11,7 @@ import { TbTableExport } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useProductsStore } from '~/hooks/products';
 import MainCard from '~/ui-component/cards/MainCard';
-import { DataTable } from '~/ui-component/molecules';
+import { AntdTable } from '~/ui-component/molecules';
 import AddProductModal from './AddProductModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import GalleryItem from './GalleryItem';
@@ -137,7 +137,7 @@ const ProductsPage = () => {
   const handleGalleryItems = (params) => {
     handleChangeGalleryItemsModal({
       status: true,
-      id: params?.row?.id
+      id: params?.id
     });
   };
 
@@ -149,43 +149,90 @@ const ProductsPage = () => {
   };
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
+  // const columns = [
+  //   { field: 'name', headerName: t('table.products.name'), flex: 1, align: 'center', headerAlign: 'center' },
+  //   { field: 'original_price', headerName: t('table.products.original_price'), flex: 1, align: 'center', headerAlign: 'center' },
+  //   { field: 'discounted_price', headerName: t('table.products.discounted_price'), flex: 1, align: 'center', headerAlign: 'center' },
+  //   { field: 'priority', headerName: t('table.products.priority'), flex: 1, align: 'center', headerAlign: 'center' },
+  //   { field: 'quantity', headerName: t('table.products.quantity'), flex: 1, align: 'center', headerAlign: 'center' },
+  //   { field: 'hot', headerName: 'hot', flex: 1, align: 'center', headerAlign: 'center' },
+  //   {
+  //     field: 'gallery_items',
+  //     headerName: t('table.products.gallery_items'),
+  //     renderCell: (params) => (
+  //       <IconButton aria-label="edit" color="primary" onClick={() => handleGalleryItems(params)}>
+  //         <GrGallery size={22} />
+  //       </IconButton>
+  //     ),
+  //     flex: 1,
+  //     align: 'center',
+  //     headerAlign: 'center'
+  //   },
+  //   {
+  //     field: 'actions',
+  //     headerName: t('table.user.actions'),
+  //     renderCell: (params) => (
+  //       <>
+  //         <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(params)}>
+  //           <AiFillEdit size={22} />
+  //         </IconButton>
+  //         <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(params)} okText="Đồng ý" cancelText="Hủy">
+  //           <IconButton aria-label="delete">
+  //             <MdDelete color="tomato" size={22} />
+  //           </IconButton>
+  //         </Popconfirm>
+  //       </>
+  //     ),
+  //     flex: 1.5,
+  //     align: 'center',
+  //     headerAlign: 'center'
+  //   }
+  // ];
+
   const columns = [
-    { field: 'name', headerName: t('table.products.name'), flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'original_price', headerName: t('table.products.original_price'), flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'discounted_price', headerName: t('table.products.discounted_price'), flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'priority', headerName: t('table.products.priority'), flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'quantity', headerName: t('table.products.quantity'), flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'hot', headerName: 'hot', flex: 1, align: 'center', headerAlign: 'center' },
+    { dataIndex: 'name', title: t('table.products.name'), width: '8%' },
+    { dataIndex: 'original_price', title: t('table.products.original_price'), width: '10%' },
+    { dataIndex: 'discounted_price', title: t('table.products.discounted_price'), width: '10%' },
+    { dataIndex: 'priority', title: t('table.products.priority'), width: '10%' },
+    { dataIndex: 'quantity', title: t('table.products.quantity'), width: '10%' },
     {
-      field: 'gallery_items',
-      headerName: t('table.products.gallery_items'),
-      renderCell: (params) => (
-        <IconButton aria-label="edit" color="primary" onClick={() => handleGalleryItems(params)}>
-          <GrGallery size={22} />
-        </IconButton>
+      dataIndex: 'hot',
+      title: 'hot',
+      render: (_, record) => (
+        // console.log("record",record)
+        <>{record.hot ? <Tag color="red">True</Tag> : <Tag color="blue">False</Tag>}</>
       ),
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center'
+      width: '10%'
     },
     {
-      field: 'actions',
-      headerName: t('table.user.actions'),
-      renderCell: (params) => (
+      dataIndex: 'gallery_items',
+      title: t('table.products.gallery_items'),
+      render: (_, record) => (
+        // console.log("record",record)
         <>
-          <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(params)}>
+          <IconButton aria-label="edit" color="primary" onClick={() => handleGalleryItems(record)}>
+            <GrGallery size={22} />
+          </IconButton>
+        </>
+      ),
+      width: '10%'
+    },
+    {
+      dataIndex: 'actions',
+      title: t('table.post.actions'),
+      render: (_, record) => (
+        <>
+          <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>
             <AiFillEdit size={22} />
           </IconButton>
-          <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(params)} okText="Đồng ý" cancelText="Hủy">
+          <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(record)} okText="Đồng ý" cancelText="Hủy">
             <IconButton aria-label="delete">
               <MdDelete color="tomato" size={22} />
             </IconButton>
           </Popconfirm>
         </>
       ),
-      flex: 1.5,
-      align: 'center',
-      headerAlign: 'center'
+      width: '10%'
     }
   ];
 
@@ -214,7 +261,8 @@ const ProductsPage = () => {
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <DataTable columns={columns} rows={products} checkboxSelection={false} />
+        {/* <DataTable columns={columns} rows={products} checkboxSelection={false} /> */}
+        <AntdTable columns={columns} dataSource={products} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination count={productsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />

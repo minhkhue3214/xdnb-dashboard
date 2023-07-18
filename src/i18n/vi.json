@@ -155,7 +155,8 @@
         "short_description":"Mô tả ngắn",
         "long_description":"Mô tả dài",
         "image_name": "Tên ảnh",
-        "image_priority": "Độ ưu tiên"
+        "image_priority": "Độ ưu tiên",
+        "gallery_items": "Danh sách ảnh"
       }
     },
     "error": {

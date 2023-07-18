@@ -14,4 +14,8 @@ const deleteProductApi = (params) => {
   return axiosClient.delete('/product/deleteProduct', params);
 };
 
-export { getAllProductsApi, getProductApi, deleteProductApi };
+const addProductApi = (params) => {
+  return axiosClient.post('/product/addProduct', params);
+};
+
+export { getAllProductsApi, getProductApi, deleteProductApi, addProductApi };

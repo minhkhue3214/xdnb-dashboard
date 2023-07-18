@@ -1,15 +1,25 @@
 import { useFormik } from 'formik';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import * as yup from 'yup';
-import { useUsersStore } from '~/hooks/users';
-import { Input, InputNumber, Switch, UploadMultipleImage } from '~/ui-component/atoms';
+import { useProductsStore } from '~/hooks/products';
+import { Input, InputNumber, Selector, Switch, UploadMultipleImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
+// import { v4 as uuidv4 } from 'uuid';
 
 const AddUserModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
-  const { dispatchAddUser } = useUsersStore();
+  // const { dispatchAddUser } = useUsersStore();
+  const { dispatchAddProduct } = useProductsStore();
+  const [imageName, setImageName] = useState('');
+  const [altImage, setAltImage] = useState('');
+  const [imagePriority, setImagePriority] = useState(1);
+
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [fileList, setFileList] = useState([]);
+  const [gallery, setGallery] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -20,39 +30,21 @@ const AddUserModal = ({ open, setOpen }) => {
       short_description: '',
       long_description: '',
       priority: 1,
-      gallery_items: []
+      gallery_items: gallery
     },
-    validationSchema: yup.object({
-      email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
-      password: yup
-        .string()
-        .min(8, t('input.error.user.passwordMinLength'))
-        .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
-        .required(t('input.error.user.pleaseEnterPassword')),
-      fullname: yup.string().max(100, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
-      phone: yup.number(),
-      username: yup
-        .string()
-        .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
-        .required(t('input.error.user.pleaseEnterUsername'))
-        .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
-      avatar: yup.string().max(9000000, t('input.error.user.nameTooLong')),
-      address: yup.string().max(50, t('input.error.user.nameTooLong')),
-      role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
-    }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
           console.log('AddUserModal', values);
-          dispatchAddUser({
-            fullname: values.fullname,
-            username: values.username,
-            avatar: values.avatar,
-            phone: values.phone,
-            email: values.email,
-            address: values.address,
-            role: values.role,
-            password: values.password
+          dispatchAddProduct({
+            category_id: values.category_id,
+            name: values.name,
+            slug: values.slug,
+            hot: values.hot,
+            short_description: values.short_description,
+            long_description: values.long_description,
+            priority: values.priority,
+            gallery_items: values.gallery_items,
           });
 
           handleCancel();
@@ -66,6 +58,58 @@ const AddUserModal = ({ open, setOpen }) => {
     formik.handleReset();
     setOpen(false);
   }, [formik, setOpen]);
+
+  const handleNameChange = (e) => setImageName(e.target.value);
+  const handleAltChange = (e) => setAltImage(e.target.value);
+  const handlePriorityChange = (e) => setImagePriority(e.target.value);
+
+  const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  const handleCancelPreview = () => setPreviewOpen(false);
+
+  const handleImageBase64 = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    return file.url || file.preview;
+  };
+
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    console.log('handlePreview', file);
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+  };
+
+  const handleChange = ({ fileList: newFileList }) => {
+    let imageFile = newFileList[newFileList.length - 1];
+    if (imageName == '' || altImage == '') {
+      return;
+    }
+    console.log('imageFile', imageFile);
+    setFileList(newFileList);
+    if (imageFile.status === 'done') {
+      console.log('imageFile status done', imageFile);
+      let sourceImage = handleImageBase64(imageFile);
+      let newImage = { imageName, altImage, imagePriority, source: sourceImage };
+      console.log('newImage', newImage);
+      gallery.push(newImage);
+
+      setGallery([...gallery, newImage]);
+      console.log('gallery', gallery);
+      setImageName('');
+      setAltImage('');
+    }
+  };
 
   return (
     <>
@@ -81,14 +125,10 @@ const AddUserModal = ({ open, setOpen }) => {
       >
         <EditUserWrapper>
           <CellLeft>
-            <Input
+            <Selector
               label={`* ${t('input.label.product.category_id')}`}
               name="category_id"
-              message={formik.touched.category_id ? formik.errors.category_id : ''}
-              type={formik.touched.category_id && formik.errors.category_id ? 'error' : ''}
-              value={formik.values.category_id}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              mode=""
               labelStyle={{
                 padding: '2px'
               }}
@@ -97,9 +137,14 @@ const AddUserModal = ({ open, setOpen }) => {
                 marginTop: '8px',
                 height: '70px'
               }}
-              inputStyle={{
+              selectStyle={{
                 width: '100%'
               }}
+              // options={categories}
+              value={formik.values.category_id}
+              onChange={formik.handleChange}
+              message={formik.touched.category_id ? formik.errors.category_id : ''}
+              type={formik.touched.category_id && formik.errors.category_id ? 'error' : ''}
             />
             <Input
               label={`* ${t('input.label.product.name')}`}
@@ -238,9 +283,11 @@ const AddUserModal = ({ open, setOpen }) => {
               name="image_name"
               message={formik.touched.image_name ? formik.errors.image_name : ''}
               type={formik.touched.image_name && formik.errors.image_name ? 'error' : ''}
-              value={formik.values.image_name}
+              value={imageName}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                handleNameChange(e);
+              }}
               labelStyle={{
                 padding: '2px'
               }}
@@ -258,9 +305,11 @@ const AddUserModal = ({ open, setOpen }) => {
               name="alt"
               message={formik.touched.alt ? formik.errors.alt : ''}
               type={formik.touched.alt && formik.errors.alt ? 'error' : ''}
-              value={formik.values.alt}
+              value={altImage}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                handleAltChange(e);
+              }}
               labelStyle={{
                 padding: '2px'
               }}
@@ -278,9 +327,11 @@ const AddUserModal = ({ open, setOpen }) => {
               name="image_priority"
               message={formik.touched.image_priority ? formik.errors.image_priority : ''}
               type={formik.touched.image_priority && formik.errors.image_priority ? 'error' : ''}
-              value={formik.values.image_priority}
+              value={imagePriority}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                handlePriorityChange(e);
+              }}
               labelStyle={{
                 padding: '2px'
               }}
@@ -294,13 +345,19 @@ const AddUserModal = ({ open, setOpen }) => {
               }}
             />
             <UploadMultipleImage
-              label={`* ${t('input.label.product.image_priority')}`}
+              label={`* ${t('input.label.product.gallery_items')}`}
               name="image_priority"
               message={formik.touched.image_priority ? formik.errors.image_priority : ''}
               type={formik.touched.image_priority && formik.errors.image_priority ? 'error' : ''}
               value={formik.values.image_priority}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={handleChange}
+              previewOpen={previewOpen}
+              previewImage={previewImage}
+              previewTitle={previewTitle}
+              fileList={fileList}
+              handleCancelPreview={handleCancelPreview}
+              handlePreview={handlePreview}
               labelStyle={{
                 padding: '2px'
               }}

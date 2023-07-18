@@ -38,11 +38,22 @@ const useProductsStore = () => {
         [dispatch]
     );
 
+    const dispatchAddProduct = useCallback(
+        (payload) => {
+            console.log("dispatchAddProduct", payload)
+            dispatch(getProductRequest(payload));
+
+            return true;
+        },
+        [dispatch]
+    );
+
 
     return {
         dispatchGetAllProducts,
         dispatchGetProductById,
         dispatchDeleteProduct,
+        dispatchAddProduct,
         productsState
     };
 };
