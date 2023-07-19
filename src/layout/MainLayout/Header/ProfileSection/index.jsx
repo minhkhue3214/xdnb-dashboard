@@ -83,7 +83,6 @@ const ProfileSection = () => {
   // console.log(handleListItemClick);
 
   const handleToggle = useCallback(() => {
-    console.log('handleToggle');
     dispatchGetProfile();
     setOpen((prevOpen) => !prevOpen);
   }, []);
@@ -97,7 +96,6 @@ const ProfileSection = () => {
   }, [open]);
 
   const handleChangeEditPasswordModal = (status) => {
-    console.log('handleChangeEditPasswordModal', status);
     setOpenEditPasswordModal(status);
     setOpenUserProfile(false);
   };

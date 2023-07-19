@@ -38,7 +38,6 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   };
 
   useEffect(() => {
-    console.log('dispatchGetProfile');
     dispatchGetProfile();
   }, [dispatchGetProfile]);
 
@@ -56,7 +55,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
-          console.log('UpdateInfoModal', values);
+          // console.log('UpdateInfoModal', values);
           dispatchUpdateProfile({
             id,
             fullname: values.fullname,
@@ -78,7 +77,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   useEffect(() => {
     const data = profileState.profile;
     if (data) {
-      console.log('profileState', data);
+      // console.log('profileState', data);
       setId(data.id);
       setImageUrl(data.avatar || avatarDefault);
       formik.setFieldValue('username', data.username || '');
@@ -103,7 +102,6 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
     // Xử lý sự kiện thay đổi giá trị
     formik.handleChange(event);
     // Các hành động khác bạn muốn thực hiện khi có sự thay đổi giá trị
-    console.log(event.target.value);
   };
 
   return (

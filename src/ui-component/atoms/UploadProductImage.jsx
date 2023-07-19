@@ -1,6 +1,6 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Input, Upload } from 'antd';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { BsFillTrashFill } from 'react-icons/bs';
 import styled from 'styled-components';
@@ -31,9 +31,9 @@ const AtomUploadProductImage = ({
   handleProductAlt,
   handleDeleteModal
 }) => {
-  useEffect(() => {
-    console.log('ProductInfo', ProductInfo);
-  }, []);
+  // useEffect(() => {
+  //   console.log('ProductInfo', ProductInfo);
+  // }, []);
 
   const [loading, setLoading] = useState(false);
   // const [imageUrl, setImageUrl] = useState();

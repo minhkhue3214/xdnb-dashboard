@@ -64,7 +64,17 @@ export const products = createSlice({
             const { message } = action.payload;
             dispatchToast('error', message);
         },
-
+        updateProductRequest: () => {
+            // request update product
+        },
+        updateProductSuccess: (_, action) => {
+            const { message } = action.payload;
+            dispatchToast('success', message);
+        },
+        updateProductFail: (_, action) => {
+            const { message } = action.payload;
+            dispatchToast('error', message);
+        }
     }
 });
 
@@ -80,7 +90,10 @@ export const {
     deleteProductFail,
     addProductRequest,
     addProductSuccess,
-    addProductFail
+    addProductFail,
+    updateProductRequest,
+    updateProductSuccess,
+    updateProductFail
 } = products.actions;
 
 export default products.reducer;

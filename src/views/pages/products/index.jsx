@@ -9,12 +9,11 @@ import { GrGallery } from 'react-icons/gr';
 import { MdDelete } from 'react-icons/md';
 import { TbTableExport } from 'react-icons/tb';
 import styled from 'styled-components';
-import { useProductsStore } from '~/hooks/products';
 import { useCategoriesStore } from '~/hooks/categories';
+import { useProductsStore } from '~/hooks/products';
 import MainCard from '~/ui-component/cards/MainCard';
 import { AntdTable } from '~/ui-component/molecules';
 import AddProductModal from './AddProductModal';
-import ChangePasswordModal from './ChangePasswordModal';
 import GalleryItem from './GalleryItem';
 import UpdateProductModal from './UpdateProductModal';
 
@@ -38,11 +37,6 @@ const ProductsPage = () => {
   });
 
   const [openGalleryItemsModal, setOpenGalleryItemsModal] = useState({
-    status: false,
-    id: ''
-  });
-
-  const [openEditPasswordModal, setOpenEditPasswordModal] = useState({
     status: false,
     id: ''
   });
@@ -109,35 +103,10 @@ const ProductsPage = () => {
     }
   }, []);
 
-  const handleChangeEditPasswordModal = useCallback((props) => {
-    if (typeof props === 'boolean') {
-      setOpenEditPasswordModal({
-        status: props,
-        id: ''
-      });
-    } else if (typeof props !== 'object') {
-      return undefined;
-    }
-
-    const { status, id } = props;
-
-    if (!id) {
-      setOpenEditPasswordModal({
-        status: false,
-        id: ''
-      });
-    } else {
-      setOpenEditPasswordModal({
-        status,
-        id
-      });
-    }
-  }, []);
-
   const handleEdit = (params) => {
     handleChangeEditProductModal({
       status: true,
-      id: params?.row?.id
+      id: params?.id
     });
   };
 
@@ -279,10 +248,8 @@ const ProductsPage = () => {
         id={openEditProductModal.id}
         open={openEditProductModal.status}
         setOpen={handleChangeEditProductModal}
-        handleChangeEditPasswordModal={handleChangeEditPasswordModal}
       />
-      <GalleryItem id={openGalleryItemsModal.id} open={openGalleryItemsModal.status} setOpen={handleChangeGalleryItemsModal} />
-      <ChangePasswordModal id={openEditPasswordModal.id} open={openEditPasswordModal.status} setOpen={handleChangeEditPasswordModal} />
+      <GalleryItem id={1} open={openGalleryItemsModal.status} setOpen={handleChangeGalleryItemsModal} />
     </MainCard>
   );
 };

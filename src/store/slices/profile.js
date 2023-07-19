@@ -13,7 +13,7 @@ export const profile = createSlice({
             // request profile
         },
         getProfileSuccess: (state, action) => {
-            console.log("getProfileSuccess", action.payload)
+            // console.log("getProfileSuccess", action.payload)
             state.profile = action.payload;
         },
         getProfileFail: (_, action) => {

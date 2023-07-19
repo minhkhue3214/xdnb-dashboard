@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     getAllProductsRequest,
     getProductRequest,
-    deleteProductRequest
+    deleteProductRequest,
+    updateProductRequest
 } from '~/store/slices/products';
 
 const useProductsStore = () => {
@@ -40,7 +41,7 @@ const useProductsStore = () => {
 
     const dispatchAddProduct = useCallback(
         (payload) => {
-            console.log("dispatchAddProduct", payload)
+            // console.log("dispatchAddProduct", payload)
             dispatch(getProductRequest(payload));
 
             return true;
@@ -48,12 +49,22 @@ const useProductsStore = () => {
         [dispatch]
     );
 
+    const dispatchUpdateProduct = useCallback(
+        (payload) => {
+          dispatch(updateProductRequest(payload));
+    
+          return true;
+        },
+        [dispatch]
+      );
+
 
     return {
         dispatchGetAllProducts,
         dispatchGetProductById,
         dispatchDeleteProduct,
         dispatchAddProduct,
+        dispatchUpdateProduct,
         productsState
     };
 };
