@@ -1,16 +1,44 @@
 import { Button } from 'antd';
 import { useFormik } from 'formik';
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { useCategoriesStore } from '~/hooks/categories';
 import { useProductsStore } from '~/hooks/products';
 import { Input, InputNumber, Selector, Switch, UploadProductImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
-const AddUserModal = ({ open, setOpen }) => {
+const AddProductModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
   const { dispatchAddProduct } = useProductsStore();
+  const { categoriesState } = useCategoriesStore();
+
+  const categoryOptions = useMemo(() => {
+    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+
+    console.log('categoryOptions', data);
+
+    return data?.map((one) => ({
+      label: one.name,
+      value: one.id
+    }));
+  }, [categoriesState]);
+
+  // useEffect(() => {
+  //   const data = JSON.parse(JSON.stringify(categoriesState.categories));
+
+  //   console.log('categoryOptions', data.length);
+  //   for (let i = 0; i < data.length; i++) {
+  //     console.log('testing', data[i].children);
+  //     let object = {
+  //       label: data[i].children.name,
+  //       value: data[i].children.id
+  //     };
+  //     categoryOptions.push(object);
+  //   }
+  // }, [categoriesState]);
+
   const [imageProduct, setImageProduct] = useState([]);
   const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
@@ -19,7 +47,7 @@ const AddUserModal = ({ open, setOpen }) => {
       category_id: 'category123',
       name: '',
       slug: '',
-      hot: false,
+      hot: true,
       short_description: '',
       long_description: '',
       priority: 1,
@@ -28,7 +56,7 @@ const AddUserModal = ({ open, setOpen }) => {
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
-          console.log('AddUserModal', values);
+          console.log('AddProductModal', values);
           dispatchAddProduct({
             category_id: values.category_id,
             name: values.name,
@@ -58,7 +86,6 @@ const AddUserModal = ({ open, setOpen }) => {
   }, []);
 
   const handleProductName = (id, e) => {
-    // console.log('handleProductName', id, e.target.value);
     setImageProduct((prevImageProduct) => {
       return prevImageProduct.map((image) => {
         if (image.id === id) {
@@ -70,7 +97,6 @@ const AddUserModal = ({ open, setOpen }) => {
   };
 
   const handleProductAlt = (id, e) => {
-    // console.log('handleProductName', id, e.target.value);
     setImageProduct((prevImageProduct) => {
       return prevImageProduct.map((image) => {
         if (image.id === id) {
@@ -82,7 +108,6 @@ const AddUserModal = ({ open, setOpen }) => {
   };
 
   const handleProductPriority = (id, e) => {
-    // console.log('handleProductName', id, e.target.value);
     setImageProduct((prevImageProduct) => {
       return prevImageProduct.map((image) => {
         if (image.id === id) {
@@ -154,6 +179,7 @@ const AddUserModal = ({ open, setOpen }) => {
                 width: '100%'
               }}
               // options={categories}
+              options={categoryOptions}
               value={formik.values.category_id}
               onChange={formik.handleChange}
               message={formik.touched.category_id ? formik.errors.category_id : ''}
@@ -222,10 +248,10 @@ const AddUserModal = ({ open, setOpen }) => {
             />
             <Switch
               label="* True"
-              name="priority"
-              message={formik.touched.priority ? formik.errors.priority : ''}
-              type={formik.touched.priority && formik.errors.priority ? 'error' : ''}
-              value={formik.values.priority}
+              name="hot"
+              message={formik.touched.hot ? formik.errors.hot : ''}
+              type={formik.touched.hot && formik.errors.hot ? 'error' : ''}
+              value={formik.values.hot}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               labelStyle={{
@@ -318,7 +344,7 @@ const AddUserModal = ({ open, setOpen }) => {
   );
 };
 
-export default memo(AddUserModal);
+export default memo(AddProductModal);
 
 const EditUserWrapper = styled.div`
   position: relative;

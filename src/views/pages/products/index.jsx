@@ -10,6 +10,7 @@ import { MdDelete } from 'react-icons/md';
 import { TbTableExport } from 'react-icons/tb';
 import styled from 'styled-components';
 import { useProductsStore } from '~/hooks/products';
+import { useCategoriesStore } from '~/hooks/categories';
 import MainCard from '~/ui-component/cards/MainCard';
 import { AntdTable } from '~/ui-component/molecules';
 import AddProductModal from './AddProductModal';
@@ -22,6 +23,12 @@ const ProductsPage = () => {
   const { productsState, dispatchGetAllProducts, dispatchDeleteProduct } = useProductsStore();
   const [page, setPage] = useState(1);
   const [openAddProductModal, setOpenAddProductModal] = useState(false);
+
+  const { dispatchGetCategories } = useCategoriesStore();
+
+  useEffect(() => {
+    dispatchGetCategories();
+  }, []);
 
   // const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
