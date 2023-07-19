@@ -81,13 +81,14 @@ const AtomUploadImage = (props) => {
         {label}
       </Label>
       <Upload
+        multiple
         style={inputStyle}
         name="avatar"
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
         maxCount={1}
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        action="http://127.0.0.1:5173/products"
         beforeUpload={beforeUpload}
         onChange={onChange}
       >

@@ -127,51 +127,6 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
         <EditUserWrapper>
           <Cell>
             <Input
-              label={`* ${t('input.label.user.username')}`}
-              name="username"
-              message={formik.touched.username ? formik.errors.username : ''}
-              type={formik.touched.username && formik.errors.username ? 'error' : ''}
-              value={formik.values.username}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              disabled
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label={`* ${t('input.label.user.email')}`}
-              name="email"
-              message={formik.touched.email ? formik.errors.email : ''}
-              type={formik.touched.email && formik.errors.email ? 'error' : ''}
-              value={formik.values.email}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <EditLinkPassword onClick={handleOpenChangePassword}>{t('modal.user.updatePasswordBtn')}</EditLinkPassword>
-          </Cell>
-          <Cell>
-            <Input
               label={`* ${t('input.label.user.fullname')}`}
               name="fullname"
               message={formik.touched.fullname ? formik.errors.fullname : ''}
@@ -251,6 +206,50 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
                 width: '100%'
               }}
             />
+          </Cell>
+          <Cell>
+            <Input
+              label={`* ${t('input.label.user.username')}`}
+              name="username"
+              message={formik.touched.username ? formik.errors.username : ''}
+              type={formik.touched.username && formik.errors.username ? 'error' : ''}
+              value={formik.values.username}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              disabled
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.user.email')}`}
+              name="email"
+              message={formik.touched.email ? formik.errors.email : ''}
+              type={formik.touched.email && formik.errors.email ? 'error' : ''}
+              value={formik.values.email}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
             <Selector
               label={`* ${t('input.label.user.role')}`}
               name="role"
@@ -272,6 +271,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
               message={formik.touched.role ? formik.errors.role : ''}
               type={formik.touched.role && formik.errors.role ? 'error' : ''}
             />
+            <EditLinkPassword onClick={handleOpenChangePassword}>{t('modal.user.updatePasswordBtn')}</EditLinkPassword>
           </Cell>
         </EditUserWrapper>
       </Modal>

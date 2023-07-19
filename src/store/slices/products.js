@@ -40,6 +40,18 @@ export const products = createSlice({
             const { message } = action.payload;
             dispatchToast('error', message);
         },
+        addProductRequest: () => {
+            // request add Product
+        },
+        addProductSuccess: (_, action) => {
+            const { message } = action.payload;
+
+            dispatchToast('success', message);
+        },
+        addProductFail: (_, action) => {
+            const { message } = action.payload;
+            dispatchToast('error', message);
+        },
         getProductRequest: () => {
             // request update user
         },
@@ -52,6 +64,7 @@ export const products = createSlice({
             const { message } = action.payload;
             dispatchToast('error', message);
         },
+
     }
 });
 
@@ -64,7 +77,10 @@ export const {
     getProductFail,
     deleteProductRequest,
     deleteProductSuccess,
-    deleteProductFail
+    deleteProductFail,
+    addProductRequest,
+    addProductSuccess,
+    addProductFail
 } = products.actions;
 
 export default products.reducer;

@@ -1,61 +1,75 @@
+import { Button } from 'antd';
 import { useFormik } from 'formik';
-import { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import * as yup from 'yup';
-import { useUsersStore } from '~/hooks/users';
-import { Input, InputNumber, Switch, UploadMultipleImage } from '~/ui-component/atoms';
+import { v4 as uuidv4 } from 'uuid';
+import { useCategoriesStore } from '~/hooks/categories';
+import { useProductsStore } from '~/hooks/products';
+import { Input, InputNumber, Selector, Switch, UploadProductImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
-const AddUserModal = ({ open, setOpen }) => {
+const AddProductModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
-  const { dispatchAddUser } = useUsersStore();
+  const { dispatchAddProduct } = useProductsStore();
+  const { categoriesState } = useCategoriesStore();
+
+  const categoryOptions = useMemo(() => {
+    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+
+    console.log('categoryOptions', data);
+
+    return data?.map((one) => ({
+      label: one.name,
+      value: one.id
+    }));
+  }, [categoriesState]);
+
+  // useEffect(() => {
+  //   const data = JSON.parse(JSON.stringify(categoriesState.categories));
+
+  //   console.log('categoryOptions', data.length);
+  //   for (let i = 0; i < data.length; i++) {
+  //     console.log('testing', data[i].children);
+  //     let object = {
+  //       label: data[i].children.name,
+  //       value: data[i].children.id
+  //     };
+  //     categoryOptions.push(object);
+  //   }
+  // }, [categoriesState]);
+
+  const [imageProduct, setImageProduct] = useState([]);
+  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   const formik = useFormik({
     initialValues: {
       category_id: 'category123',
       name: '',
       slug: '',
-      hot: false,
+      hot: true,
       short_description: '',
       long_description: '',
       priority: 1,
-      gallery_items: []
+      gallery_items: imageProduct
     },
-    validationSchema: yup.object({
-      email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
-      password: yup
-        .string()
-        .min(8, t('input.error.user.passwordMinLength'))
-        .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
-        .required(t('input.error.user.pleaseEnterPassword')),
-      fullname: yup.string().max(100, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
-      phone: yup.number(),
-      username: yup
-        .string()
-        .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
-        .required(t('input.error.user.pleaseEnterUsername'))
-        .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
-      avatar: yup.string().max(9000000, t('input.error.user.nameTooLong')),
-      address: yup.string().max(50, t('input.error.user.nameTooLong')),
-      role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
-    }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
-          console.log('AddUserModal', values);
-          dispatchAddUser({
-            fullname: values.fullname,
-            username: values.username,
-            avatar: values.avatar,
-            phone: values.phone,
-            email: values.email,
-            address: values.address,
-            role: values.role,
-            password: values.password
+          console.log('AddProductModal', values);
+          dispatchAddProduct({
+            category_id: values.category_id,
+            name: values.name,
+            slug: values.slug,
+            hot: values.hot,
+            short_description: values.short_description,
+            long_description: values.long_description,
+            priority: values.priority,
+            gallery_items: imageProduct
           });
 
           handleCancel();
+          setImageProduct([]);
         }
       });
     },
@@ -66,6 +80,74 @@ const AddUserModal = ({ open, setOpen }) => {
     formik.handleReset();
     setOpen(false);
   }, [formik, setOpen]);
+
+  const id = React.useMemo(() => {
+    return uuidv4();
+  }, []);
+
+  const handleProductName = (id, e) => {
+    setImageProduct((prevImageProduct) => {
+      return prevImageProduct.map((image) => {
+        if (image.id === id) {
+          return { ...image, name: e.target.value };
+        }
+        return image;
+      });
+    });
+  };
+
+  const handleProductAlt = (id, e) => {
+    setImageProduct((prevImageProduct) => {
+      return prevImageProduct.map((image) => {
+        if (image.id === id) {
+          return { ...image, alt: e.target.value };
+        }
+        return image;
+      });
+    });
+  };
+
+  const handleProductPriority = (id, e) => {
+    setImageProduct((prevImageProduct) => {
+      return prevImageProduct.map((image) => {
+        if (image.id === id) {
+          return { ...image, priority: e.target.value };
+        }
+        return image;
+      });
+    });
+  };
+
+  const handleProductSource = (id, url) => {
+    setImageProduct((prevImageProduct) => {
+      return prevImageProduct.map((image) => {
+        if (image.id === id) {
+          return { ...image, source: url };
+        }
+        return image;
+      });
+    });
+  };
+
+  const handleAddModal = () => {
+    console.log('handleAddModal');
+    setImageProduct((prevImageProduct) => {
+      const newImage = {
+        id: uuidv4(),
+        name: 'Gallery Item 1',
+        alt: 'Alt text for Gallery Item 1',
+        source: avatarDefault,
+        priority: 1
+      };
+      return [...prevImageProduct, newImage];
+    });
+  };
+
+  const handleDeleteModal = (id) => {
+    console.log('handleDeleteModal', id);
+    const newListImage = imageProduct.filter((image) => image.id !== id);
+    setImageProduct(newListImage);
+  };
 
   return (
     <>
@@ -81,14 +163,10 @@ const AddUserModal = ({ open, setOpen }) => {
       >
         <EditUserWrapper>
           <CellLeft>
-            <Input
+            <Selector
               label={`* ${t('input.label.product.category_id')}`}
               name="category_id"
-              message={formik.touched.category_id ? formik.errors.category_id : ''}
-              type={formik.touched.category_id && formik.errors.category_id ? 'error' : ''}
-              value={formik.values.category_id}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              mode=""
               labelStyle={{
                 padding: '2px'
               }}
@@ -97,9 +175,15 @@ const AddUserModal = ({ open, setOpen }) => {
                 marginTop: '8px',
                 height: '70px'
               }}
-              inputStyle={{
+              selectStyle={{
                 width: '100%'
               }}
+              // options={categories}
+              options={categoryOptions}
+              value={formik.values.category_id}
+              onChange={formik.handleChange}
+              message={formik.touched.category_id ? formik.errors.category_id : ''}
+              type={formik.touched.category_id && formik.errors.category_id ? 'error' : ''}
             />
             <Input
               label={`* ${t('input.label.product.name')}`}
@@ -164,10 +248,10 @@ const AddUserModal = ({ open, setOpen }) => {
             />
             <Switch
               label="* True"
-              name="priority"
-              message={formik.touched.priority ? formik.errors.priority : ''}
-              type={formik.touched.priority && formik.errors.priority ? 'error' : ''}
-              value={formik.values.priority}
+              name="hot"
+              message={formik.touched.hot ? formik.errors.hot : ''}
+              type={formik.touched.hot && formik.errors.hot ? 'error' : ''}
+              value={formik.values.hot}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               labelStyle={{
@@ -233,86 +317,26 @@ const AddUserModal = ({ open, setOpen }) => {
             />
           </CellLeft>
           <CellRight>
-            <Input
-              label={`* ${t('input.label.product.image_name')}`}
-              name="image_name"
-              message={formik.touched.image_name ? formik.errors.image_name : ''}
-              type={formik.touched.image_name && formik.errors.image_name ? 'error' : ''}
-              value={formik.values.image_name}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
+            <Button
+              type="primary"
               style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
+                width: '30%'
               }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label="alt"
-              name="alt"
-              message={formik.touched.alt ? formik.errors.alt : ''}
-              type={formik.touched.alt && formik.errors.alt ? 'error' : ''}
-              value={formik.values.alt}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <InputNumber
-              label={`* ${t('input.label.product.image_priority')}`}
-              name="image_priority"
-              message={formik.touched.image_priority ? formik.errors.image_priority : ''}
-              type={formik.touched.image_priority && formik.errors.image_priority ? 'error' : ''}
-              value={formik.values.image_priority}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '20%'
-              }}
-            />
-            <UploadMultipleImage
-              label={`* ${t('input.label.product.image_priority')}`}
-              name="image_priority"
-              message={formik.touched.image_priority ? formik.errors.image_priority : ''}
-              type={formik.touched.image_priority && formik.errors.image_priority ? 'error' : ''}
-              value={formik.values.image_priority}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '20%'
-              }}
-            />
+              onClick={handleAddModal}
+            >
+              Add Modal
+            </Button>
+            {imageProduct.map((ProductInfo) => (
+              <UploadProductImage
+                key={id}
+                handleProductName={handleProductName}
+                handleDeleteModal={handleDeleteModal}
+                handleProductAlt={handleProductAlt}
+                handleProductPriority={handleProductPriority}
+                handleProductSource={handleProductSource}
+                ProductInfo={ProductInfo}
+              />
+            ))}
           </CellRight>
         </EditUserWrapper>
       </Modal>
@@ -320,7 +344,7 @@ const AddUserModal = ({ open, setOpen }) => {
   );
 };
 
-export default memo(AddUserModal);
+export default memo(AddProductModal);
 
 const EditUserWrapper = styled.div`
   position: relative;

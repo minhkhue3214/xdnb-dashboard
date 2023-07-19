@@ -12,3 +12,4 @@ export { default as InputNumber } from './InputNumber';
 export { default as InputImage } from './InputImage';
 export { default as Editor } from './Editor';
 export { default as UploadMultipleImage } from './UploadMultipleImage';
+export { default as UploadProductImage } from './UploadProductImage';

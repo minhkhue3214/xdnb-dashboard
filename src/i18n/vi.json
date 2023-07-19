@@ -179,15 +179,16 @@
         "visible": "Hiển thị danh mục",
         "visibleChildren": "Hiển thị danh mục con"
       },
-      "product":{
-        "category_id":"Mã loại sản phẩm",
-        "name":"Tên sản phẩm",
-        "slug":"Slug",
-        "priority":"Ưu tiên hiển thị",
-        "short_description":"Mô tả ngắn",
-        "long_description":"Mô tả dài",
+      "product": {
+        "category_id": "Mã loại sản phẩm",
+        "name": "Tên sản phẩm",
+        "slug": "Slug",
+        "priority": "Ưu tiên hiển thị",
+        "short_description": "Mô tả ngắn",
+        "long_description": "Mô tả dài",
         "image_name": "Tên ảnh",
-        "image_priority": "Độ ưu tiên"
+        "image_priority": "Độ ưu tiên",
+        "gallery_items": "Danh sách ảnh"
       },
       "consultationRequest": {
         "status": "Tình trạng",

@@ -1,19 +1,19 @@
-import { memo, useCallback, useEffect, useState, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 // project imports
-import { AiOutlineUserAdd, AiFillEdit } from 'react-icons/ai';
-import { TbTableExport } from 'react-icons/tb';
-import { MdDelete } from 'react-icons/md';
-import styled from 'styled-components';
-import MainCard from '~/ui-component/cards/MainCard';
-import { DataTable } from '~/ui-component/molecules';
-import Pagination from '@mui/material/Pagination';
 import IconButton from '@mui/material/IconButton';
+import Pagination from '@mui/material/Pagination';
+import { Button, Image, Popconfirm } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai';
+import { MdDelete } from 'react-icons/md';
+import { TbTableExport } from 'react-icons/tb';
+import styled from 'styled-components';
+import { useUsersStore } from '~/hooks/users';
+import MainCard from '~/ui-component/cards/MainCard';
+import { AntdTable } from '~/ui-component/molecules';
 import AddUserModal from './AddUserModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import UpdateUserModal from './UpdateUserModal';
-import { Popconfirm, Button, Image } from 'antd';
-import { useUsersStore } from '~/hooks/users';
-import { useTranslation } from 'react-i18next';
 
 const UsersPage = () => {
   const { t } = useTranslation();
@@ -122,7 +122,7 @@ const UsersPage = () => {
   const handleEdit = (params) => {
     handleChangeEditUserModal({
       status: true,
-      id: params?.row?.id
+      id: params?.id
     });
   };
 
@@ -133,15 +133,14 @@ const UsersPage = () => {
     // setPage(1)
   };
 
-  // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { field: 'username', headerName: t('table.user.username'), flex: 1.3, align: 'center', headerAlign: 'center' },
-    { field: 'fullname', headerName: t('table.user.fullname'), flex: 1, align: 'center', headerAlign: 'center' },
-    // { field: 'avatar', headerName: t('table.user.fullname'), flex: 1, align: 'center', headerAlign: 'center' },
+    { dataIndex: 'username', title: t('table.user.username'), width: '8%' },
+    { dataIndex: 'fullname', title: t('table.user.fullname'), width: '10%' },
     {
-      field: 'avatar',
-      headerName: t('table.user.avatar'),
-      renderCell: (params) => (
+      dataIndex: 'avatar',
+      title: t('table.user.avatar'),
+      render: (_, record) => (
+        // console.log("record",record)
         <>
           <Image
             width={55}
@@ -151,38 +150,35 @@ const UsersPage = () => {
             preview={{
               mask: false
             }}
-            src={params.row.avatar || avatarDefault}
+            src={record.avatar || avatarDefault}
           />
+          {/* <h4>Tesing</h4> */}
         </>
       ),
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center'
+      width: '10%'
     },
-    { field: 'email', headerName: t('table.user.email'), flex: 1.5, align: 'center', headerAlign: 'center' },
-    { field: 'phone', headerName: t('table.user.phone'), flex: 1.5, align: 'center', headerAlign: 'center' },
-    { field: 'address', headerName: t('table.user.address'), flex: 1.5, align: 'center', headerAlign: 'center' },
-    { field: 'role', headerName: t('table.user.role'), flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'create_at', headerName: t('table.user.create_at'), flex: 1, align: 'center', headerAlign: 'center' },
-    { field: 'update_at', headerName: t('table.user.update_at'), flex: 1, align: 'center', headerAlign: 'center' },
+    { dataIndex: 'email', title: t('table.user.email'), width: '10%' },
+    { dataIndex: 'phone', title: t('table.user.phone'), width: '10%' },
+    { dataIndex: 'address', title: t('table.user.address'), width: '10%' },
+    { dataIndex: 'role', title: t('table.user.role'), width: '10%' },
+    { dataIndex: 'create_at', title: t('table.user.create_at'), width: '10%' },
+    { dataIndex: 'update_at', title: t('table.user.update_at'), width: '10%' },
     {
-      field: 'actions',
-      headerName: t('table.user.actions'),
-      renderCell: (params) => (
+      dataIndex: 'actions',
+      title: t('table.post.actions'),
+      render: (_, record) => (
         <>
-          <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(params)}>
+          <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>
             <AiFillEdit size={22} />
           </IconButton>
-          <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(params)} okText="Đồng ý" cancelText="Hủy">
+          <Popconfirm title="Bạn có chắc chắn muốn xoá?" onConfirm={() => handleDelete(record)} okText="Đồng ý" cancelText="Hủy">
             <IconButton aria-label="delete">
               <MdDelete color="tomato" size={22} />
             </IconButton>
           </Popconfirm>
         </>
       ),
-      flex: 1.5,
-      align: 'center',
-      headerAlign: 'center'
+      width: '10%'
     }
   ];
 
@@ -211,7 +207,8 @@ const UsersPage = () => {
         </Button>
       </ControlBar>
       <DataTableWrapper>
-        <DataTable columns={columns} rows={users} checkboxSelection={false} />
+        {/* <DataTable columns={columns} rows={users} checkboxSelection={false} /> */}
+        <AntdTable columns={columns} dataSource={users} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination count={usersState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
