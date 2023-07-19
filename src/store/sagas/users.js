@@ -54,7 +54,7 @@ function* requestDeleteUserSaga(action) {
       delete action.payload.params;
     }
 
-    console.log("requestDeleteUserSaga", action.payload)
+    // console.log("requestDeleteUserSaga", action.payload)
 
     yield call(requestDeleteUserApi, action.payload);
     yield put(deleteUserSuccess(action.payload));
@@ -67,7 +67,7 @@ function* requestDeleteUserSaga(action) {
 function* requestAddUserSaga(action) {
   try {
     const { params } = action.payload;
-    console.log("requestAddUserSaga 1", action.payload.params);
+    // console.log("requestAddUserSaga 1", action.payload.params);
     if (params) {
       delete action.payload.params;
     }
@@ -122,7 +122,7 @@ function* requestUpdateUserSaga(action) {
 
 function* requestUpdatePasswordSaga(action) {
   try {
-    console.log("requestUpdatePasswordSaga", action.payload)
+    // console.log("requestUpdatePasswordSaga", action.payload)
     const data = yield call(requestUpdatePasswordApi, action.payload);
     yield put(updatePasswordSuccess(data));
   } catch (error) {

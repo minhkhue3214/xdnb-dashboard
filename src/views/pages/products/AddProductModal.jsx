@@ -17,7 +17,7 @@ const AddProductModal = ({ open, setOpen }) => {
   const categoryOptions = useMemo(() => {
     const data = JSON.parse(JSON.stringify(categoriesState.categories));
 
-    console.log('categoryOptions', data);
+    // console.log('categoryOptions', data);
 
     return data?.map((one) => ({
       label: one.name,
@@ -57,6 +57,9 @@ const AddProductModal = ({ open, setOpen }) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {
           console.log('AddProductModal', values);
+          // for (var i = 0; i < arr.length; i++) {
+          //   delete arr[i].id;
+          // }
           dispatchAddProduct({
             category_id: values.category_id,
             name: values.name,

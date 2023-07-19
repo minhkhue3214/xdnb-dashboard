@@ -3,7 +3,8 @@ import {
     getAllProductsApi,
     getProductApi,
     deleteProductApi,
-    addProductApi
+    addProductApi,
+    requestUpdateProductApi
 } from '~/api/products';
 
 import {
@@ -18,13 +19,16 @@ import {
     deleteProductFail,
     addProductRequest,
     addProductSuccess,
-    addProductFail
+    addProductFail,
+    updateProductRequest,
+    updateProductSuccess,
+    updateProductFail
 } from '~/store/slices/rootAction';
 
 function* requestAllProductsSaga(action) {
     try {
         const result = yield call(getAllProductsApi, action.payload);
-        console.log("requestAllProductsSaga", result);
+        // console.log("requestAllProductsSaga", result);
         const { meta, data } = result;
 
         yield put(
@@ -60,7 +64,7 @@ function* requestDeleteProductSaga(action) {
 function* requestAddProductSaga(action) {
     try {
         const { params } = action.payload;
-        console.log("requestAddProductSaga 1", action.payload.params);
+        // console.log("requestAddProductSaga 1", action.payload.params);
         if (params) {
             delete action.payload.params;
         }
@@ -75,9 +79,26 @@ function* requestAddProductSaga(action) {
     }
 }
 
+function* requestUpdateProductSaga(action) {
+    try {
+  
+      const { params } = action.payload;
+      if (params) {
+        delete action.payload.params;
+      }
+  
+      const data = yield call(requestUpdateProductApi, action.payload);
+      yield put(updateProductSuccess(data));
+    //   yield put(reGetAllUserRequest({ params }));
+    } catch (error) {
+      yield put(updateProductFail(error));
+    }
+  }
+
 export default function* watchProducts() {
     yield takeLatest(getAllProductsRequest.type, requestAllProductsSaga);
     yield takeLatest(getProductRequest.type, requestGetProductSaga);
     yield takeLatest(deleteProductRequest.type, requestDeleteProductSaga);
     yield takeLatest(addProductRequest.type, requestAddProductSaga);
+    yield takeLatest(updateProductRequest.type, requestUpdateProductSaga);
 }
