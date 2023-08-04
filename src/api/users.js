@@ -1,20 +1,20 @@
 import axiosClient from './axiosClient';
 const getAllUsersApi = (params) => {
-  return axiosClient.get('/user/getUsers', params);
+  return axiosClient.get('/users', params);
 };
 
 const requestDeleteUserApi = (params) => {
   // const id = params?.id || '';
-  return axiosClient.delete(`/users/deleteUser`, params);
+  return axiosClient.delete(`/users`, params);
 };
 
 const requestAddUserApi = (params) => {
-  return axiosClient.post('/user/addUser', params);
+  return axiosClient.post('/users', params);
 };
 
 const requestGetUserApi = (params) => {
   // const id = params?.id || '';
-  return axiosClient.get(`/user/getUser`, params);
+  return axiosClient.get(`/users`, params);
 };
 
 const requestUpdateUserApi = (params) => {
@@ -22,7 +22,7 @@ const requestUpdateUserApi = (params) => {
   if (!id) throw new Error('Id is required');
 
   // delete params['id'];
-  return axiosClient.put(`/user/updateUser/`, params);
+  return axiosClient.put(`/users`, params);
 };
 
 const requestUpdatePasswordApi = (params) => {
@@ -30,7 +30,7 @@ const requestUpdatePasswordApi = (params) => {
   if (!id) throw new Error('Id is required');
 
   // delete params['id'];
-  return axiosClient.put(`/updatePassword/`, params);
+  return axiosClient.put(`/update-password/`, params);
 };
 
 export { getAllUsersApi, requestDeleteUserApi, requestAddUserApi, requestGetUserApi, requestUpdateUserApi, requestUpdatePasswordApi };

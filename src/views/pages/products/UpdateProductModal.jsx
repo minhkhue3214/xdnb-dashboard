@@ -86,7 +86,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       formik.setFieldValue('gallery_items', data.gallery_items || '');
 
       // console.log('data.gallery_items', data.gallery_items);
-      var galleryWithId = data.gallery_items.map((obj) => {
+      var galleryWithId = data.gallery_items?.map((obj) => {
         return { ...obj, id: uuidv4() };
       });
       setImageProduct(galleryWithId);

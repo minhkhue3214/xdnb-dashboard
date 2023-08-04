@@ -1,23 +1,23 @@
 import axiosClient from './axiosClient';
 
 const getPostsApi = (params) => {
-  return axiosClient.get('/post/getPosts', params);
+  return axiosClient.get('/posts', params);
 };
 
 const getPostApi = (params) => {
-  return axiosClient.get('/post/getPost', params);
+  return axiosClient.get('/posts', params);
 };
 
 const addPostApi = (params) => {
-  return axiosClient.post('/post/addPost', params);
+  return axiosClient.post('/posts', params);
 };
 
 const updatePostApi = (params) => {
-  return axiosClient.put('/post/updatePost', params);
+  return axiosClient.put('/posts', params);
 };
 
 const deletePostApi = (params) => {
-  return axiosClient.delete('/post/deletePost', params);
+  return axiosClient.delete('/posts', params);
 };
 
 export { getPostsApi, getPostApi, addPostApi, updatePostApi, deletePostApi };

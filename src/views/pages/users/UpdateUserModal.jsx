@@ -84,9 +84,10 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
 
   useEffect(() => {
     const data = usersState.detail;
+    console.log("data",data)
     if (data) {
       formik.setFieldValue('username', data.username || '');
-      formik.setFieldValue('fullname', data.fullname || '');
+      formik.setFieldValue('full_name', data.fullname || '');
       formik.setFieldValue('avatar', data.avatar || '');
       formik.setFieldValue('phone', data.phone || '');
       formik.setFieldValue('email', data.email || '');

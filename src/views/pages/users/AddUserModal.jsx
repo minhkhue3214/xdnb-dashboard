@@ -28,7 +28,7 @@ const AddUserModal = ({ open, setOpen }) => {
       password: '',
       fullname: '',
       username: '',
-      avatar: '',
+      avatar: 'testing',
       phone: null,
       address: '',
       role: 'ADMIN'
@@ -56,7 +56,7 @@ const AddUserModal = ({ open, setOpen }) => {
         if (formik.isValid) {
           console.log('AddUserModal', values);
           dispatchAddUser({
-            fullname: values.fullname,
+            full_name: values.fullname,
             username: values.username,
             avatar: values.avatar,
             phone: values.phone,
@@ -107,7 +107,7 @@ const AddUserModal = ({ open, setOpen }) => {
 
   const handleChangeImageUrl = (value) => {
     console.log('value', value);
-    formik.setFieldValue('avatar', value);
+    // formik.setFieldValue('avatar', value);
   };
 
   // const handleChangeImageUrl = useCallback(
