@@ -77,11 +77,11 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   useEffect(() => {
     const data = profileState.profile;
     if (data) {
-      // console.log('profileState', data);
+      console.log('profileState', data);
       setId(data.id);
       setImageUrl(data.avatar || avatarDefault);
       formik.setFieldValue('username', data.username || '');
-      formik.setFieldValue('fullname', data.fullname || '');
+      formik.setFieldValue('full_name', data.fullname || '');
       formik.setFieldValue('avatar', data.avatar || avatarDefault);
       formik.setFieldValue('phone', data.phone || '');
       formik.setFieldValue('email', data.email || '');

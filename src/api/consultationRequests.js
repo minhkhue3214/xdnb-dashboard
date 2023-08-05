@@ -1,19 +1,28 @@
 import axiosClient from './axiosClient';
 
 const getConsultationRequestsApi = (params) => {
-  return axiosClient.get('/request/getRequests', params);
+  return axiosClient.get('/requests', params);
 };
 
 const getConsultationRequestApi = (params) => {
-  return axiosClient.get('/request/getRequest', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+  
+  return axiosClient.get(`/requests/${id}`);
 };
 
 const updateConsultationRequestApi = (params) => {
-  return axiosClient.put('/request/updateConsultationRequest', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  return axiosClient.put(`/requests/${id}`);
 };
 
 const deleteConsultationRequestApi = (params) => {
-  return axiosClient.delete('/request/deleteRequest', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  return axiosClient.delete(`/requests/${id}`);
 };
 
 export { getConsultationRequestsApi, getConsultationRequestApi, updateConsultationRequestApi, deleteConsultationRequestApi };

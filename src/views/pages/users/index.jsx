@@ -45,21 +45,21 @@ const UsersPage = () => {
     const date = new Date(timestamp);
     const hour = date.getHours();
     const minute = date.getMinutes();
-    const formattedHour = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 
+    const formattedHour = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
     return formattedHour;
   }
 
   const users = useMemo(() => {
     console.log('shiftsState.users', usersState.users);
     const convertedusers = usersState.users.map((user) => {
-      const formattedHour = convertTimestampToHour(user.create_at);
-      const formattedHour1 = convertTimestampToHour(user.update_at);
+      const formattedHour = convertTimestampToHour(user.created_at);
+      const formattedHour1 = convertTimestampToHour(user.updated_at);
 
       return {
         ...user,
-        create_at: formattedHour,
-        update_at: formattedHour1
+        created_at: formattedHour,
+        updated_at: formattedHour1
       };
     });
     return convertedusers;
@@ -135,7 +135,7 @@ const UsersPage = () => {
 
   const columns = [
     { dataIndex: 'username', title: t('table.user.username'), width: '8%' },
-    { dataIndex: 'fullname', title: t('table.user.fullname'), width: '10%' },
+    { dataIndex: 'full_name', title: t('table.user.fullname'), width: '10%' },
     {
       dataIndex: 'avatar',
       title: t('table.user.avatar'),
@@ -161,8 +161,8 @@ const UsersPage = () => {
     { dataIndex: 'phone', title: t('table.user.phone'), width: '10%' },
     { dataIndex: 'address', title: t('table.user.address'), width: '10%' },
     { dataIndex: 'role', title: t('table.user.role'), width: '10%' },
-    { dataIndex: 'create_at', title: t('table.user.create_at'), width: '10%' },
-    { dataIndex: 'update_at', title: t('table.user.update_at'), width: '10%' },
+    { dataIndex: 'created_at', title: t('table.user.create_at'), width: '10%' },
+    { dataIndex: 'updated_at', title: t('table.user.update_at'), width: '10%' },
     {
       dataIndex: 'actions',
       title: t('table.post.actions'),

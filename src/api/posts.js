@@ -1,23 +1,34 @@
 import axiosClient from './axiosClient';
 
 const getPostsApi = (params) => {
-  return axiosClient.get('/post/getPosts', params);
+  return axiosClient.get('/posts', params);
 };
 
 const getPostApi = (params) => {
-  return axiosClient.get('/post/getPost', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  // return axiosClient.get('/posts', params);
+  return axiosClient.get(`/posts/${id}`);
 };
 
 const addPostApi = (params) => {
-  return axiosClient.post('/post/addPost', params);
+  return axiosClient.post('/posts', params);
 };
 
 const updatePostApi = (params) => {
-  return axiosClient.put('/post/updatePost', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  // return axiosClient.put('/posts', params);
+  return axiosClient.put(`/posts/${id}`);
 };
 
 const deletePostApi = (params) => {
-  return axiosClient.delete('/post/deletePost', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  return axiosClient.delete(`/posts/${id}`);
 };
 
 export { getPostsApi, getPostApi, addPostApi, updatePostApi, deletePostApi };
