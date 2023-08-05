@@ -4,8 +4,11 @@ const getAllUsersApi = (params) => {
 };
 
 const requestDeleteUserApi = (params) => {
-  // const id = params?.id || '';
-  return axiosClient.delete(`/users`, params);
+
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+  // return axiosClient.delete(`/users`, params);
+  return axiosClient.delete(`/users/${id}`);
 };
 
 const requestAddUserApi = (params) => {
@@ -13,8 +16,10 @@ const requestAddUserApi = (params) => {
 };
 
 const requestGetUserApi = (params) => {
-  // const id = params?.id || '';
-  return axiosClient.get(`/users`, params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+  // return axiosClient.get(`/users`, params);
+  return axiosClient.get(`/users/${id}`);
 };
 
 const requestUpdateUserApi = (params) => {

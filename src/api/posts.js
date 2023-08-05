@@ -5,7 +5,11 @@ const getPostsApi = (params) => {
 };
 
 const getPostApi = (params) => {
-  return axiosClient.get('/posts', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  // return axiosClient.get('/posts', params);
+  return axiosClient.get(`/posts/${id}`);
 };
 
 const addPostApi = (params) => {
@@ -13,11 +17,18 @@ const addPostApi = (params) => {
 };
 
 const updatePostApi = (params) => {
-  return axiosClient.put('/posts', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  // return axiosClient.put('/posts', params);
+  return axiosClient.put(`/posts/${id}`);
 };
 
 const deletePostApi = (params) => {
-  return axiosClient.delete('/posts', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  return axiosClient.delete(`/posts/${id}`);
 };
 
 export { getPostsApi, getPostApi, addPostApi, updatePostApi, deletePostApi };

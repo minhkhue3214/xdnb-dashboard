@@ -335,7 +335,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
             >
               Add Modal
             </Button>
-            {imageProduct.map((ProductInfo) => (
+            {imageProduct?.map((ProductInfo) => (
               <UploadProductImage
                 key={id}
                 handleProductName={handleProductName}

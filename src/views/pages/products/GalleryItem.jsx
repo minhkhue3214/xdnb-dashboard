@@ -27,7 +27,7 @@ const GalleryItemsModal = ({ open, setOpen, id }) => {
     <>
       <Modal open={open} onOpen={setOpen} title="Gallery" width="300px" footer={null}>
         <EditUserWrapper>
-          {gallery.map((item, index) => {
+          {gallery?.map((item, index) => {
             return (
               <>
                 <h3>{item.name}</h3>

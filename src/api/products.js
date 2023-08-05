@@ -6,12 +6,20 @@ const getAllProductsApi = (params) => {
 
 const getProductApi = (params) => {
   // console.log("getProductApi", params);
-  return axiosClient.get('/products', params);
+
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  return axiosClient.get(`/products/${id}`);
 };
 
 const deleteProductApi = (params) => {
   // console.log("getProductApi", params);
-  return axiosClient.delete('/products', params);
+
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  return axiosClient.delete(`/products/${id}`);
 };
 
 const addProductApi = (params) => {
@@ -23,7 +31,7 @@ const requestUpdateProductApi = (params) => {
   if (!id) throw new Error('Id is required');
 
   // delete params['id'];
-  return axiosClient.put(`/products`, params);
+  return axiosClient.put(`/products/${id}`);
 };
 
 export { getAllProductsApi, getProductApi, deleteProductApi, addProductApi, requestUpdateProductApi };
