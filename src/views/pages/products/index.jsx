@@ -176,7 +176,7 @@ const ProductsPage = () => {
       title: 'hot',
       render: (_, record) => (
         // console.log("record",record)
-        <>{record.hot ? <Tag color="red">True</Tag> : <Tag color="blue">False</Tag>}</>
+        <>{record.hot ? <Tag color="red">Hiển thị</Tag> : <Tag color="blue">Không hiển thị</Tag>}</>
       ),
       width: '10%'
     },

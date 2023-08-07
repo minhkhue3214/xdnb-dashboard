@@ -24,6 +24,7 @@ const UpdateConsultationRequestModal = ({ id, open, setOpen }) => {
         if (formik.isValid) {
           // logic submit
           dispatchUpdateConsultationRequest({
+            id,
             status,
             result
           });
@@ -48,7 +49,7 @@ const UpdateConsultationRequestModal = ({ id, open, setOpen }) => {
 
   useEffect(() => {
     if (id) {
-      dispatchGetConsultationRequest({ params: { id } });
+      dispatchGetConsultationRequest({ id });
     }
   }, [dispatchGetConsultationRequest, id]);
 

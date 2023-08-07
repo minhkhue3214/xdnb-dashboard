@@ -7,7 +7,7 @@ const getConsultationRequestsApi = (params) => {
 const getConsultationRequestApi = (params) => {
   const id = params['id'];
   if (!id) throw new Error('Id is required');
-  
+
   return axiosClient.get(`/requests/${id}`);
 };
 
@@ -15,7 +15,7 @@ const updateConsultationRequestApi = (params) => {
   const id = params['id'];
   if (!id) throw new Error('Id is required');
 
-  return axiosClient.put(`/requests/${id}`);
+  return axiosClient.put(`/requests/${id}`, params);
 };
 
 const deleteConsultationRequestApi = (params) => {
