@@ -114,7 +114,7 @@ const PageCategory = () => {
     {
       title: t('table.category.name'),
       dataIndex: 'name',
-      width: '30%'
+      width: '35%'
     },
     {
       title: t('table.category.slug'),
@@ -122,11 +122,21 @@ const PageCategory = () => {
       width: '35%'
     },
     {
+      title: 'Visible',
       dataIndex: t('table.category.visible'),
-      title: 'visible',
       render: (_, record) => (
         // console.log("record",record)
-        <>{record.visible ? <Tag color="red">True</Tag> : <Tag color="blue">False</Tag>}</>
+        <>
+          {record.visible ? (
+            <Tag color="blue" style={{ width: '70px', textAlign: 'center', borderRadius: '8px' }}>
+              Hiển thị
+            </Tag>
+          ) : (
+            <Tag color="red" style={{ width: '70px', textAlign: 'center', borderRadius: '8px' }}>
+              Ẩn
+            </Tag>
+          )}
+        </>
       ),
       width: '10%'
     },
@@ -138,7 +148,7 @@ const PageCategory = () => {
     {
       title: t('table.category.actions'),
       dataIndex: 'action',
-      width: '15%',
+      width: '10%',
       render: (_, record) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>
