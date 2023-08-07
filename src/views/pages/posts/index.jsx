@@ -12,6 +12,7 @@ import { usePostsStore } from '~/hooks/posts';
 import MainCard from '~/ui-component/cards/MainCard';
 import { AntdTable } from '~/ui-component/molecules';
 import AddPostModal from './AddPostModal';
+import PreviewModal from './PreviewModal';
 import UpdatePostModal from './UpdatePostModal';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -24,6 +25,7 @@ const PagePost = () => {
   const { t } = useTranslation();
   const { postsState, dispatchGetPosts, dispatchDeletePost } = usePostsStore();
   const [openAddPostModal, setOpenAddPostModal] = useState(false);
+  // const [isPreViewModal, setIsPreViewModal] = useState(false);
 
   const [openEditPostModal, setOpenEditPostModal] = useState({
     status: false,
@@ -143,6 +145,7 @@ const PagePost = () => {
       </PaginationWrapper>
       <AddPostModal open={openAddPostModal} setOpen={setOpenAddPostModal} />
       <UpdatePostModal id={openEditPostModal.id} open={openEditPostModal.status} setOpen={handleChangeEditPostModal} />
+      {isPreViewModal && <PreviewModal />}
     </MainCard>
   );
 };

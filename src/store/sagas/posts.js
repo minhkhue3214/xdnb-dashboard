@@ -30,9 +30,10 @@ function* requestPostsSaga(action) {
   }
 }
 
-function* requestPostSaga(action) {
+function* requestGetPostSaga(action) {
   try {
     const results = yield call(getPostApi, action.payload);
+    console.log("requestPostSaga", results);
     yield put(getPostSuccess(results));
   } catch (error) {
     yield put(getPostFail(error));
@@ -56,10 +57,12 @@ function* requestAddPostSaga(action) {
 
 function* requestUpdatePostSaga(action) {
   try {
+    console.log("requestUpdatePostSaga", action.payload);
     const { params } = action.payload;
     if (params) {
       delete action.payload.params;
     }
+
 
     const results = yield call(updatePostApi, action.payload);
     yield put(updatePostSuccess(results));
@@ -88,7 +91,7 @@ function* requestDeletePostSaga(action) {
 
 export default function* watchPosts() {
   yield takeLatest(getPostsRequest.type, requestPostsSaga);
-  yield takeLatest(getPostRequest.type, requestPostSaga);
+  yield takeLatest(getPostRequest.type, requestGetPostSaga);
   yield takeLatest(addPostRequest.type, requestAddPostSaga);
   yield takeLatest(updatePostRequest.type, requestUpdatePostSaga);
   yield takeLatest(deletePostRequest.type, requestDeletePostSaga);

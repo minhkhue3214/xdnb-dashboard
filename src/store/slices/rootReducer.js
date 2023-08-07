@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   categories,
   profile,
   products,
-  consultationRequests
+  consultationRequests,
 });
 
 export default rootReducer;

@@ -3,17 +3,27 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
+import axios from 'axios';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useUsersStore } from '~/hooks/users';
 import { roles } from '~/store/constant';
-import { Input, InputImage, Selector } from '~/ui-component/atoms';
+import { Input, Selector, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
+
+// const getBase64 = (img, callback) => {
+//   const reader = new FileReader();
+//   reader.addEventListener('load', () => callback(reader.result));
+//   reader.readAsDataURL(img);
+// };
 
 const AddUserModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
   const { authenticationState } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
   const { dispatchAddUser } = useUsersStore();
+
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
@@ -28,7 +38,6 @@ const AddUserModal = ({ open, setOpen }) => {
       password: '',
       fullname: '',
       username: '',
-      avatar: 'testing',
       phone: null,
       address: '',
       role: 'ADMIN'
@@ -47,7 +56,7 @@ const AddUserModal = ({ open, setOpen }) => {
         .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
         .required(t('input.error.user.pleaseEnterUsername'))
         .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
-      avatar: yup.string().max(9000000, t('input.error.user.nameTooLong')),
+      // avatar: yup.string().max(9000000, t('input.error.user.nameTooLong')),
       address: yup.string().max(50, t('input.error.user.nameTooLong')),
       role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
     }),
@@ -58,7 +67,7 @@ const AddUserModal = ({ open, setOpen }) => {
           dispatchAddUser({
             full_name: values.fullname,
             username: values.username,
-            avatar: values.avatar,
+            avatar: imageUrl,
             phone: values.phone,
             email: values.email,
             address: values.address,
@@ -85,38 +94,53 @@ const AddUserModal = ({ open, setOpen }) => {
     [formik]
   );
 
-  // const getBase64 = (img, callback) => {
-  //   const reader = new FileReader();
-  //   reader.addEventListener('load', () => callback(reader.result));
-  //   reader.readAsDataURL(img);
-  // };
+  const uploadImage = async (options) => {
+    setLoading(true);
+    const { onSuccess, onError, file } = options;
 
-  // const handleUploadImage = (info) => {
-  //   console.log('handleChange', info);
-  //   if (info.file.status === 'uploading') {
-  //     setLoading(true);
-  //     return;
-  //   }
-  //   // Get this url from response in real world.
-  //   getBase64(info.file.originFileObj, (url) => {
-  //     setLoading(false);
-  //     console.log('setImageUrl', url);
-  //     setImageUrl(url);
-  //   });
-  // };
+    const fmData = new FormData();
+    // const config = {
+    //   headers: { 'content-type': 'multipart/form-data' },
+    //   onUploadProgress: (event) => {
+    //     const percent = Math.floor((event.loaded / event.total) * 100);
+    //     setProgress(percent);
+    //     if (percent === 100) {
+    //       setTimeout(() => setProgress(0), 1000);
+    //     }
+    //     onProgress({ percent: (event.loaded / event.total) * 100 });
+    //   }
+    // };
+    fmData.append('image', file);
+    try {
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
 
-  const handleChangeImageUrl = (value) => {
-    console.log('value', value);
-    // formik.setFieldValue('avatar', value);
+      onSuccess('Ok');
+      console.log('server res: ', res);
+      setLoading(false);
+      setImageUrl(res.data.data.image_url);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      // const error = new Error('Some error');
+      onError({ err });
+    }
   };
 
-  // const handleChangeImageUrl = useCallback(
-  //   (value) => {
-  //     console.log('value', value);
-  //     formik.setFieldValue('avatar', value);
-  //   },
-  //   [formik]
-  // );
+  // const handleChange = (info) => {
+  //   const apiUrl = 'https://tenmienmienphi.online/api/upload-image';
+
+  //   new Promise((resolve, reject) => {
+  //     axios
+  //       .post(apiUrl, info)
+  //       .then((response) => {
+  //         // Trả về dữ liệu thành công khi gọi API thành công
+  //         resolve(response.data);
+  //       })
+  //       .catch((error) => {
+  //         // Trả về lỗi nếu có lỗi xảy ra trong quá trình gọi API
+  //         reject(error);
+  //       });
+  //   });
+  // };
 
   return (
     <>
@@ -152,14 +176,16 @@ const AddUserModal = ({ open, setOpen }) => {
                 width: '100%'
               }}
             />
-            <InputImage
+            <UploadImage
               label={`* ${t('input.label.post.imageUrl')}`}
               name="avatar"
               message={formik.touched.avatar ? formik.errors.avatar : ''}
               type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
               value={formik.values.avatar}
               onBlur={formik.handleBlur}
-              onChange={handleChangeImageUrl}
+              onChange={uploadImage}
+              loading={loading}
+              imageUrl={imageUrl}
               labelStyle={{
                 padding: '2px'
               }}

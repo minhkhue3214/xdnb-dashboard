@@ -65,10 +65,6 @@ const UsersPage = () => {
     return convertedusers;
   }, [usersState.users]);
 
-  // const users = useMemo(() => {
-  //   return usersState.users;
-  // }, [usersState.users]);
-
   const handleChangeEditUserModal = useCallback((props) => {
     if (typeof props === 'boolean') {
       setOpenEditUserModal({

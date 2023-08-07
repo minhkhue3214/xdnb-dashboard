@@ -3,10 +3,11 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
+import axios from 'axios';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useUsersStore } from '~/hooks/users';
 import { roles } from '~/store/constant';
-import { Input, Selector, InputImage } from '~/ui-component/atoms';
+import { Input, Selector, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
 const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) => {
@@ -14,6 +15,9 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
   const { authenticationState } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
   const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
+
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
@@ -48,7 +52,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
         if (formik.isValid) {
           dispatchUpdateUser({
             id,
-            fullname: values.fullname,
+            full_name: values.fullname,
             username: values.username,
             avatar: values.avatar,
             phone: values.phone,
@@ -84,16 +88,17 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
 
   useEffect(() => {
     const data = usersState.detail;
-    console.log("data",data)
+    console.log('data', data);
     if (data) {
       formik.setFieldValue('username', data.username || '');
-      formik.setFieldValue('full_name', data.fullname || '');
+      formik.setFieldValue('fullname', data.full_name || '');
       formik.setFieldValue('avatar', data.avatar || '');
       formik.setFieldValue('phone', data.phone || '');
       formik.setFieldValue('email', data.email || '');
       formik.setFieldValue('address', data.address || '');
       formik.setFieldValue('password', data.password || '');
       formik.setFieldValue('role', data.role || '');
+      setImageUrl(data.avatar);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersState.detail]);
@@ -106,12 +111,43 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
     });
   }, [handleCancel, handleChangeEditPasswordModal, id]);
 
-  const handleChangeImageUrl = useCallback(
-    (value) => {
-      formik.setFieldValue('avatar', value);
-    },
-    [formik]
-  );
+  // const handleChangeImageUrl = useCallback(
+  //   (value) => {
+  //     formik.setFieldValue('avatar', value);
+  //   },
+  //   [formik]
+  // );
+
+  const uploadImage = async (options) => {
+    setLoading(true);
+    const { onSuccess, onError, file } = options;
+
+    const fmData = new FormData();
+    // const config = {
+    //   headers: { 'content-type': 'multipart/form-data' },
+    //   onUploadProgress: (event) => {
+    //     const percent = Math.floor((event.loaded / event.total) * 100);
+    //     setProgress(percent);
+    //     if (percent === 100) {
+    //       setTimeout(() => setProgress(0), 1000);
+    //     }
+    //     onProgress({ percent: (event.loaded / event.total) * 100 });
+    //   }
+    // };
+    fmData.append('image', file);
+    try {
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+
+      onSuccess('Ok');
+      console.log('server res: ', res);
+      setLoading(false);
+      setImageUrl(res.data.data.image_url);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      // const error = new Error('Some error');
+      onError({ err });
+    }
+  };
 
   return (
     <>
@@ -147,14 +183,16 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
                 width: '100%'
               }}
             />
-            <InputImage
-              label={`* ${t('input.label.user.avatar')}`}
+            <UploadImage
+              label={`* ${t('input.label.post.imageUrl')}`}
               name="avatar"
               message={formik.touched.avatar ? formik.errors.avatar : ''}
               type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
               value={formik.values.avatar}
               onBlur={formik.handleBlur}
-              onChange={handleChangeImageUrl}
+              onChange={uploadImage}
+              loading={loading}
+              imageUrl={imageUrl}
               labelStyle={{
                 padding: '2px'
               }}

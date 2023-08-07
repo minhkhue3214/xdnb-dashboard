@@ -27,7 +27,7 @@ const requestUpdateUserApi = (params) => {
   if (!id) throw new Error('Id is required');
 
   // delete params['id'];
-  return axiosClient.put(`/users`, params);
+  return axiosClient.put(`/users/${id}`, params);
 };
 
 const requestUpdatePasswordApi = (params) => {

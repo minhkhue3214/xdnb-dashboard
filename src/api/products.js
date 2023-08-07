@@ -23,6 +23,7 @@ const deleteProductApi = (params) => {
 };
 
 const addProductApi = (params) => {
+
   return axiosClient.post('/products', params);
 };
 
@@ -30,8 +31,9 @@ const requestUpdateProductApi = (params) => {
   const id = params['id'];
   if (!id) throw new Error('Id is required');
 
+  console.log("requestUpdateProductApi", params);
   // delete params['id'];
-  return axiosClient.put(`/products/${id}`);
+  return axiosClient.put(`/products/${id}`, params);
 };
 
 export { getAllProductsApi, getProductApi, deleteProductApi, addProductApi, requestUpdateProductApi };

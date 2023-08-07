@@ -1,4 +1,5 @@
 import { Button } from 'antd';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,25 +18,25 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [disableButton, setDisableButton] = useState(true);
 
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
+  // const getBase64 = (img, callback) => {
+  //   const reader = new FileReader();
+  //   reader.addEventListener('load', () => callback(reader.result));
+  //   reader.readAsDataURL(img);
+  // };
 
-  const handleImageChange = (info) => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    // Get this url from response in real world.
-    getBase64(info.file.originFileObj, (url) => {
-      setLoading(false);
-      setImageUrl(url);
-      setDisableButton(false);
-      formik.setFieldValue('avatar', url);
-    });
-  };
+  // const handleImageChange = (info) => {
+  //   if (info.file.status === 'uploading') {
+  //     setLoading(true);
+  //     return;
+  //   }
+  //   // Get this url from response in real world.
+  //   getBase64(info.file.originFileObj, (url) => {
+  //     setLoading(false);
+  //     setImageUrl(url);
+  //     setDisableButton(false);
+  //     formik.setFieldValue('avatar', url);
+  //   });
+  // };
 
   useEffect(() => {
     dispatchGetProfile();
@@ -58,7 +59,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
           // console.log('UpdateInfoModal', values);
           dispatchUpdateProfile({
             id,
-            fullname: values.fullname,
+            full_name: values.fullname,
             username: values.username,
             avatar: values.avatar,
             phone: values.phone,
@@ -104,6 +105,25 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
     // Các hành động khác bạn muốn thực hiện khi có sự thay đổi giá trị
   };
 
+  const uploadImage = async (options) => {
+    setLoading(true);
+    const { onSuccess, onError, file } = options;
+
+    const fmData = new FormData();
+    fmData.append('image', file);
+    try {
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+
+      onSuccess('Ok');
+      console.log('server res: ', res);
+      setLoading(false);
+      setImageUrl(res.data.data.image_url);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      onError({ err });
+    }
+  };
+
   return (
     <>
       <Modal
@@ -140,9 +160,9 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
             name="avatar"
             disabled="true"
             value={formik.values.avatar}
-            onChange={handleImageChange}
             loading={loading}
             imageUrl={imageUrl}
+            onChange={uploadImage}
             labelStyle={{
               padding: '2px'
             }}

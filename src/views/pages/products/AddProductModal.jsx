@@ -17,39 +17,26 @@ const AddProductModal = ({ open, setOpen }) => {
   const categoryOptions = useMemo(() => {
     const data = JSON.parse(JSON.stringify(categoriesState.categories));
 
-    // console.log('categoryOptions', data);
-
     return data?.map((one) => ({
       label: one.name,
       value: one.id
     }));
   }, [categoriesState]);
 
-  // useEffect(() => {
-  //   const data = JSON.parse(JSON.stringify(categoriesState.categories));
-
-  //   console.log('categoryOptions', data.length);
-  //   for (let i = 0; i < data.length; i++) {
-  //     console.log('testing', data[i].children);
-  //     let object = {
-  //       label: data[i].children.name,
-  //       value: data[i].children.id
-  //     };
-  //     categoryOptions.push(object);
-  //   }
-  // }, [categoriesState]);
-
   const [imageProduct, setImageProduct] = useState([]);
   const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   const formik = useFormik({
     initialValues: {
-      category_id: 'category123',
+      category_id: '',
       name: '',
       slug: '',
       hot: true,
       short_description: '',
       long_description: '',
+      original_price: '',
+      discounted_price: '',
+      quantity: 0,
       priority: 1,
       gallery_items: imageProduct
     },
@@ -67,6 +54,9 @@ const AddProductModal = ({ open, setOpen }) => {
             hot: values.hot,
             short_description: values.short_description,
             long_description: values.long_description,
+            original_price: values.original_price,
+            discounted_price: values.discounted_price,
+            quantity: values.quantity,
             priority: values.priority,
             gallery_items: imageProduct
           });
@@ -125,7 +115,7 @@ const AddProductModal = ({ open, setOpen }) => {
     setImageProduct((prevImageProduct) => {
       return prevImageProduct.map((image) => {
         if (image.id === id) {
-          return { ...image, source: url };
+          return { ...image, path: url };
         }
         return image;
       });
@@ -139,7 +129,7 @@ const AddProductModal = ({ open, setOpen }) => {
         id: uuidv4(),
         name: 'Gallery Item 1',
         alt: 'Alt text for Gallery Item 1',
-        source: avatarDefault,
+        path: avatarDefault,
         priority: 1
       };
       return [...prevImageProduct, newImage];
@@ -151,6 +141,13 @@ const AddProductModal = ({ open, setOpen }) => {
     const newListImage = imageProduct.filter((image) => image.id !== id);
     setImageProduct(newListImage);
   };
+
+  const handleChangeCategoryId = useCallback(
+    (value) => {
+      formik.setFieldValue('category_id', value);
+    },
+    [formik]
+  );
 
   return (
     <>
@@ -184,7 +181,7 @@ const AddProductModal = ({ open, setOpen }) => {
               // options={categories}
               options={categoryOptions}
               value={formik.values.category_id}
-              onChange={formik.handleChange}
+              onChange={handleChangeCategoryId}
               message={formik.touched.category_id ? formik.errors.category_id : ''}
               type={formik.touched.category_id && formik.errors.category_id ? 'error' : ''}
             />
@@ -207,6 +204,68 @@ const AddProductModal = ({ open, setOpen }) => {
               }}
               inputStyle={{
                 width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.product.original_price')}`}
+              name="original_price"
+              message={formik.touched.original_price ? formik.errors.original_price : ''}
+              type={formik.touched.original_price && formik.errors.original_price ? 'error' : ''}
+              value={formik.values.original_price}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.product.discounted_price')}`}
+              name="discounted_price"
+              message={formik.touched.discounted_price ? formik.errors.discounted_price : ''}
+              type={formik.touched.discounted_price && formik.errors.discounted_price ? 'error' : ''}
+              value={formik.values.discounted_price}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <InputNumber
+              label={`* ${t('input.label.product.quantity')}`}
+              name="quantity"
+              message={formik.touched.quantity ? formik.errors.quantity : ''}
+              type={formik.touched.quantity && formik.errors.quantity ? 'error' : ''}
+              value={formik.values.quantity}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '20%'
               }}
             />
             <Input

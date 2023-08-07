@@ -56,6 +56,7 @@ export const users = createSlice({
       // request update user
     },
     getUserSuccess: (state, action) => {
+      console.log("getUserSuccess", action.payload);
       state.detail = action.payload;
     },
     getUserFail: (_, action) => {

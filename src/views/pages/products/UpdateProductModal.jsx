@@ -36,6 +36,9 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       hot: true,
       short_description: '',
       long_description: '',
+      original_price: '',
+      discounted_price: '',
+      quantity: 0,
       priority: 1,
       gallery_items: imageProduct
     },
@@ -50,6 +53,9 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
             hot: values.hot,
             short_description: values.short_description,
             long_description: values.long_description,
+            original_price: values.original_price,
+            discounted_price: values.discounted_price,
+            quantity: values.quantity,
             priority: values.priority,
             gallery_items: imageProduct
           });
@@ -82,6 +88,9 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       formik.setFieldValue('hot', data.hot || '');
       formik.setFieldValue('short_description', data.short_description || '');
       formik.setFieldValue('long_description', data.long_description || '');
+      formik.setFieldValue('original_price', data.original_price || '');
+      formik.setFieldValue('discounted_price', data.discounted_price || '');
+      formik.setFieldValue('quantity', data.quantity || '');
       formik.setFieldValue('priority', data.priority || '');
       formik.setFieldValue('gallery_items', data.gallery_items || '');
 
@@ -134,10 +143,11 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   };
 
   const handleProductSource = (id, url) => {
+    console.log('handleProductSource', id, url);
     setImageProduct((prevImageProduct) => {
       return prevImageProduct.map((image) => {
         if (image.id === id) {
-          return { ...image, source: url };
+          return { ...image, path: url };
         }
         return image;
       });
@@ -151,7 +161,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
         id: uuidv4(),
         name: 'Gallery Item 1',
         alt: 'Alt text for Gallery Item 1',
-        source: avatarDefault,
+        path: avatarDefault,
         priority: 1
       };
       return [...prevImageProduct, newImage];
@@ -213,6 +223,68 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               }}
               inputStyle={{
                 width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.product.original_price')}`}
+              name="original_price"
+              message={formik.touched.original_price ? formik.errors.original_price : ''}
+              type={formik.touched.original_price && formik.errors.original_price ? 'error' : ''}
+              value={formik.values.original_price}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <Input
+              label={`* ${t('input.label.product.discounted_price')}`}
+              name="discounted_price"
+              message={formik.touched.discounted_price ? formik.errors.discounted_price : ''}
+              type={formik.touched.discounted_price && formik.errors.discounted_price ? 'error' : ''}
+              value={formik.values.discounted_price}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              size="middle"
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
+            <InputNumber
+              label={`* ${t('input.label.product.quantity')}`}
+              name="quantity"
+              message={formik.touched.quantity ? formik.errors.quantity : ''}
+              type={formik.touched.quantity && formik.errors.quantity ? 'error' : ''}
+              value={formik.values.quantity}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '20%'
               }}
             />
             <Input

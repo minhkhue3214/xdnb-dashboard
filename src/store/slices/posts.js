@@ -34,6 +34,7 @@ export const posts = createSlice({
       //
     },
     getPostSuccess: (state, action) => {
+      console.log("getPostSuccess", action.payload);
       const { data } = action.payload;
       state.detail = data;
     },

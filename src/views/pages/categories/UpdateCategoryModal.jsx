@@ -117,7 +117,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
 
   useEffect(() => {
     if (id) {
-      dispatchGetCategory({ params: { id } });
+      dispatchGetCategory({ id });
     }
   }, [dispatchGetCategory, id]);
 

@@ -17,6 +17,7 @@ const usePostsStore = () => {
   );
   const dispatchGetPost = useCallback(
     (payload) => {
+      console.log("dispatchGetPost", payload);
       dispatch(getPostRequest(payload));
 
       return true;
@@ -35,6 +36,7 @@ const usePostsStore = () => {
 
   const dispatchUpdatePost = useCallback(
     (payload) => {
+      console.log("dispatchUpdatePost", payload);
       dispatch(updatePostRequest(payload));
 
       return true;

@@ -89,7 +89,7 @@ function* requestGetUserSaga(action) {
 
     yield put(
       getUserSuccess({
-        fullname: data.fullname,
+        full_name: data.full_name,
         username: data.username,
         avatar: data.avatar,
         phone: data.phone,

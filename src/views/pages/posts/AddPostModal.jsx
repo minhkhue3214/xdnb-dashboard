@@ -1,10 +1,11 @@
 import { Button } from 'antd';
+import axios from 'axios';
 import { useFormik } from 'formik';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { DatePicker, Input, InputPermalink, Tag, InputNumber, InputImage, Editor, Selector } from '~/ui-component/atoms';
+import { DatePicker, Input, InputPermalink, Tag, InputNumber, UploadImage, Editor, Selector } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import { usePostsStore } from '~/hooks/posts';
 import dayjs from 'dayjs';
@@ -12,6 +13,9 @@ import dayjs from 'dayjs';
 const AddPostModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
   const { dispatchAddPost } = usePostsStore();
+
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -21,7 +25,6 @@ const AddPostModal = ({ open, setOpen }) => {
       author: '',
       publicationDate: '',
       slug: '',
-      imageUrl: '',
       imageAlt: '',
       content: '',
       priority: 1,
@@ -42,7 +45,7 @@ const AddPostModal = ({ open, setOpen }) => {
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
-        const { title, type, description, author, publicationDate, slug, imageUrl, imageAlt, content, priority, tags } = values;
+        const { title, type, description, author, publicationDate, slug, imageAlt, content, priority, tags } = values;
 
         console.log('values', values);
         if (formik.isValid) {
@@ -55,8 +58,8 @@ const AddPostModal = ({ open, setOpen }) => {
             publication_date: dayjs(publicationDate).toISOString(),
             slug,
             image: {
-              alt: imageAlt,
-              url: imageUrl
+              path: imageUrl,
+              alt: imageAlt
             },
             content,
             priority,
@@ -88,12 +91,12 @@ const AddPostModal = ({ open, setOpen }) => {
     [formik]
   );
 
-  const handleChangeImageUrl = useCallback(
-    (value) => {
-      formik.setFieldValue('imageUrl', value);
-    },
-    [formik]
-  );
+  // const handleChangeImageUrl = useCallback(
+  //   (value) => {
+  //     formik.setFieldValue('imageUrl', value);
+  //   },
+  //   [formik]
+  // );
 
   const handleChangeContent = useCallback(
     (value) => {
@@ -109,6 +112,37 @@ const AddPostModal = ({ open, setOpen }) => {
     },
     [formik]
   );
+
+  const uploadImage = async (options) => {
+    setLoading(true);
+    const { onSuccess, onError, file } = options;
+
+    const fmData = new FormData();
+    // const config = {
+    //   headers: { 'content-type': 'multipart/form-data' },
+    //   onUploadProgress: (event) => {
+    //     const percent = Math.floor((event.loaded / event.total) * 100);
+    //     setProgress(percent);
+    //     if (percent === 100) {
+    //       setTimeout(() => setProgress(0), 1000);
+    //     }
+    //     onProgress({ percent: (event.loaded / event.total) * 100 });
+    //   }
+    // };
+    fmData.append('image', file);
+    try {
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+
+      onSuccess('Ok');
+      console.log('server res: ', res);
+      setLoading(false);
+      setImageUrl(res.data.data.image_url);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      // const error = new Error('Some error');
+      onError({ err });
+    }
+  };
 
   return (
     <>
@@ -200,14 +234,16 @@ const AddPostModal = ({ open, setOpen }) => {
           </Cell>
           <Cell>
             <WrapperImage2>
-              <InputImage
+              <UploadImage
                 label={`* ${t('input.label.post.imageUrl')}`}
-                name="imageUrl"
-                message={formik.touched.imageUrl ? formik.errors.imageUrl : ''}
-                type={formik.touched.imageUrl && formik.errors.imageUrl ? 'error' : ''}
-                value={formik.values.imageUrl}
+                name="avatar"
+                message={formik.touched.avatar ? formik.errors.avatar : ''}
+                type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
+                value={formik.values.avatar}
                 onBlur={formik.handleBlur}
-                onChange={handleChangeImageUrl}
+                onChange={uploadImage}
+                loading={loading}
+                imageUrl={imageUrl}
                 labelStyle={{
                   padding: '2px'
                 }}
@@ -217,10 +253,6 @@ const AddPostModal = ({ open, setOpen }) => {
                 }}
                 inputStyle={{
                   width: '100%'
-                }}
-                uploadStyle={{
-                  width: '133px',
-                  height: '100px'
                 }}
               />
               <Input
