@@ -13,6 +13,7 @@ const getPostApi = (params) => {
 };
 
 const addPostApi = (params) => {
+  console.log("addPostApi", params)
   return axiosClient.post('/posts', params);
 };
 

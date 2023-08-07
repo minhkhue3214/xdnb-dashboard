@@ -4,7 +4,8 @@ import {
     getAllProductsRequest,
     getProductRequest,
     deleteProductRequest,
-    updateProductRequest
+    updateProductRequest,
+    addProductRequest
 } from '~/store/slices/products';
 
 const useProductsStore = () => {
@@ -41,8 +42,8 @@ const useProductsStore = () => {
 
     const dispatchAddProduct = useCallback(
         (payload) => {
-            // console.log("dispatchAddProduct", payload)
-            dispatch(getProductRequest(payload));
+            console.log("dispatchAddProduct", payload)
+            dispatch(addProductRequest(payload));
 
             return true;
         },
@@ -51,12 +52,13 @@ const useProductsStore = () => {
 
     const dispatchUpdateProduct = useCallback(
         (payload) => {
-          dispatch(updateProductRequest(payload));
-    
-          return true;
+            console.log("dispatchUpdateProduct", payload)
+            dispatch(updateProductRequest(payload));
+
+            return true;
         },
         [dispatch]
-      );
+    );
 
 
     return {

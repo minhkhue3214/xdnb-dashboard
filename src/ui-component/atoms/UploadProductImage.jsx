@@ -1,16 +1,12 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Input, Upload } from 'antd';
+import axios from 'axios';
 import React, { memo, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { BsFillTrashFill } from 'react-icons/bs';
 import styled from 'styled-components';
 // const { Option } = Select;
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
@@ -37,17 +33,39 @@ const AtomUploadProductImage = ({
 
   const [loading, setLoading] = useState(false);
   // const [imageUrl, setImageUrl] = useState();
-  const handleChange = (info) => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    // Get this url from response in real world.
-    getBase64(info.file.originFileObj, (url) => {
+
+  // const handleChange = (info) => {
+  //   if (info.file.status === 'uploading') {
+  //     setLoading(true);
+  //     return;
+  //   }
+  //   // Get this url from response in real world.
+  //   getBase64(info.file.originFileObj, (url) => {
+  //     setLoading(false);
+  //     // setImageUrl(url);
+  //     handleProductSource(ProductInfo.id, url);
+  //   });
+  // };
+
+  const handleChange = async (options) => {
+    setLoading(true);
+    const { onSuccess, onError, file } = options;
+
+    const fmData = new FormData();
+    fmData.append('image', file);
+    try {
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+
+      onSuccess('Ok');
+      console.log('server res: ', res);
       setLoading(false);
-      // setImageUrl(url);
-      handleProductSource(ProductInfo.id, url);
-    });
+      // setImageUrl(res.data.data.image_url);
+      handleProductSource(ProductInfo.id, res.data.data.image_url);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      // const error = new Error('Some error');
+      onError({ err });
+    }
   };
 
   const uploadButton = (
@@ -70,18 +88,17 @@ const AtomUploadProductImage = ({
   return (
     <ImageWrapper>
       <CustomUpload
-        name="avatar"
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
         style={{ marginLeft: '100px' }}
         beforeUpload={beforeUpload}
-        onChange={handleChange}
+        // onChange={handleChange}
+        customRequest={handleChange}
       >
-        {ProductInfo.source ? (
+        {ProductInfo.path ? (
           <img
-            src={ProductInfo.source}
+            src={ProductInfo.path}
             alt="avatar"
             style={{
               width: '100%'

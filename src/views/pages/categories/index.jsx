@@ -37,6 +37,8 @@ const PageCategory = () => {
   const categories = useMemo(() => {
     const data = JSON.parse(JSON.stringify(categoriesState.categories));
 
+    console.log('data categories', data);
+
     return data?.map((one) => {
       one.key = one.id;
       if (one.children) {

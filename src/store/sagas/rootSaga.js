@@ -15,6 +15,6 @@ export default function* rootSaga() {
     watchCategories(),
     watchProfile(),
     watchProducts(),
-    watchConsultationRequests()
+    watchConsultationRequests(),
   ]);
 }
