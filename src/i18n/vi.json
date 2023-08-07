@@ -38,7 +38,7 @@
     },
     "products": {
       "name": "Tên sản phẩm",
-      "discounted_price": "Giá giảm",
+      "discounted_price": "Giảm giá",
       "original_price": "Giá gốc",
       "long_description": "Mô tả dài",
       "short_description": "Mô tả ngắn",

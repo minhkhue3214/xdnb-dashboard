@@ -12,7 +12,7 @@ import { usePostsStore } from '~/hooks/posts';
 import MainCard from '~/ui-component/cards/MainCard';
 import { AntdTable } from '~/ui-component/molecules';
 import AddPostModal from './AddPostModal';
-import PreviewModal from './PreviewModal';
+// import PreviewModal from './PreviewModal';
 import UpdatePostModal from './UpdatePostModal';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -80,10 +80,10 @@ const PagePost = () => {
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { dataIndex: 'title', title: t('table.post.title'), width: '15%' },
+    { dataIndex: 'title', title: t('table.post.title'), width: '25%' },
     { dataIndex: 'description', title: t('table.post.description'), width: '25%' },
-    { dataIndex: 'author', title: t('table.post.author'), width: '20%' },
-    { dataIndex: 'priority', title: t('table.post.priority'), width: '15%' },
+    { dataIndex: 'author', title: t('table.post.author'), width: '15%' },
+    { dataIndex: 'priority', title: t('table.post.priority'), width: '10%' },
     {
       dataIndex: 'publication_date',
       title: t('table.post.publication_date'),
@@ -145,7 +145,7 @@ const PagePost = () => {
       </PaginationWrapper>
       <AddPostModal open={openAddPostModal} setOpen={setOpenAddPostModal} />
       <UpdatePostModal id={openEditPostModal.id} open={openEditPostModal.status} setOpen={handleChangeEditPostModal} />
-      {isPreViewModal && <PreviewModal />}
+      {/* {isPreViewModal && <PreviewModal />} */}
     </MainCard>
   );
 };

@@ -244,11 +244,7 @@ const ProductsPage = () => {
         <Pagination count={productsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
       </PaginationWrapper>
       <AddProductModal open={openAddProductModal} setOpen={setOpenAddProductModal} />
-      <UpdateProductModal
-        id={openEditProductModal.id}
-        open={openEditProductModal.status}
-        setOpen={handleChangeEditProductModal}
-      />
+      <UpdateProductModal id={openEditProductModal.id} open={openEditProductModal.status} setOpen={handleChangeEditProductModal} />
       <GalleryItem id={1} open={openGalleryItemsModal.status} setOpen={handleChangeGalleryItemsModal} />
     </MainCard>
   );
