@@ -5,7 +5,10 @@ const getCategoriesApi = (params) => {
 };
 
 const getCategoryApi = (params) => {
-  return axiosClient.get('/categories', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+  console.log("getCategoryApi", id);
+  return axiosClient.get(`categories/${id}`);
 };
 
 const addCategoryApi = (params) => {
@@ -17,7 +20,10 @@ const updateCategoryApi = (params) => {
 };
 
 const deleteCategoryApi = (params) => {
-  return axiosClient.delete('/categories', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+
+  return axiosClient.delete(`/categories/${id}`);
 };
 
 export { getCategoriesApi, getCategoryApi, addCategoryApi, updateCategoryApi, deleteCategoryApi };

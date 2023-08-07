@@ -23,6 +23,7 @@ const useCategoriesStore = () => {
   );
   const dispatchGetCategory = useCallback(
     (payload) => {
+      console.log("dispatchGetCategory", payload);
       dispatch(getCategoryRequest(payload));
 
       return true;
@@ -32,6 +33,7 @@ const useCategoriesStore = () => {
 
   const dispatchAddCategory = useCallback(
     (payload) => {
+      console.log("dispatchAddCategory", payload);
       dispatch(addCategoryRequest(payload));
 
       return true;

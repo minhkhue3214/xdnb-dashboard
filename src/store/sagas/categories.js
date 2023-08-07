@@ -34,6 +34,7 @@ function* requestCategoriesSaga(action) {
 function* requestCategorySaga(action) {
   try {
     const results = yield call(getCategoryApi, action.payload);
+    console.log("requestCategorySaga", results);
     yield put(getCategorySuccess(results));
   } catch (error) {
     yield put(getCategoryFail(error));

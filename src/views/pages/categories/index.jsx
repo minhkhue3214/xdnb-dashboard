@@ -16,6 +16,7 @@ import UpdateCategoryModal from './UpdateCategoryModal';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { Tag } from 'antd';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -121,8 +122,12 @@ const PageCategory = () => {
       width: '35%'
     },
     {
-      title: t('table.category.visible'),
-      dataIndex: 'visible',
+      dataIndex: t('table.category.visible'),
+      title: 'visible',
+      render: (_, record) => (
+        // console.log("record",record)
+        <>{record.visible ? <Tag color="red">True</Tag> : <Tag color="blue">False</Tag>}</>
+      ),
       width: '10%'
     },
     {

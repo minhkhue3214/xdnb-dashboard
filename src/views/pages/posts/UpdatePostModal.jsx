@@ -1,15 +1,16 @@
 import { Button } from 'antd';
 import { useFormik } from 'formik';
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { DatePicker, Input, InputPermalink, Tag, InputNumber, InputImage, Editor, Selector } from '~/ui-component/atoms';
+import { DatePicker, Input, InputPermalink, Tag, InputNumber, Editor, Selector, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import { usePostsStore } from '~/hooks/posts';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import axios from 'axios';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -17,6 +18,9 @@ dayjs.extend(timezone);
 const UpdatePostModal = ({ id, open, setOpen }) => {
   const { t } = useTranslation();
   const { postsState, dispatchUpdatePost, dispatchGetPost } = usePostsStore();
+
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -26,7 +30,6 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       author: '',
       publicationDate: '',
       slug: '',
-      imageUrl: '',
       imageAlt: '',
       content: '',
       priority: 1,
@@ -47,11 +50,12 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
-        const { title, type, description, author, publicationDate, slug, imageUrl, imageAlt, content, priority, tags } = values;
+        const { title, type, description, author, publicationDate, slug, imageAlt, content, priority, tags } = values;
 
         if (formik.isValid) {
           // logic submit
           dispatchUpdatePost({
+            id,
             title,
             type,
             description,
@@ -59,8 +63,8 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
             publication_date: dayjs(publicationDate).toISOString(),
             slug,
             image: {
-              alt: imageAlt,
-              url: imageUrl
+              path: imageUrl,
+              alt: imageAlt
             },
             content,
             priority,
@@ -92,13 +96,6 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
     [formik]
   );
 
-  const handleChangeImageUrl = useCallback(
-    (value) => {
-      formik.setFieldValue('imageUrl', value);
-    },
-    [formik]
-  );
-
   const handleChangeContent = useCallback(
     (value) => {
       formik.setFieldValue('content', value);
@@ -115,12 +112,13 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
 
   useEffect(() => {
     if (id) {
-      dispatchGetPost({ params: { id } });
+      dispatchGetPost({ id });
     }
   }, [dispatchGetPost, id]);
 
   useEffect(() => {
     const data = postsState.detail;
+    console.log('postsStateDetail', data);
     if (data) {
       formik.setFieldValue('title', data.title || '');
       formik.setFieldValue('type', data.type || 'blog');
@@ -133,9 +131,41 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       formik.setFieldValue('content', data.content || '');
       formik.setFieldValue('priority', data.priority || 1);
       formik.setFieldValue('tags', data.tags || []);
+      setImageUrl(data.image?.url || '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postsState.detail]);
+
+  const uploadImage = async (options) => {
+    setLoading(true);
+    const { onSuccess, onError, file } = options;
+
+    const fmData = new FormData();
+    // const config = {
+    //   headers: { 'content-type': 'multipart/form-data' },
+    //   onUploadProgress: (event) => {
+    //     const percent = Math.floor((event.loaded / event.total) * 100);
+    //     setProgress(percent);
+    //     if (percent === 100) {
+    //       setTimeout(() => setProgress(0), 1000);
+    //     }
+    //     onProgress({ percent: (event.loaded / event.total) * 100 });
+    //   }
+    // };
+    fmData.append('image', file);
+    try {
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+
+      onSuccess('Ok');
+      console.log('server res: ', res);
+      setLoading(false);
+      setImageUrl(res.data.data.image_url);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      // const error = new Error('Some error');
+      onError({ err });
+    }
+  };
 
   return (
     <>
@@ -227,14 +257,16 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
           </Cell>
           <Cell>
             <WrapperImage2>
-              <InputImage
+              <UploadImage
                 label={`* ${t('input.label.post.imageUrl')}`}
-                name="imageUrl"
-                message={formik.touched.imageUrl ? formik.errors.imageUrl : ''}
-                type={formik.touched.imageUrl && formik.errors.imageUrl ? 'error' : ''}
-                value={formik.values.imageUrl}
+                name="avatar"
+                message={formik.touched.avatar ? formik.errors.avatar : ''}
+                type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
+                value={formik.values.avatar}
                 onBlur={formik.handleBlur}
-                onChange={handleChangeImageUrl}
+                onChange={uploadImage}
+                loading={loading}
+                imageUrl={imageUrl}
                 labelStyle={{
                   padding: '2px'
                 }}
@@ -244,10 +276,6 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
                 }}
                 inputStyle={{
                   width: '100%'
-                }}
-                uploadStyle={{
-                  width: '133px',
-                  height: '100px'
                 }}
               />
               <Input
