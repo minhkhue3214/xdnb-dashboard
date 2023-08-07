@@ -61,7 +61,7 @@ const AtomUploadImage = (props) => {
       </Label>
       <Upload
         multiple
-        style={inputStyle}
+        style={{ overflow: 'hidden', ...inputStyle }}
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
