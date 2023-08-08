@@ -20,7 +20,7 @@ const AtomUploadImage = (props) => {
   const {
     style = {}, // custom style cho wrapper
     labelStyle = {}, // custom style cho label
-    inputStyle = {}, // custom style cho input
+    // inputStyle = {}, // custom style cho input
     messageStyle = {}, // custom style cho message
     visileLabel = true, // Có hiện label hay không?
     visibleMessage = true, // Có hiện message hay không?
@@ -61,7 +61,6 @@ const AtomUploadImage = (props) => {
       </Label>
       <Upload
         multiple
-        style={inputStyle}
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
@@ -70,7 +69,7 @@ const AtomUploadImage = (props) => {
         customRequest={onChange}
         // onChange={onChange}
       >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '90%' }} /> : uploadButton}
       </Upload>
       <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
         {message}

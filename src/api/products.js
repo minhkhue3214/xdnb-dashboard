@@ -23,6 +23,7 @@ const deleteProductApi = (params) => {
 };
 
 const addProductApi = (params) => {
+  console.log("addProductApi", params)
 
   return axiosClient.post('/products', params);
 };

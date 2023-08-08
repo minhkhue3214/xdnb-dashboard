@@ -36,6 +36,7 @@
       "exportCategoryData": "Export Category Data"
     },
     "products": {
+      "addProduct": "Add Product",
       "name": "Product name",
       "discounted_price": "Discounted price",
       "original_price": "Original price",

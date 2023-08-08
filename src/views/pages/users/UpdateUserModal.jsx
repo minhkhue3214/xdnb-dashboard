@@ -20,7 +20,11 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
   const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
-    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
+    console.log('authenticationState', authenticationState);
+
+    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-1);
+    console.log('updateRoles', updateRoles);
+    console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
     setNewRoles(updateRoles);
   }, [authenticationState.loginInfo.role, authenticationState.role]);
 
@@ -29,10 +33,9 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       email: '',
       fullname: '',
       username: '',
-      avatar: '',
       phone: null,
       address: '',
-      role: 'ADMIN'
+      role: ''
     },
     validationSchema: yup.object({
       email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
@@ -43,7 +46,6 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
         .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
         .required(t('input.error.user.pleaseEnterUsername'))
         .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
-      avatar: yup.string().max(9000000, t('input.error.user.nameTooLong')),
       address: yup.string().max(50, t('input.error.user.nameTooLong')),
       role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
     }),
@@ -54,7 +56,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             id,
             full_name: values.fullname,
             username: values.username,
-            avatar: values.avatar,
+            avatar: imageUrl,
             phone: values.phone,
             email: values.email,
             address: values.address,

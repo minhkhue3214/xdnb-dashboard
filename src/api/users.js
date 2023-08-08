@@ -12,6 +12,7 @@ const requestDeleteUserApi = (params) => {
 };
 
 const requestAddUserApi = (params) => {
+  console.log("requestAddUserApi", params);
   return axiosClient.post('/users', params);
 };
 
@@ -35,7 +36,7 @@ const requestUpdatePasswordApi = (params) => {
   if (!id) throw new Error('Id is required');
 
   // delete params['id'];
-  return axiosClient.put(`/update-password/`, params);
+  return axiosClient.put(`/update-password/${id}`, params);
 };
 
 export { getAllUsersApi, requestDeleteUserApi, requestAddUserApi, requestGetUserApi, requestUpdateUserApi, requestUpdatePasswordApi };

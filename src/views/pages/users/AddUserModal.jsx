@@ -10,12 +10,6 @@ import { roles } from '~/store/constant';
 import { Input, Selector, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
-// const getBase64 = (img, callback) => {
-//   const reader = new FileReader();
-//   reader.addEventListener('load', () => callback(reader.result));
-//   reader.readAsDataURL(img);
-// };
-
 const AddUserModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
   const { authenticationState } = useAuthenticationStore();
@@ -26,9 +20,11 @@ const AddUserModal = ({ open, setOpen }) => {
   const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
-    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
-    console.log('updateRoles', updateRoles);
-    // console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
+    console.log('authenticationState', authenticationState);
+
+    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-1);
+    // console.log('updateRoles', updateRoles);
+    console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
     setNewRoles(updateRoles);
   }, [authenticationState.loginInfo.role, authenticationState.role]);
 
@@ -40,7 +36,7 @@ const AddUserModal = ({ open, setOpen }) => {
       username: '',
       phone: null,
       address: '',
-      role: 'ADMIN'
+      role: ''
     },
     validationSchema: yup.object({
       email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
@@ -85,6 +81,7 @@ const AddUserModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
+    setImageUrl('')
   }, [formik, setOpen]);
 
   const handleChangeRole = useCallback(
@@ -189,10 +186,10 @@ const AddUserModal = ({ open, setOpen }) => {
               labelStyle={{
                 padding: '2px'
               }}
-              style={{
-                width: '100%',
-                marginTop: '8px'
-              }}
+              // style={{
+              //   width: '100%',
+              //   marginTop: '8px'
+              // }}
               inputStyle={{
                 width: '100%'
               }}
@@ -334,7 +331,7 @@ export default memo(AddUserModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 55vh;
+  height: 58vh;
   display: grid;
   grid-template-rows: 1fr; /* 2 hàng bằng nhau */
   grid-template-columns: 1.6fr 1fr; /* 2 cột bằng nhau */

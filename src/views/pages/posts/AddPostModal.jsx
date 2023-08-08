@@ -75,6 +75,7 @@ const AddPostModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
+    setImageUrl('')
   }, [formik, setOpen]);
 
   const handleChangePublicationDate = useCallback(
@@ -118,17 +119,6 @@ const AddPostModal = ({ open, setOpen }) => {
     const { onSuccess, onError, file } = options;
 
     const fmData = new FormData();
-    // const config = {
-    //   headers: { 'content-type': 'multipart/form-data' },
-    //   onUploadProgress: (event) => {
-    //     const percent = Math.floor((event.loaded / event.total) * 100);
-    //     setProgress(percent);
-    //     if (percent === 100) {
-    //       setTimeout(() => setProgress(0), 1000);
-    //     }
-    //     onProgress({ percent: (event.loaded / event.total) * 100 });
-    //   }
-    // };
     fmData.append('image', file);
     try {
       const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);

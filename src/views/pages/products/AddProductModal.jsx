@@ -71,6 +71,7 @@ const AddProductModal = ({ open, setOpen }) => {
 
   const handleCancel = useCallback(() => {
     formik.handleReset();
+    setImageProduct([]);
     setOpen(false);
   }, [formik, setOpen]);
 
@@ -411,7 +412,7 @@ export default memo(AddProductModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 72vh;
+  height: 80vh;
   display: grid;
   grid-template-rows: 1fr; /* 2 hàng bằng nhau */
   grid-template-columns: 1.5fr 1fr; /* 2 cột bằng nhau */

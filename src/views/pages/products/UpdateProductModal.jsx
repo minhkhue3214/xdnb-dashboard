@@ -26,6 +26,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   }, [categoriesState]);
 
   const [imageProduct, setImageProduct] = useState([]);
+  const [deleteProduct, setDeleteProduct] = useState([]);
   const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   const formik = useFormik({
@@ -39,8 +40,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       original_price: '',
       discounted_price: '',
       quantity: 0,
-      priority: 1,
-      gallery_items: imageProduct
+      priority: 1
     },
     onSubmit: (values) => {
       formik.validateForm().then(() => {
@@ -57,9 +57,10 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
             discounted_price: values.discounted_price,
             quantity: values.quantity,
             priority: values.priority,
+            gallery_deletes: deleteProduct,
             gallery_items: imageProduct
           });
-
+          setDeleteProduct([]);
           handleCancel();
         }
       });
@@ -94,19 +95,28 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       formik.setFieldValue('priority', data.priority || '');
       formik.setFieldValue('gallery_items', data.gallery_items || '');
 
-      // console.log('data.gallery_items', data.gallery_items);
-      var galleryWithId = data.gallery_items?.map((obj) => {
-        return { ...obj, id: uuidv4() };
-      });
-      setImageProduct(galleryWithId);
+      console.log('data.gallery_items', data.gallery_items);
+      // var galleryWithId = data.gallery_items?.map((obj) => {
+      //   return { ...obj, id: uuidv4() };
+      // });
+      setImageProduct(data.gallery_items);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productsState.detail]);
 
   const handleDeleteModal = (id) => {
-    console.log('handleDeleteModal', id);
     const newListImage = imageProduct.filter((image) => image.id !== id);
+    console.log('handleDeleteModal', newListImage);
     setImageProduct(newListImage);
+
+    if (!Array.isArray(deleteProduct)) {
+      console.error('deleteProduct is not an array.');
+      return;
+    }
+  
+    const newDeleteProduct = [...deleteProduct, id];
+    setDeleteProduct(newDeleteProduct);
+  
   };
 
   const handleProductName = (id, e) => {

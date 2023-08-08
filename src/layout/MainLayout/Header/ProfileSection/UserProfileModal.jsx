@@ -50,7 +50,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
       avatar: '',
       phone: null,
       address: '',
-      role: 'ADMIN'
+      role: 'admin'
     },
     validationSchema: yup.object({}),
     onSubmit: (values) => {
@@ -82,7 +82,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
       setId(data.id);
       setImageUrl(data.avatar || avatarDefault);
       formik.setFieldValue('username', data.username || '');
-      formik.setFieldValue('full_name', data.fullname || '');
+      formik.setFieldValue('fullname', data.full_name || '');
       formik.setFieldValue('avatar', data.avatar || avatarDefault);
       formik.setFieldValue('phone', data.phone || '');
       formik.setFieldValue('email', data.email || '');

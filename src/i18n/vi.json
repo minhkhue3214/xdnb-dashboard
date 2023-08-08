@@ -37,6 +37,7 @@
       "exportCategoryData": "Xuất dữ liệu"
     },
     "products": {
+      "addProduct": "Thêm sản phẩm",
       "name": "Tên sản phẩm",
       "discounted_price": "Giảm giá",
       "original_price": "Giá gốc",

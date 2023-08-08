@@ -24,7 +24,7 @@ function* requestProfileSaga(action) {
         console.log("requestProfileSaga", data);
         yield put(
             getProfileSuccess({
-                fullname: data.fullname,
+                full_name: data.full_name,
                 username: data.username,
                 avatar: data.avatar,
                 phone: data.phone,
