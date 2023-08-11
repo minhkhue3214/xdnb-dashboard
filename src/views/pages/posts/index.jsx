@@ -25,6 +25,7 @@ const PagePost = () => {
   const { t } = useTranslation();
   const { postsState, dispatchGetPosts, dispatchDeletePost } = usePostsStore();
   const [openAddPostModal, setOpenAddPostModal] = useState(false);
+  // const [openPreviewModal, setOpenPreviewModal] = useState(false);
   // const [isPreViewModal, setIsPreViewModal] = useState(false);
 
   const [openEditPostModal, setOpenEditPostModal] = useState({
@@ -39,6 +40,10 @@ const PagePost = () => {
   const posts = useMemo(() => {
     return postsState.posts;
   }, [postsState.posts]);
+
+  // const handleChangeOpenPreviewModal = (status) => {
+  //   setOpenPreviewModal(status);
+  // };
 
   const handleChangeEditPostModal = useCallback((props) => {
     if (typeof props === 'boolean') {
@@ -144,8 +149,13 @@ const PagePost = () => {
         />
       </PaginationWrapper>
       <AddPostModal open={openAddPostModal} setOpen={setOpenAddPostModal} />
-      <UpdatePostModal id={openEditPostModal.id} open={openEditPostModal.status} setOpen={handleChangeEditPostModal} />
-      {/* {isPreViewModal && <PreviewModal />} */}
+      {/* <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} /> */}
+      <UpdatePostModal
+        id={openEditPostModal.id}
+        open={openEditPostModal.status}
+        setOpen={handleChangeEditPostModal}
+        // handleChangeOpenPreviewModal={handleChangeOpenPreviewModal}
+      />
     </MainCard>
   );
 };

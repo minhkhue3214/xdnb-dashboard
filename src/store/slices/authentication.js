@@ -24,6 +24,7 @@ export const authentication = createSlice({
       const { data, message } = action.payload;
 
       const { token, user } = data;
+      console.log("loginSuccess",token,user)
 
       state.token = token;
       state.loginInfo = user;

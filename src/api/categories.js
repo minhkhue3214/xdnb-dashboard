@@ -12,11 +12,16 @@ const getCategoryApi = (params) => {
 };
 
 const addCategoryApi = (params) => {
+  console.log("addCategoryApi", params)
   return axiosClient.post('/categories', params);
 };
 
 const updateCategoryApi = (params) => {
-  return axiosClient.put('/categories', params);
+  const id = params['id'];
+  if (!id) throw new Error('Id is required');
+  console.log("getCategoryApi", id);
+
+  return axiosClient.put(`/categories/${id}`, params);
 };
 
 const deleteCategoryApi = (params) => {

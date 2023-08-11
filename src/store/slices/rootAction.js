@@ -6,3 +6,4 @@ export * from './categories';
 export * from './profile';
 export * from './products';
 export * from './consultationRequests';
+export * from './upload';

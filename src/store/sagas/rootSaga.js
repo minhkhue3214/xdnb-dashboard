@@ -6,6 +6,7 @@ import watchCategories from './categories';
 import watchProfile from './profile';
 import watchProducts from './products';
 import watchConsultationRequests from './consultationRequests';
+import watchUpload from './upload';
 
 export default function* rootSaga() {
   yield all([
@@ -16,5 +17,6 @@ export default function* rootSaga() {
     watchProfile(),
     watchProducts(),
     watchConsultationRequests(),
+    watchUpload()
   ]);
 }

@@ -144,7 +144,8 @@ const UsersPage = () => {
             preview={{
               mask: false
             }}
-            src={record.avatar || avatarDefault}
+            // src={record.avatar || avatarDefault}
+            src={`https://tenmienmienphi.online/storage/${record.avatar}` || avatarDefault}
           />
           {/* <h4>Tesing</h4> */}
         </>

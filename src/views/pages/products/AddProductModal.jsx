@@ -24,7 +24,7 @@ const AddProductModal = ({ open, setOpen }) => {
   }, [categoriesState]);
 
   const [imageProduct, setImageProduct] = useState([]);
-  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+  // const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   const formik = useFormik({
     initialValues: {
@@ -71,6 +71,7 @@ const AddProductModal = ({ open, setOpen }) => {
 
   const handleCancel = useCallback(() => {
     formik.handleReset();
+    setImageProduct([]);
     setOpen(false);
   }, [formik, setOpen]);
 
@@ -129,7 +130,7 @@ const AddProductModal = ({ open, setOpen }) => {
         id: uuidv4(),
         name: 'Gallery Item 1',
         alt: 'Alt text for Gallery Item 1',
-        path: avatarDefault,
+        path: '',
         priority: 1
       };
       return [...prevImageProduct, newImage];
@@ -411,7 +412,7 @@ export default memo(AddProductModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 72vh;
+  height: 80vh;
   display: grid;
   grid-template-rows: 1fr; /* 2 hàng bằng nhau */
   grid-template-columns: 1.5fr 1fr; /* 2 cột bằng nhau */

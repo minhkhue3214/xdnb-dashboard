@@ -3,6 +3,7 @@ import { message, Upload } from 'antd';
 import React, { memo } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { FiTrash } from 'react-icons/fi';
 // const { Option } = Select;
 
 const beforeUpload = (file) => {
@@ -20,7 +21,7 @@ const AtomUploadImage = (props) => {
   const {
     style = {}, // custom style cho wrapper
     labelStyle = {}, // custom style cho label
-    inputStyle = {}, // custom style cho input
+    // inputStyle = {}, // custom style cho input
     messageStyle = {}, // custom style cho message
     visileLabel = true, // Có hiện label hay không?
     visibleMessage = true, // Có hiện message hay không?
@@ -31,6 +32,7 @@ const AtomUploadImage = (props) => {
     // onBlur, // onBlur
     loading,
     imageUrl,
+    setImagePath,
     onChange, // hàm bắt sự kiện onChange
     hiddenMode = 'hidden' // hidden || none Có 2 cách ẩn input: ẩn hoàn toàn với display = none, chỉ ẩn phần tử nhưng vẫn giữ nguyên vị trí với visibility = hidden
     // ...restProps // Tất cả những props được truyền vào khác với các props bên trên sẽ được truyền cho thẻ Input của antd
@@ -54,6 +56,10 @@ const AtomUploadImage = (props) => {
     return uuidv4();
   }, []);
 
+  const handleDeleteImage = () => {
+    setImagePath('');
+  };
+
   return (
     <InputWrapper style={style}>
       <Label htmlFor={id} style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} `}>
@@ -69,8 +75,16 @@ const AtomUploadImage = (props) => {
         beforeUpload={beforeUpload}
         customRequest={onChange}
         // onChange={onChange}
+        disabled={imageUrl ? true : false}
       >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+        {imageUrl ? (
+          <GroupIcon>
+            <img src={`https://tenmienmienphi.online/storage/${imageUrl}`} alt="avatar" style={{ width: '90%' }} />
+            <StyledTrashIcon onClick={handleDeleteImage} />
+          </GroupIcon>
+        ) : (
+          uploadButton
+        )}
       </Upload>
       <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
         {message}
@@ -120,4 +134,28 @@ const Message = styled.span`
   &.warning {
     color: #faad14;
   }
+`;
+
+const StyledTrashIcon = styled(FiTrash)`
+  position: absolute;
+  cursor: pointer;
+  font-size: 30px;
+  z-index: 100;
+  color: #ffff;
+
+  &:hover {
+    color: black;
+
+    Img {
+      transition: 0.3s;
+      opacity: 0;
+    }
+  }
+`;
+
+const GroupIcon = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

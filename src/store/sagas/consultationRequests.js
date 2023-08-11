@@ -43,6 +43,7 @@ function* requestConsultationRequestSaga(action) {
 
 function* requestUpdateConsultationRequestSaga(action) {
   try {
+    console.log("requestUpdateConsultationRequestSaga", action.payload);
     const { params } = action.payload;
     if (params) {
       delete action.payload.params;

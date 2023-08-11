@@ -1,14 +1,21 @@
 import { Button } from 'antd';
 import { useFormik } from 'formik';
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import { useAuthenticationStore } from '~/hooks/authentication';
 import * as yup from 'yup';
 import { useCategoriesStore } from '~/hooks/categories';
-import { Editor, Input, InputNumber, InputPermalink, Selector, Switch, Tag } from '~/ui-component/atoms';
+import { Editor, Input, InputNumber, InputPermalink, Selector, Switch, Tag, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
+import axios from 'axios';
 
 const AddCategoryModal = ({ open, setOpen }) => {
+  const { authenticationState } = useAuthenticationStore();
+  const [loading, setLoading] = useState(false);
+  const [loadingIcon, setLoadingIcon] = useState(false);
+  const [imagePath, setImagePath] = useState('');
+  const [iconPath, setIconPath] = useState('');
   const { t } = useTranslation();
   const { categoriesState, dispatchAddCategory } = useCategoriesStore();
 
@@ -54,6 +61,8 @@ const AddCategoryModal = ({ open, setOpen }) => {
             visible,
             visible_children: visibleChildren,
             content,
+            image: imagePath,
+            icon: iconPath,
             priority,
             tags
           });
@@ -67,6 +76,8 @@ const AddCategoryModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
+    setImagePath('');
+    setIconPath('');
   }, [formik, setOpen]);
 
   const handleChangeTags = useCallback(
@@ -115,6 +126,56 @@ const AddCategoryModal = ({ open, setOpen }) => {
 
     return value;
   }, [formik.values.parentId, categoriesState]);
+
+  const uploadImage = async (options) => {
+    setLoading(true);
+    const { onSuccess, onError, file } = options;
+
+    const fmData = new FormData();
+    fmData.append('image', file);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authenticationState.token}`
+      }
+    };
+    try {
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
+
+      onSuccess('Ok');
+      console.log('server res: ', res);
+      setLoading(false);
+      setImagePath(res.data.data.image_path);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      // const error = new Error('Some error');
+      onError({ err });
+    }
+  };
+
+  const uploadIcon = async (options) => {
+    setLoading(true);
+    const { onSuccess, onError, file } = options;
+
+    const fmData = new FormData();
+    fmData.append('image', file);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authenticationState.token}`
+      }
+    };
+    try {
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
+
+      onSuccess('Ok');
+      console.log('server res: ', res);
+      setLoadingIcon(false);
+      setIconPath(res.data.data.image_path);
+    } catch (err) {
+      console.log('Eroor: ', err);
+      // const error = new Error('Some error');
+      onError({ err });
+    }
+  };
 
   return (
     <>
@@ -178,6 +239,52 @@ const AddCategoryModal = ({ open, setOpen }) => {
             <Editor onChange={handleChangeContent} />
           </Cell>
           <Cell>
+            <WrapperImage3>
+              <UploadImage
+                label={`* ${t('input.label.category.imageUrl')}`}
+                name="avatar"
+                message={formik.touched.avatar ? formik.errors.avatar : ''}
+                type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
+                value={formik.values.avatar}
+                onBlur={formik.handleBlur}
+                onChange={uploadImage}
+                loading={loading}
+                imageUrl={imagePath}
+                setImagePath={setImagePath}
+                labelStyle={{
+                  padding: '2px'
+                }}
+                // style={{
+                //   width: '100%',
+                //   marginTop: '8px'
+                // }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+              <UploadImage
+                label={`* ${t('input.label.category.iconUrl')}`}
+                name="avatar"
+                message={formik.touched.avatar ? formik.errors.avatar : ''}
+                type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
+                value={formik.values.avatar}
+                onBlur={formik.handleBlur}
+                onChange={uploadIcon}
+                loading={loadingIcon}
+                imageUrl={iconPath}
+                setImagePath={setIconPath}
+                labelStyle={{
+                  padding: '2px'
+                }}
+                // style={{
+                //   width: '100%',
+                //   marginTop: '8px'
+                // }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+            </WrapperImage3>
             <Selector
               label={`* ${t('input.label.category.parentId')}`}
               name="parentId"
@@ -321,4 +428,11 @@ const WrapperImage2 = styled.div`
   grid-template-columns: 1fr 1fr; /* 2 cột bằng nhau */
   flex-direction: row;
   gap: 10px; /* Khoảng cách giữa các vùng */
+`;
+
+const WrapperImage3 = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 `;

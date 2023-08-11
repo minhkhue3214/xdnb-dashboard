@@ -4,7 +4,9 @@ import axios from 'axios';
 import React, { memo, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { BsFillTrashFill } from 'react-icons/bs';
+import { useAuthenticationStore } from '~/hooks/authentication';
 import styled from 'styled-components';
+import { FiTrash } from 'react-icons/fi';
 // const { Option } = Select;
 
 const beforeUpload = (file) => {
@@ -27,6 +29,10 @@ const AtomUploadProductImage = ({
   handleProductAlt,
   handleDeleteModal
 }) => {
+  // const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+
+  const { authenticationState } = useAuthenticationStore();
+
   // useEffect(() => {
   //   console.log('ProductInfo', ProductInfo);
   // }, []);
@@ -53,14 +59,19 @@ const AtomUploadProductImage = ({
 
     const fmData = new FormData();
     fmData.append('image', file);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authenticationState.token}`
+      }
+    };
     try {
-      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
 
       onSuccess('Ok');
       console.log('server res: ', res);
       setLoading(false);
       // setImageUrl(res.data.data.image_url);
-      handleProductSource(ProductInfo.id, res.data.data.image_url);
+      handleProductSource(ProductInfo.id, res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
       // const error = new Error('Some error');
@@ -81,6 +92,10 @@ const AtomUploadProductImage = ({
     </div>
   );
 
+  const handleDeleteImage = () => {
+    handleProductSource(ProductInfo.id, '');
+  };
+
   // const id = React.useMemo(() => {
   //   return uuidv4();
   // }, []);
@@ -95,15 +110,13 @@ const AtomUploadProductImage = ({
         beforeUpload={beforeUpload}
         // onChange={handleChange}
         customRequest={handleChange}
+        disabled={ProductInfo.path ? true : false}
       >
         {ProductInfo.path ? (
-          <img
-            src={ProductInfo.path}
-            alt="avatar"
-            style={{
-              width: '100%'
-            }}
-          />
+          <GroupIcon>
+            <img src={`https://tenmienmienphi.online/storage/${ProductInfo.path}`} alt="avatar" style={{ width: '100%' }} />
+            <StyledTrashIcon onClick={handleDeleteImage} />
+          </GroupIcon>
         ) : (
           uploadButton
         )}
@@ -153,7 +166,7 @@ const ImageWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 150px;
-  background-color: #4096ff9f;
+  background-color: #4096ff;
   border-radius: 8px;
   margin-top: 20px;
   align-items: center;
@@ -195,4 +208,28 @@ const CustomUpload = styled(Upload)`
 
 const CustomInput = styled(Input)`
   margin-top: 10px;
+`;
+
+const StyledTrashIcon = styled(FiTrash)`
+  position: absolute;
+  cursor: pointer;
+  font-size: 30px;
+  z-index: 100;
+  color: #ffff;
+
+  &:hover {
+    color: black;
+
+    Img {
+      transition: 0.3s;
+      opacity: 0;
+    }
+  }
+`;
+
+const GroupIcon = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

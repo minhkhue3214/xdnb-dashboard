@@ -7,10 +7,12 @@ import * as yup from 'yup';
 import { DatePicker, Input, InputPermalink, Tag, InputNumber, Editor, Selector, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import { usePostsStore } from '~/hooks/posts';
+import { useAuthenticationStore } from '~/hooks/authentication';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import axios from 'axios';
+import PreviewModal from './PreviewModal';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -18,9 +20,12 @@ dayjs.extend(timezone);
 const UpdatePostModal = ({ id, open, setOpen }) => {
   const { t } = useTranslation();
   const { postsState, dispatchUpdatePost, dispatchGetPost } = usePostsStore();
+  const { authenticationState } = useAuthenticationStore();
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const [openPreviewModal, setOpenPreviewModal] = useState(false);
+  const [imagePath, setImagePath] = useState('');
+  const [initValue, setInitValue] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +68,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
             publication_date: dayjs(publicationDate).toISOString(),
             slug,
             image: {
-              path: imageUrl,
+              path: imagePath,
               alt: imageAlt
             },
             content,
@@ -126,12 +131,13 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       formik.setFieldValue('author', data.author || '');
       formik.setFieldValue('publicationDate', dayjs(data.publicationDate).utcOffset(7) || '');
       formik.setFieldValue('slug', data.slug || '');
-      formik.setFieldValue('imageUrl', data.image?.url || '');
+      formik.setFieldValue('imagePath', data.image?.path || '');
       formik.setFieldValue('imageAlt', data.image?.alt || '');
       formik.setFieldValue('content', data.content || '');
       formik.setFieldValue('priority', data.priority || 1);
       formik.setFieldValue('tags', data.tags || []);
-      setImageUrl(data.image?.url || '');
+      setImagePath(data.image?.path || '');
+      setInitValue(data.content);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postsState.detail]);
@@ -141,6 +147,12 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
     const { onSuccess, onError, file } = options;
 
     const fmData = new FormData();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authenticationState.token}`
+      }
+    };
     // const config = {
     //   headers: { 'content-type': 'multipart/form-data' },
     //   onUploadProgress: (event) => {
@@ -154,17 +166,21 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
     // };
     fmData.append('image', file);
     try {
-      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
 
       onSuccess('Ok');
       console.log('server res: ', res);
       setLoading(false);
-      setImageUrl(res.data.data.image_url);
+      setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
       // const error = new Error('Some error');
       onError({ err });
     }
+  };
+
+  const handleChangeOpenPreviewModal = (status) => {
+    setOpenPreviewModal(status);
   };
 
   return (
@@ -175,7 +191,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
         onOpen={setOpen}
         width="95%"
         footer={[
-          <Button key="3" ghost type="primary">
+          <Button key="3" ghost type="primary" onClick={() => handleChangeOpenPreviewModal(true)}>
             {t('modal.post.previewPost')}
           </Button>,
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
@@ -253,7 +269,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
                 width: '100%'
               }}
             />
-            <Editor initValue={formik.values.content} onChange={handleChangeContent} />
+            <Editor initValue={initValue} onChange={handleChangeContent} />
           </Cell>
           <Cell>
             <WrapperImage2>
@@ -266,7 +282,8 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
                 onBlur={formik.handleBlur}
                 onChange={uploadImage}
                 loading={loading}
-                imageUrl={imageUrl}
+                imageUrl={imagePath}
+                setImagePath={setImagePath}
                 labelStyle={{
                   padding: '2px'
                 }}
@@ -397,6 +414,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
             />
           </Cell>
         </Wrapper>
+        <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values} />
       </Modal>
     </>
   );

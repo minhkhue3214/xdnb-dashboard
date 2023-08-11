@@ -17,10 +17,15 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
   const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  // const [imageUrl, setImageUrl] = useState('');
+  const [imagePath, setImagePath] = useState('');
 
   useEffect(() => {
-    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-2);
+    console.log('authenticationState', authenticationState);
+
+    const updateRoles = authenticationState.loginInfo.role == 'admin' ? roles : roles.slice(-1);
+    console.log('updateRoles', updateRoles);
+    console.log('updateRoles', authenticationState.loginInfo.role, updateRoles);
     setNewRoles(updateRoles);
   }, [authenticationState.loginInfo.role, authenticationState.role]);
 
@@ -29,10 +34,9 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       email: '',
       fullname: '',
       username: '',
-      avatar: '',
       phone: null,
       address: '',
-      role: 'ADMIN'
+      role: ''
     },
     validationSchema: yup.object({
       email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
@@ -43,7 +47,6 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
         .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
         .required(t('input.error.user.pleaseEnterUsername'))
         .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
-      avatar: yup.string().max(9000000, t('input.error.user.nameTooLong')),
       address: yup.string().max(50, t('input.error.user.nameTooLong')),
       role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
     }),
@@ -54,7 +57,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             id,
             full_name: values.fullname,
             username: values.username,
-            avatar: values.avatar,
+            avatar: imagePath,
             phone: values.phone,
             email: values.email,
             address: values.address,
@@ -98,7 +101,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       formik.setFieldValue('address', data.address || '');
       formik.setFieldValue('password', data.password || '');
       formik.setFieldValue('role', data.role || '');
-      setImageUrl(data.avatar);
+      setImagePath(data.avatar);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersState.detail]);
@@ -123,25 +126,20 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
     const { onSuccess, onError, file } = options;
 
     const fmData = new FormData();
-    // const config = {
-    //   headers: { 'content-type': 'multipart/form-data' },
-    //   onUploadProgress: (event) => {
-    //     const percent = Math.floor((event.loaded / event.total) * 100);
-    //     setProgress(percent);
-    //     if (percent === 100) {
-    //       setTimeout(() => setProgress(0), 1000);
-    //     }
-    //     onProgress({ percent: (event.loaded / event.total) * 100 });
-    //   }
-    // };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authenticationState.token}`
+      }
+    };
     fmData.append('image', file);
     try {
-      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
 
       onSuccess('Ok');
       console.log('server res: ', res);
       setLoading(false);
-      setImageUrl(res.data.data.image_url);
+      // setImageUrl(res.data.data.image_url);
+      setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
       // const error = new Error('Some error');
@@ -192,7 +190,8 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
               onBlur={formik.handleBlur}
               onChange={uploadImage}
               loading={loading}
-              imageUrl={imageUrl}
+              imageUrl={imagePath}
+              setImagePath={setImagePath}
               labelStyle={{
                 padding: '2px'
               }}
