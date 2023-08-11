@@ -121,6 +121,7 @@
     },
     "post": {
       "addPost": "Thêm bài viết",
+      "previewModal": "Xem trước thông tin",
       "editPost": "Thay đổi thông tin bài viết",
       "cancel": "Hủy bỏ",
       "previewPost": "Xem thử",
@@ -178,7 +179,9 @@
         "addTagText": "Thêm tag",
         "parentId": "Danh mục cha",
         "visible": "Hiển thị danh mục",
-        "visibleChildren": "Hiển thị danh mục con"
+        "visibleChildren": "Hiển thị danh mục con",
+        "imageUrl": "Ảnh loại sản phẩm",
+        "iconUrl": "Icon loại sản phẩm"
       },
       "product": {
         "category_id": "Mã loại sản phẩm",

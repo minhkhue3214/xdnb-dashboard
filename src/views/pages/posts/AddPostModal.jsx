@@ -9,13 +9,17 @@ import { DatePicker, Input, InputPermalink, Tag, InputNumber, UploadImage, Edito
 import { Modal } from '~/ui-component/molecules';
 import { usePostsStore } from '~/hooks/posts';
 import dayjs from 'dayjs';
+import { useAuthenticationStore } from '~/hooks/authentication';
+import PreviewModal from './PreviewModal';
 
 const AddPostModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
   const { dispatchAddPost } = usePostsStore();
+  const { authenticationState } = useAuthenticationStore();
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const [imagePath, setImagePath] = useState('');
+  const [openPreviewModal, setOpenPreviewModal] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -58,7 +62,7 @@ const AddPostModal = ({ open, setOpen }) => {
             publication_date: dayjs(publicationDate).toISOString(),
             slug,
             image: {
-              path: imageUrl,
+              path: imagePath,
               alt: imageAlt
             },
             content,
@@ -75,7 +79,7 @@ const AddPostModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
-    setImageUrl('')
+    setImagePath('')
   }, [formik, setOpen]);
 
   const handleChangePublicationDate = useCallback(
@@ -120,18 +124,27 @@ const AddPostModal = ({ open, setOpen }) => {
 
     const fmData = new FormData();
     fmData.append('image', file);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authenticationState.token}`
+      }
+    };
     try {
-      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
 
       onSuccess('Ok');
       console.log('server res: ', res);
       setLoading(false);
-      setImageUrl(res.data.data.image_url);
+      setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
       // const error = new Error('Some error');
       onError({ err });
     }
+  };
+
+  const handleChangeOpenPreviewModal = (status) => {
+    setOpenPreviewModal(status);
   };
 
   return (
@@ -142,7 +155,7 @@ const AddPostModal = ({ open, setOpen }) => {
         onOpen={setOpen}
         width="95%"
         footer={[
-          <Button key="3" ghost type="primary">
+          <Button key="3" ghost type="primary" onClick={() => handleChangeOpenPreviewModal(true)}>
             {t('modal.post.previewPost')}
           </Button>,
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
@@ -233,7 +246,8 @@ const AddPostModal = ({ open, setOpen }) => {
                 onBlur={formik.handleBlur}
                 onChange={uploadImage}
                 loading={loading}
-                imageUrl={imageUrl}
+                imageUrl={imagePath}
+                setImagePath={setImagePath}
                 labelStyle={{
                   padding: '2px'
                 }}
@@ -365,6 +379,7 @@ const AddPostModal = ({ open, setOpen }) => {
           </Cell>
         </Wrapper>
       </Modal>
+      <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values} />
     </>
   );
 };

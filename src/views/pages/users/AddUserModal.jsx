@@ -1,9 +1,9 @@
+import axios from 'axios';
 import { useFormik } from 'formik';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import axios from 'axios';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { useUsersStore } from '~/hooks/users';
 import { roles } from '~/store/constant';
@@ -17,7 +17,7 @@ const AddUserModal = ({ open, setOpen }) => {
   const { dispatchAddUser } = useUsersStore();
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const [imagePath, setImagePath] = useState('');
 
   useEffect(() => {
     console.log('authenticationState', authenticationState);
@@ -63,7 +63,7 @@ const AddUserModal = ({ open, setOpen }) => {
           dispatchAddUser({
             full_name: values.fullname,
             username: values.username,
-            avatar: imageUrl,
+            avatar: imagePath,
             phone: values.phone,
             email: values.email,
             address: values.address,
@@ -81,7 +81,7 @@ const AddUserModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
-    setImageUrl('')
+    setImagePath('');
   }, [formik, setOpen]);
 
   const handleChangeRole = useCallback(
@@ -96,25 +96,20 @@ const AddUserModal = ({ open, setOpen }) => {
     const { onSuccess, onError, file } = options;
 
     const fmData = new FormData();
-    // const config = {
-    //   headers: { 'content-type': 'multipart/form-data' },
-    //   onUploadProgress: (event) => {
-    //     const percent = Math.floor((event.loaded / event.total) * 100);
-    //     setProgress(percent);
-    //     if (percent === 100) {
-    //       setTimeout(() => setProgress(0), 1000);
-    //     }
-    //     onProgress({ percent: (event.loaded / event.total) * 100 });
-    //   }
-    // };
     fmData.append('image', file);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authenticationState.token}`
+      }
+    };
     try {
-      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
 
       onSuccess('Ok');
       console.log('server res: ', res);
       setLoading(false);
-      setImageUrl(res.data.data.image_url);
+      // setImageUrl(res.data.data.image_url);
+      setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
       // const error = new Error('Some error');
@@ -182,7 +177,8 @@ const AddUserModal = ({ open, setOpen }) => {
               onBlur={formik.handleBlur}
               onChange={uploadImage}
               loading={loading}
-              imageUrl={imageUrl}
+              imageUrl={imagePath}
+              setImagePath={setImagePath}
               labelStyle={{
                 padding: '2px'
               }}

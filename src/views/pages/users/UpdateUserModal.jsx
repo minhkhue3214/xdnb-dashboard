@@ -17,7 +17,8 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
   const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  // const [imageUrl, setImageUrl] = useState('');
+  const [imagePath, setImagePath] = useState('');
 
   useEffect(() => {
     console.log('authenticationState', authenticationState);
@@ -56,7 +57,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
             id,
             full_name: values.fullname,
             username: values.username,
-            avatar: imageUrl,
+            avatar: imagePath,
             phone: values.phone,
             email: values.email,
             address: values.address,
@@ -100,7 +101,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       formik.setFieldValue('address', data.address || '');
       formik.setFieldValue('password', data.password || '');
       formik.setFieldValue('role', data.role || '');
-      setImageUrl(data.avatar);
+      setImagePath(data.avatar);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersState.detail]);
@@ -125,25 +126,20 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
     const { onSuccess, onError, file } = options;
 
     const fmData = new FormData();
-    // const config = {
-    //   headers: { 'content-type': 'multipart/form-data' },
-    //   onUploadProgress: (event) => {
-    //     const percent = Math.floor((event.loaded / event.total) * 100);
-    //     setProgress(percent);
-    //     if (percent === 100) {
-    //       setTimeout(() => setProgress(0), 1000);
-    //     }
-    //     onProgress({ percent: (event.loaded / event.total) * 100 });
-    //   }
-    // };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${authenticationState.token}`
+      }
+    };
     fmData.append('image', file);
     try {
-      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData);
+      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
 
       onSuccess('Ok');
       console.log('server res: ', res);
       setLoading(false);
-      setImageUrl(res.data.data.image_url);
+      // setImageUrl(res.data.data.image_url);
+      setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
       // const error = new Error('Some error');
@@ -194,7 +190,8 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
               onBlur={formik.handleBlur}
               onChange={uploadImage}
               loading={loading}
-              imageUrl={imageUrl}
+              imageUrl={imagePath}
+              setImagePath={setImagePath}
               labelStyle={{
                 padding: '2px'
               }}

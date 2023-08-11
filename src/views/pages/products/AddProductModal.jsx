@@ -24,7 +24,7 @@ const AddProductModal = ({ open, setOpen }) => {
   }, [categoriesState]);
 
   const [imageProduct, setImageProduct] = useState([]);
-  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+  // const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   const formik = useFormik({
     initialValues: {
@@ -130,7 +130,7 @@ const AddProductModal = ({ open, setOpen }) => {
         id: uuidv4(),
         name: 'Gallery Item 1',
         alt: 'Alt text for Gallery Item 1',
-        path: avatarDefault,
+        path: '',
         priority: 1
       };
       return [...prevImageProduct, newImage];

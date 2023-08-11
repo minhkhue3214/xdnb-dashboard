@@ -83,6 +83,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   useEffect(() => {
     const data = productsState.detail;
     if (data) {
+      console.log('productsState', data);
       formik.setFieldValue('category_id', data.category_id || '');
       formik.setFieldValue('name', data.name || '');
       formik.setFieldValue('slug', data.slug || '');
@@ -113,10 +114,9 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       console.error('deleteProduct is not an array.');
       return;
     }
-  
+
     const newDeleteProduct = [...deleteProduct, id];
     setDeleteProduct(newDeleteProduct);
-  
   };
 
   const handleProductName = (id, e) => {
