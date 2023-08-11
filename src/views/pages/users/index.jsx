@@ -130,8 +130,6 @@ const UsersPage = () => {
   };
 
   const columns = [
-    { dataIndex: 'username', title: t('table.user.username'), width: '8%' },
-    { dataIndex: 'full_name', title: t('table.user.fullname'), width: '10%' },
     {
       dataIndex: 'avatar',
       title: t('table.user.avatar'),
@@ -154,12 +152,14 @@ const UsersPage = () => {
       ),
       width: '10%'
     },
-    { dataIndex: 'email', title: t('table.user.email'), width: '10%' },
-    { dataIndex: 'phone', title: t('table.user.phone'), width: '10%' },
-    { dataIndex: 'address', title: t('table.user.address'), width: '10%' },
+    { dataIndex: 'username', title: t('table.user.username'), width: '30%' },
+    { dataIndex: 'full_name', title: t('table.user.fullname'), width: '40%' },
+    // { dataIndex: 'email', title: t('table.user.email'), width: '10%' },
+    // { dataIndex: 'phone', title: t('table.user.phone'), width: '10%' },
+    // { dataIndex: 'address', title: t('table.user.address'), width: '10%' },
     { dataIndex: 'role', title: t('table.user.role'), width: '10%' },
-    { dataIndex: 'created_at', title: t('table.user.create_at'), width: '10%' },
-    { dataIndex: 'updated_at', title: t('table.user.update_at'), width: '10%' },
+    // { dataIndex: 'created_at', title: t('table.user.create_at'), width: '10%' },
+    // { dataIndex: 'updated_at', title: t('table.user.update_at'), width: '10%' },
     {
       dataIndex: 'actions',
       title: t('table.post.actions'),

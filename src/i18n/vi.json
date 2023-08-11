@@ -54,7 +54,7 @@
   "table": {
     "user": {
       "fullname": "Tên đầy đủ",
-      "role": "Quyền người dùng",
+      "role": "Role",
       "name": "Tên người dùng",
       "email": "Email",
       "username": "Tên đăng nhập",
@@ -155,7 +155,7 @@
         "password": "Mật khẩu",
         "email": "Email",
         "address": "Địa chỉ",
-        "role": "Quyền người dùng",
+        "role": "Role",
         "newPassword": "Mật khẩu mới",
         "reTypeNewPassword": "Nhập lại mật khẩu mới"
       },
