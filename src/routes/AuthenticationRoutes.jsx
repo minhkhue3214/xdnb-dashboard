@@ -10,6 +10,8 @@ import Loadable from '~/ui-component/Loadable';
 // login option 3 routing
 const AuthLogin3 = Loadable(lazy(() => import('~/views/pages/authentication/authentication3/Login3')));
 const AuthRegister3 = Loadable(lazy(() => import('~/views/pages/authentication/authentication3/Register3')));
+const RecoveryPassword1 = Loadable(lazy(() => import('~/views/pages/authentication/authentication3/RecoveryPassword1')));
+const RecoveryPassword2 = Loadable(lazy(() => import('~/views/pages/authentication/authentication3/RecoveryPassword2')));
 
 function NoneProtectedRoute() {
   // Kiểm tra trạng thái đăng nhập ở đây
@@ -35,7 +37,15 @@ const AuthenticationRoutes = {
     {
       path: '/register',
       element: <AuthRegister3 />
-    }
+    },
+    {
+      path: '/recoverypassword1',
+      element: <RecoveryPassword1 />
+    },
+    {
+      path: '/recoverypassword2',
+      element: <RecoveryPassword2 />
+    },
   ]
 };
 

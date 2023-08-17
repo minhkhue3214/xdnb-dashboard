@@ -96,13 +96,6 @@ const AddPostModal = ({ open, setOpen }) => {
     [formik]
   );
 
-  // const handleChangeImageUrl = useCallback(
-  //   (value) => {
-  //     formik.setFieldValue('imageUrl', value);
-  //   },
-  //   [formik]
-  // );
-
   const handleChangeContent = useCallback(
     (value) => {
       formik.setFieldValue('content', value);

@@ -139,19 +139,6 @@ const ProductsPage = () => {
       ),
       width: '10%'
     },
-    // {
-    //   dataIndex: 'gallery_items',
-    //   title: t('table.products.gallery_items'),
-    //   render: (_, record) => (
-    //     // console.log("record",record)
-    //     <>
-    //       <IconButton aria-label="edit" color="primary" onClick={() => handleGalleryItems(record)}>
-    //         <GrGallery size={22} />
-    //       </IconButton>
-    //     </>
-    //   ),
-    //   width: '10%'
-    // },
     {
       dataIndex: 'actions',
       title: t('table.post.actions'),

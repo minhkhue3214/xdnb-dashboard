@@ -2,6 +2,7 @@ import { memo, useCallback, useState } from 'react';
 
 import {
   Box,
+  Link,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -144,6 +145,7 @@ const FirebaseLogin = ({ ...others }) => {
                 }
                 label="Ghi nhớ mật khẩu"
               />
+              <FormControlLabel control={<Link href="/recoverypassword1">Quên mật khẩu</Link>} />
             </Stack>
             <Box sx={{ mt: 3, visibility: errors.submit ? 'visible' : 'hidden' }}>
               <FormHelperText error>{errors.submit}</FormHelperText>

@@ -5,13 +5,21 @@ import { useEffect, useRef, useState } from 'react';
 
 const AtomTag = ({ style = {}, tagStyle = {}, tagInputStyle = {}, initValue = [], addTagText, color, onChange, ...restProps }) => {
   const { token } = theme.useToken();
-  const [tags, setTags] = useState(initValue);
+  const [tags, setTags] = useState([]);
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [editInputIndex, setEditInputIndex] = useState(-1);
   const [editInputValue, setEditInputValue] = useState('');
   const inputRef = useRef(null);
   const editInputRef = useRef(null);
+
+  console.log('initValue', initValue);
+
+  useEffect(() => {
+    if (initValue.length > 0) {
+      setTags(initValue);
+    }
+  }, [initValue]);
 
   useEffect(() => {
     onChange && onChange(tags);
@@ -149,7 +157,7 @@ const AtomTag = ({ style = {}, tagStyle = {}, tagInputStyle = {}, initValue = []
         />
       ) : (
         <Tag style={tagPlusStyle} onClick={showInput}>
-          <PlusOutlined size={12}/> {addTagText || 'New Tag'}
+          <PlusOutlined size={12} /> {addTagText || 'New Tag'}
         </Tag>
       )}
     </Space>

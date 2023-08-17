@@ -135,7 +135,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       formik.setFieldValue('imageAlt', data.image?.alt || '');
       formik.setFieldValue('content', data.content || '');
       formik.setFieldValue('priority', data.priority || 1);
-      formik.setFieldValue('tags', data.tags || []);
+      formik.setFieldValue('tags', data.tags);
       setImagePath(data.image?.path || '');
       setInitValue(data.content);
     }

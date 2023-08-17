@@ -43,6 +43,7 @@ const useCategoriesStore = () => {
 
   const dispatchUpdateCategory = useCallback(
     (payload) => {
+      console.log("dispatchUpdateCategory", payload);
       dispatch(updateCategoryRequest(payload));
 
       return true;

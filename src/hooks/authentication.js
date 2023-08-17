@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeRememberMe, initApp, loginRequest, logoutSuccess } from '~/store/slices/authentication';
+import { changeRememberMe, initApp, loginRequest, logoutRequest, recoveryPassword1Request, recoveryPassword2Request } from '~/store/slices/authentication';
 
 const useAuthenticationStore = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const useAuthenticationStore = () => {
   );
 
   const dispatchLogout = useCallback(() => {
-    dispatch(logoutSuccess());
+    dispatch(logoutRequest());
 
     return true;
   }, [dispatch]);
@@ -36,12 +36,30 @@ const useAuthenticationStore = () => {
     [dispatch]
   );
 
+  const dispatchRecoveryPassword1 = useCallback(
+    (payload) => {
+      console.log("dispatchRecoveryPassword1", payload)
+      dispatch(recoveryPassword1Request(payload));
+    },
+    [dispatch]
+  );
+
+  const dispatchRecoveryPassword2 = useCallback(
+    (payload) => {
+      console.log("dispatchRecoveryPassword2", payload)
+      dispatch(recoveryPassword2Request(payload));
+    },
+    [dispatch]
+  );
+
   return {
     dispatchInitApp,
     authenticationState,
     dispatchLogin,
     dispatchLogout,
-    dispatchChangeRememberMe
+    dispatchChangeRememberMe,
+    dispatchRecoveryPassword1,
+    dispatchRecoveryPassword2
   };
 };
 

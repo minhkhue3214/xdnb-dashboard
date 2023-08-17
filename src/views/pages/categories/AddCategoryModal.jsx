@@ -153,7 +153,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
   };
 
   const uploadIcon = async (options) => {
-    setLoading(true);
+    setLoadingIcon(true);
     const { onSuccess, onError, file } = options;
 
     const fmData = new FormData();

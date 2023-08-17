@@ -18,6 +18,7 @@ const AtomSwitch = (props) => {
     onFocus, // onFocus
     onBlur, // onBlur
     onChange, // hàm bắt sự kiện onChange
+    value,
     hiddenMode = 'hidden', // hidden || none Có 2 cách ẩn input: ẩn hoàn toàn với display = none, chỉ ẩn phần tử nhưng vẫn giữ nguyên vị trí với visibility = hidden
     ...restProps // Tất cả những props được truyền vào khác với các props bên trên sẽ được truyền cho thẻ Input của antd
     // Có thể sử dụng các thuộc tính của thẻ Input antd như bình thường.
@@ -54,13 +55,13 @@ const AtomSwitch = (props) => {
         id={id}
         status={type}
         style={inputStyle}
+        checked={value}
         onChange={onChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
         {...restProps}
         checkedChildren={<CheckOutlined />}
         unCheckedChildren={<CloseOutlined />}
-        defaultChecked
       />
       <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
         {message}

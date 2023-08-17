@@ -124,6 +124,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
       console.log('server res: ', res);
       setLoading(false);
       setImagePath(res.data.data.image_path);
+      setDisableButton(false);
     } catch (err) {
       console.log('Eroor: ', err);
       onError({ err });
@@ -307,9 +308,10 @@ const EditUserWrapper = styled.div`
   height: 80%;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+  overflow-y: scroll; /* Hiển thị thanh cuộn dọc */
 
   ::-webkit-scrollbar {
-    width: 0px; /* Chiều rộng thanh cuộn ngang */
+    width: 0; /* Ẩn thanh cuộn ngang */
   }
 `;
