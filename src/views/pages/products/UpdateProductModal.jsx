@@ -13,13 +13,35 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   const { t } = useTranslation();
   const { productsState, dispatchGetProductById, dispatchUpdateProduct } = useProductsStore();
   const { categoriesState } = useCategoriesStore();
+  const [newCategoryId, setNewCategoryId] = useState(null);
+
+  const flattenChildren = (items) => {
+    const flattened = [];
+
+    const processItem = (item) => {
+      flattened.push(item);
+
+      if (item.children && item.children.length > 0) {
+        item.children.forEach((child) => {
+          processItem(child);
+        });
+      }
+    };
+
+    items.forEach((item) => {
+      processItem(item);
+    });
+
+    return flattened;
+  };
 
   const categoryOptions = useMemo(() => {
     const data = JSON.parse(JSON.stringify(categoriesState.categories));
 
-    console.log('categoryOptions', data);
+    const flattenedData = flattenChildren(data);
+    console.log('flattenedData', flattenedData);
 
-    return data?.map((one) => ({
+    return flattenedData?.map((one) => ({
       label: one.name,
       value: one.id
     }));
@@ -47,7 +69,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
         if (formik.isValid) {
           dispatchUpdateProduct({
             id,
-            category_id: values.category_id,
+            category_id: newCategoryId,
             name: values.name,
             slug: values.slug,
             hot: values.hot,
@@ -71,6 +93,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
+    setNewCategoryId('');
   }, [formik, setOpen]);
 
   useEffect(() => {
@@ -81,13 +104,30 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   }, [dispatchGetProductById, id]);
 
   useEffect(() => {
+    const getNameById = (id, data) => {
+      const item = data.find((item) => item.id === id);
+      return item ? item.name : null;
+    };
+
     const data = productsState.detail;
     if (data) {
       console.log('productsState', data);
-      formik.setFieldValue('category_id', data.category_id || '');
+
+      console.log('Productmodal', JSON.parse(JSON.stringify(categoriesState.categories)));
+      const flattenedData = flattenChildren(JSON.parse(JSON.stringify(categoriesState.categories)));
+
+      const name = getNameById(data.category_id, flattenedData);
+      formik.setFieldValue('category_id', name);
+      setNewCategoryId(data.category_id);
+
+      // formik.setFieldValue('category_id', data.category_id || '');
       formik.setFieldValue('name', data.name || '');
       formik.setFieldValue('slug', data.slug || '');
-      formik.setFieldValue('hot', data.hot || '');
+      if (data.hot == 1) {
+        formik.setFieldValue('hot', true);
+      } else {
+        formik.setFieldValue('hot', false);
+      }
       formik.setFieldValue('short_description', data.short_description || '');
       formik.setFieldValue('long_description', data.long_description || '');
       formik.setFieldValue('original_price', data.original_price || '');
@@ -178,6 +218,22 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
     });
   };
 
+  const handleChangeHot = useCallback(
+    (value) => {
+      formik.setFieldValue('hot', value);
+    },
+    [formik]
+  );
+
+  const handleChangeCategoryId = useCallback(
+    (value) => {
+      console.log('handleChangeCategoryId', value);
+      setNewCategoryId(value);
+      formik.setFieldValue('category_id', value);
+    },
+    [formik]
+  );
+
   return (
     <>
       <Modal
@@ -210,7 +266,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               // options={categories}
               options={categoryOptions}
               value={formik.values.category_id}
-              onChange={formik.handleChange}
+              onChange={handleChangeCategoryId}
               message={formik.touched.category_id ? formik.errors.category_id : ''}
               type={formik.touched.category_id && formik.errors.category_id ? 'error' : ''}
             />
@@ -344,7 +400,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               type={formik.touched.hot && formik.errors.hot ? 'error' : ''}
               value={formik.values.hot}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={handleChangeHot}
               labelStyle={{
                 padding: '2px',
                 width: '20%'

@@ -22,7 +22,8 @@ import {
     addProductFail,
     updateProductRequest,
     updateProductSuccess,
-    updateProductFail
+    updateProductFail,
+    reGetAllProductsRequest
 } from '~/store/slices/rootAction';
 
 function* requestAllProductsSaga(action) {
@@ -54,8 +55,14 @@ function* requestGetProductSaga(action) {
 
 function* requestDeleteProductSaga(action) {
     try {
+        const { params } = action.payload;
+        if (params) {
+            delete action.payload.params;
+        }
+
         const result = yield call(deleteProductApi, action.payload);
         yield put(deleteProductSuccess(result));
+        yield put(reGetAllProductsRequest({ params }));
     } catch (error) {
         yield put(deleteProductFail(error));
     }
@@ -72,8 +79,7 @@ function* requestAddProductSaga(action) {
 
         const result = yield call(addProductApi, action.payload);
         yield put(addProductSuccess(result));
-        // yield put(reGetAllUserRequest({ params }));
-        //   yield put(reGetAllUserRequest());
+        yield put(reGetAllProductsRequest({ params }));
     } catch (error) {
         yield put(addProductFail(error));
     }
@@ -81,19 +87,19 @@ function* requestAddProductSaga(action) {
 
 function* requestUpdateProductSaga(action) {
     try {
-  
-      const { params } = action.payload;
-      if (params) {
-        delete action.payload.params;
-      }
-  
-      const data = yield call(requestUpdateProductApi, action.payload);
-      yield put(updateProductSuccess(data));
-    //   yield put(reGetAllUserRequest({ params }));
+
+        const { params } = action.payload;
+        if (params) {
+            delete action.payload.params;
+        }
+
+        const data = yield call(requestUpdateProductApi, action.payload);
+        yield put(updateProductSuccess(data));
+        yield put(reGetAllProductsRequest({ params }));
     } catch (error) {
-      yield put(updateProductFail(error));
+        yield put(updateProductFail(error));
     }
-  }
+}
 
 export default function* watchProducts() {
     yield takeLatest(getAllProductsRequest.type, requestAllProductsSaga);
@@ -101,4 +107,6 @@ export default function* watchProducts() {
     yield takeLatest(deleteProductRequest.type, requestDeleteProductSaga);
     yield takeLatest(addProductRequest.type, requestAddProductSaga);
     yield takeLatest(updateProductRequest.type, requestUpdateProductSaga);
+
+    yield takeLatest([reGetAllProductsRequest.type], requestAllProductsSaga);
 }

@@ -19,7 +19,11 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
   const [loadingIcon, setLoadingIcon] = useState(false);
   const [imagePath, setImagePath] = useState('');
   const [iconPath, setIconPath] = useState('');
+  const [newParentId, setNewParentId] = useState(null);
+  const [enable, setEnable] = useState(true);
+
   const categoryOptions = useMemo(() => {
+    console.log('categoryOptions', categoriesState.categories);
     const data = JSON.parse(JSON.stringify(categoriesState.categories));
 
     return data?.map((one) => ({
@@ -35,8 +39,8 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
       slug: '',
       parentId: '',
       priority: 1,
-      visible: true,
-      visibleChildren: true,
+      visible: false,
+      visibleChildren: false,
       tags: []
     },
     validationSchema: yup.object({
@@ -49,14 +53,14 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
-        const { name, slug, parentId, content, priority, tags, visible, visibleChildren } = values;
+        const { name, slug, content, priority, tags, visible, visibleChildren } = values;
 
         if (formik.isValid) {
           // logic submit
           dispatchUpdateCategory({
             id,
             name,
-            parent_id: parentId,
+            parent_id: newParentId,
             slug,
             visible,
             visible_children: visibleChildren,
@@ -78,6 +82,8 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     setOpen(false);
     setImagePath('');
     setIconPath('');
+    formik.setFieldValue('parentId', '');
+    setNewParentId(null);
   }, [formik, setOpen]);
 
   const handleChangeTags = useCallback(
@@ -184,16 +190,29 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
   }, [dispatchGetCategory, id]);
 
   useEffect(() => {
+    const getNameById = (id, data) => {
+      const item = data.find((item) => item.id === id);
+      return item ? item.name : null;
+    };
+
     const data = categoriesState.detail;
     console.log('categoriesState', data);
     if (data) {
+      const name = getNameById(data.parent_id, JSON.parse(JSON.stringify(categoriesState.categories)));
+      formik.setFieldValue('parentId', name);
+      setNewParentId(data.parent_id);
+
+      if (data.parent_id) {
+        setEnable(false);
+      }
+
       formik.setFieldValue('name', data.name || '');
       formik.setFieldValue('slug', data.slug || '');
       formik.setFieldValue('content', data.content || '');
       formik.setFieldValue('priority', data.priority || 1);
-      formik.setFieldValue('visible', data.visible || []);
-      formik.setFieldValue('visibleChildren', data.visible_children || []);
-      formik.setFieldValue('tags', data.tags || []);
+      formik.setFieldValue('visible', data.visible);
+      formik.setFieldValue('visibleChildren', data.visible_children);
+      formik.setFieldValue('tags', data.tags);
       setImagePath(data.image_path);
       setIconPath(data.icon_path);
     }
@@ -330,6 +349,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
               selectStyle={{
                 width: '200px'
               }}
+              disabled={enable}
               options={categoryOptions}
               value={formik.values.parentId}
               onChange={handleChangeParentId}

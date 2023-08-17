@@ -4,7 +4,9 @@ import dispatchToast from '~/handlers/toast';
 const initialState = {
   token: '',
   loginInfo: null,
-  rememberMe: true
+  rememberMe: true,
+  recoveryPassword1Status: false,
+  recoveryPasswordS2tatus: false,
 };
 
 export const authentication = createSlice({
@@ -24,7 +26,7 @@ export const authentication = createSlice({
       const { data, message } = action.payload;
 
       const { token, user } = data;
-      console.log("loginSuccess",token,user)
+      console.log("loginSuccess", token, user)
 
       state.token = token;
       state.loginInfo = user;
@@ -39,22 +41,48 @@ export const authentication = createSlice({
     logoutRequest: () => {
       // request logout
     },
-    logoutSuccess: (state) => {
+    logoutSuccess: (state, action) => {
       const { message } = action.payload;
 
-      state.token = initialState.token;
-      state.loginInfo = initialState.loginInfo;
+      state.token = "";
+      state.loginInfo = null;
       dispatchToast('success', message);
     },
     logoutFail: (_, action) => {
       const { message } = action.payload;
 
       dispatchToast('error', message);
-    }
+    },
+    recoveryPassword1Request: () => {
+      // request recoveryPassword1
+    },
+    recoveryPassword1Success: (state, action) => {
+      const { message } = action.payload;
+      state.recoveryPassword1Status = true;
+      dispatchToast('success', message);
+    },
+    recoveryPassword1Fail: (_, action) => {
+      const { message } = action.payload;
+
+      dispatchToast('error', message);
+    },
+    recoveryPassword2Request: () => {
+      // request recoveryPassword1
+    },
+    recoveryPassword2Success: (state, action) => {
+      const { message } = action.payload;
+      state.recoveryPassword1Status = true;
+      dispatchToast('success', message);
+    },
+    recoveryPassword2Fail: (_, action) => {
+      const { message } = action.payload;
+
+      dispatchToast('error', message);
+    },
   }
 });
 
-export const { initApp, changeRememberMe, loginRequest, loginSuccess, logoutRequest, logoutSuccess, loginFail, logoutFail } =
+export const { initApp, changeRememberMe, loginRequest, loginSuccess, logoutRequest, logoutSuccess, loginFail, logoutFail, recoveryPassword1Request, recoveryPassword1Success, recoveryPassword1Fail, recoveryPassword2Request, recoveryPassword2Success, recoveryPassword2Fail } =
   authentication.actions;
 
 export default authentication.reducer;

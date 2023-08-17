@@ -74,6 +74,9 @@ export const products = createSlice({
         updateProductFail: (_, action) => {
             const { message } = action.payload;
             dispatchToast('error', message);
+        },
+        reGetAllProductsRequest: () => {
+            // request all products
         }
     }
 });
@@ -93,7 +96,8 @@ export const {
     addProductFail,
     updateProductRequest,
     updateProductSuccess,
-    updateProductFail
+    updateProductFail,
+    reGetAllProductsRequest
 } = products.actions;
 
 export default products.reducer;

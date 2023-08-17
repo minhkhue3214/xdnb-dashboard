@@ -19,7 +19,7 @@ const beforeUpload = (file) => {
 };
 const AtomUploadImage = (props) => {
   const {
-    style = {}, // custom style cho wrapper
+    // style = {}, // custom style cho wrapper
     labelStyle = {}, // custom style cho label
     // inputStyle = {}, // custom style cho input
     messageStyle = {}, // custom style cho message
@@ -61,13 +61,13 @@ const AtomUploadImage = (props) => {
   };
 
   return (
-    <InputWrapper style={style}>
+    <div>
       <Label htmlFor={id} style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} `}>
         {label}
       </Label>
       <Upload
         multiple
-        style={{ overflow: 'hidden', ...inputStyle }}
+        style={{ overflow: 'hidden' }}
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
@@ -79,7 +79,7 @@ const AtomUploadImage = (props) => {
       >
         {imageUrl ? (
           <GroupIcon>
-            <img src={`https://tenmienmienphi.online/storage/${imageUrl}`} alt="avatar" style={{ width: '90%' }} />
+            <img src={`https://tenmienmienphi.online/storage/${imageUrl}`} alt="avatar" style={{ width: '90%', cursor: 'pointer' }} />
             <StyledTrashIcon onClick={handleDeleteImage} />
           </GroupIcon>
         ) : (
@@ -89,29 +89,29 @@ const AtomUploadImage = (props) => {
       <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
         {message}
       </Message>
-    </InputWrapper>
+    </div>
   );
 };
 
 export default memo(AtomUploadImage);
 
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: fit-content;
-  height: fit-content;
-  position: relative;
+// const InputWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-start;
+//   align-items: flex-start;
+//   width: fit-content;
+//   height: fit-content;
+//   position: relative;
 
-  &.hidden {
-    visibility: hidden;
-  }
+//   &.hidden {
+//     visibility: hidden;
+//   }
 
-  &.none {
-    display: none;
-  }
-`;
+//   &.none {
+//     display: none;
+//   }
+// `;
 
 const Label = styled.label`
   position: relative;

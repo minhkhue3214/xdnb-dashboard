@@ -14,10 +14,50 @@ const AddProductModal = ({ open, setOpen }) => {
   const { dispatchAddProduct } = useProductsStore();
   const { categoriesState } = useCategoriesStore();
 
+  // const categoryOptions = useMemo(() => {
+  //   const data = categoriesState.categories;
+
+  //   const flattenCategories = (categories) => {
+  //     return categories.flatMap((category) => {
+  //       const children = category.children.map((child) => ({
+  //         label: child.name,
+  //         value: child.id
+  //       }));
+
+  //       return [{ label: category.name, value: category.id }, ...children];
+  //     });
+  //   };
+
+  //   return flattenCategories(data);
+  // }, [categoriesState.categories]);
+
+  const flattenChildren = (items) => {
+    const flattened = [];
+
+    const processItem = (item) => {
+      flattened.push(item);
+
+      if (item.children && item.children.length > 0) {
+        item.children.forEach((child) => {
+          processItem(child);
+        });
+      }
+    };
+
+    items.forEach((item) => {
+      processItem(item);
+    });
+
+    return flattened;
+  };
+
   const categoryOptions = useMemo(() => {
     const data = JSON.parse(JSON.stringify(categoriesState.categories));
 
-    return data?.map((one) => ({
+    const flattenedData = flattenChildren(data);
+    console.log('flattenedData', flattenedData);
+
+    return flattenedData?.map((one) => ({
       label: one.name,
       value: one.id
     }));
@@ -146,6 +186,13 @@ const AddProductModal = ({ open, setOpen }) => {
   const handleChangeCategoryId = useCallback(
     (value) => {
       formik.setFieldValue('category_id', value);
+    },
+    [formik]
+  );
+
+  const handleChangeHot = useCallback(
+    (value) => {
+      formik.setFieldValue('hot', value);
     },
     [formik]
   );
@@ -316,7 +363,7 @@ const AddProductModal = ({ open, setOpen }) => {
               type={formik.touched.hot && formik.errors.hot ? 'error' : ''}
               value={formik.values.hot}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={handleChangeHot}
               labelStyle={{
                 padding: '2px',
                 width: '20%'
