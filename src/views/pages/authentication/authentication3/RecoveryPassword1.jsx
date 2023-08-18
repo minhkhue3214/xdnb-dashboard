@@ -33,6 +33,7 @@ const RecoveryPassword1 = () => {
             email: values.email
           });
           console.log('authenticationState navigate', authenticationState.recoveryPassword1Status);
+
           if (authenticationState.recoveryPassword1Status) {
             navigateTo('/recoverypassword2');
           }
