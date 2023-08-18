@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { Input } from '~/ui-component/atoms';
+import { InputPassword, Input } from '~/ui-component/atoms';
 
 // project imports
 import { useAuthenticationStore } from '~/hooks/authentication';
@@ -99,7 +99,7 @@ const RecoveryPassword2 = () => {
             width: '100%'
           }}
         />
-        <Input
+        <InputPassword
           label={`* ${t('input.label.user.password')}`}
           name="password"
           message={formik.touched.password ? formik.errors.password : ''}
@@ -119,7 +119,7 @@ const RecoveryPassword2 = () => {
             width: '100%'
           }}
         />
-        <Input
+        <InputPassword
           label="Nhập lại mật khẩu"
           name="password_confirmation"
           message={formik.touched.password_confirmation ? formik.errors.password_confirmation : ''}

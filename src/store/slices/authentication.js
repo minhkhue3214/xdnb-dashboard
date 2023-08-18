@@ -57,26 +57,26 @@ export const authentication = createSlice({
       // request recoveryPassword1
     },
     recoveryPassword1Success: (state, action) => {
-      const { message } = action.payload;
-      state.recoveryPassword1Status = true;
+      const { message, success } = action.payload;
+      state.recoveryPassword1Status = success;
       dispatchToast('success', message);
     },
     recoveryPassword1Fail: (_, action) => {
       const { message } = action.payload;
-
+      state.recoveryPassword1Status = false;
       dispatchToast('error', message);
     },
     recoveryPassword2Request: () => {
       // request recoveryPassword1
     },
     recoveryPassword2Success: (state, action) => {
-      const { message } = action.payload;
-      state.recoveryPassword1Status = true;
+      const { message, success } = action.payload;
+      state.recoveryPasswordS2tatus = success;
       dispatchToast('success', message);
     },
     recoveryPassword2Fail: (_, action) => {
       const { message } = action.payload;
-
+      state.recoveryPasswordS2tatus = false;
       dispatchToast('error', message);
     },
   }

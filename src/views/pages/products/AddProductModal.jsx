@@ -398,7 +398,7 @@ const AddProductModal = ({ open, setOpen }) => {
                 width: '100%',
                 resize: 'none'
               }}
-              maxLength={20}
+              maxLength={200}
               showCount
             />
             <Input

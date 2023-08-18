@@ -2,11 +2,10 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Input, Upload } from 'antd';
 import axios from 'axios';
 import React, { memo, useState } from 'react';
-import { AiFillEdit } from 'react-icons/ai';
 import { BsFillTrashFill } from 'react-icons/bs';
-import { useAuthenticationStore } from '~/hooks/authentication';
-import styled from 'styled-components';
 import { FiTrash } from 'react-icons/fi';
+import styled from 'styled-components';
+import { useAuthenticationStore } from '~/hooks/authentication';
 // const { Option } = Select;
 
 const beforeUpload = (file) => {
@@ -146,14 +145,14 @@ const AtomUploadProductImage = ({
         />
       </InputWrapper>
       <ButtonWrapper>
-        <BsFillTrashFill
+        <BsFillTrashFillIcon
           className="BsFillTrashFill"
+          color="#ffffff"
           onClick={() => {
             handleDeleteModal(ProductInfo.id);
           }}
           size={24}
         />
-        <AiFillEdit className="AiFillEdit" size={24} />
       </ButtonWrapper>
     </ImageWrapper>
   );
@@ -173,7 +172,7 @@ const ImageWrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  margin-right: 20px;
+  margin-right: 10px;
   display: flex;
   flex-direction: column;
   width: 200%;
@@ -183,7 +182,7 @@ const InputWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  margin-right: 20px;
+  margin-right: 10px;
   display: flex;
   flex-direction: column;
   width: 30%;
@@ -208,6 +207,12 @@ const CustomUpload = styled(Upload)`
 
 const CustomInput = styled(Input)`
   margin-top: 10px;
+`;
+
+const BsFillTrashFillIcon = styled(BsFillTrashFill)`
+  &:hover {
+    color: black;
+  }
 `;
 
 const StyledTrashIcon = styled(FiTrash)`
