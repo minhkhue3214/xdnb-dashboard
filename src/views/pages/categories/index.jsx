@@ -183,7 +183,7 @@ const PageCategory = () => {
         >
           {t('pages.categories.addCategory')}
         </Button>
-        <Button type="primary" icon={<TbTableExport />}>
+        <Button type="primary" disabled="true" icon={<TbTableExport />}>
           {t('pages.categories.exportCategoryData')}
         </Button>
       </ControlBar>
@@ -193,7 +193,7 @@ const PageCategory = () => {
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination
-          count={categoriesState.pagination.totalPages}
+          count={categoriesState.pagination.lastPage}
           page={categoriesState.pagination.currentPage}
           onChange={handleChangePage}
           color="primary"

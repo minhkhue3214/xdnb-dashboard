@@ -17,7 +17,8 @@ import {
   updateCategoryFail,
   deleteCategoryRequest,
   deleteCategorySuccess,
-  deleteCategoryFail
+  deleteCategoryFail,
+  forceLogout
 } from '~/store/slices/rootAction';
 
 function* requestCategoriesSaga(action) {
@@ -52,6 +53,10 @@ function* requestAddCategorySaga(action) {
     yield put(addCategorySuccess(results));
     yield put(reGetCategoriesRequest({ params }));
   } catch (error) {
+    if (error.code == 401) {
+      yield put(forceLogout());
+      return;
+    }
     yield put(addCategoryFail(error));
   }
 }

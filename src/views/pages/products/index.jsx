@@ -20,7 +20,7 @@ import UpdateProductModal from './UpdateProductModal';
 const ProductsPage = () => {
   const { t } = useTranslation();
   const { productsState, dispatchGetAllProducts, dispatchDeleteProduct } = useProductsStore();
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const [openAddProductModal, setOpenAddProductModal] = useState(false);
 
   const { dispatchGetCategories } = useCategoriesStore();
@@ -45,9 +45,9 @@ const ProductsPage = () => {
     dispatchGetAllProducts();
   }, [dispatchGetAllProducts]);
 
-  useEffect(() => {
-    setPage(productsState.pagination.currentPage);
-  }, [productsState.pagination.currentPage]);
+  // useEffect(() => {
+  //   setPage(productsState.pagination.currentPage);
+  // }, [productsState.pagination.currentPage]);
 
   const products = useMemo(() => {
     return productsState.products;
@@ -132,7 +132,7 @@ const ProductsPage = () => {
     { dataIndex: 'quantity', title: t('table.products.quantity'), width: '6%' },
     {
       dataIndex: 'hot',
-      title: 'hot',
+      title: 'Hot',
       render: (_, record) => (
         // console.log("record",record)
         <>{record.hot ? <Tag color="red">Hiển thị</Tag> : <Tag color="blue">Không hiển thị</Tag>}</>
@@ -161,7 +161,7 @@ const ProductsPage = () => {
   const handleChange = useCallback(
     (event, value) => {
       dispatchGetAllProducts({ params: { page: value } });
-      setPage(value);
+      // setPage(value);
     },
     [dispatchGetAllProducts]
   );
@@ -178,7 +178,7 @@ const ProductsPage = () => {
         >
           {t('pages.products.addProduct')}
         </Button>
-        <Button type="primary" icon={<TbTableExport />}>
+        <Button type="primary" disabled="true" icon={<TbTableExport />}>
           {t('pages.users.exportUserData')}
         </Button>
       </ControlBar>
@@ -187,7 +187,7 @@ const ProductsPage = () => {
         <AntdTable columns={columns} dataSource={products} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
-        <Pagination count={productsState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
+        <Pagination count={productsState.pagination.lastPage} page={productsState.pagination.currentPage} onChange={handleChange} color="primary" />
       </PaginationWrapper>
       <AddProductModal open={openAddProductModal} setOpen={setOpenAddProductModal} />
       <UpdateProductModal id={openEditProductModal.id} open={openEditProductModal.status} setOpen={handleChangeEditProductModal} />

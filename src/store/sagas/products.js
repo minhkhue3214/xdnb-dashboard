@@ -23,21 +23,18 @@ import {
     updateProductRequest,
     updateProductSuccess,
     updateProductFail,
-    reGetAllProductsRequest
+    reGetAllProductsRequest,
+    forceLogout
 } from '~/store/slices/rootAction';
 
 function* requestAllProductsSaga(action) {
     try {
         const result = yield call(getAllProductsApi, action.payload);
         // console.log("requestAllProductsSaga", result);
-        const { meta, data } = result;
+        // const { meta, data } = result;
 
         yield put(
-            getAllProductsSuccess({
-                results: data,
-                totalPages: meta?.total,
-                page: meta?.current_page
-            })
+            getAllProductsSuccess(result)
         );
     } catch (error) {
         yield put(getAllProductsFail(error));
@@ -81,6 +78,10 @@ function* requestAddProductSaga(action) {
         yield put(addProductSuccess(result));
         yield put(reGetAllProductsRequest({ params }));
     } catch (error) {
+        if (error.code == 401) {
+            yield put(forceLogout());
+            return;
+        }
         yield put(addProductFail(error));
     }
 }

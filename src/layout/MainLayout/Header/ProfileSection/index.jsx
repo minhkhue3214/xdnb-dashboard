@@ -27,7 +27,7 @@ import { useTheme } from '@mui/material/styles';
 // third-party
 
 // project imports
-import User1 from '~/assets/images/users/user-round.svg';
+// import User1 from '~/assets/images/users/user-round.svg';
 import MainCard from '~/ui-component/cards/MainCard';
 import Transitions from '~/ui-component/extended/Transitions';
 
@@ -42,6 +42,7 @@ const ProfileSection = () => {
   const { authenticationState, dispatchLogout } = useAuthenticationStore();
   const { profileState, dispatchGetProfile } = useProfileStore();
   const { t } = useTranslation();
+  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   // const navigate = useNavigate();
 
@@ -124,7 +125,7 @@ const ProfileSection = () => {
         }}
         icon={
           <Avatar
-            src={User1}
+            src={`https://tenmienmienphi.online/storage/${authenticationState.loginInfo.avatar}` || avatarDefault}
             sx={{
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',

@@ -5,11 +5,10 @@ import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { DatePicker, Input, InputPermalink, Tag, InputNumber, UploadImage, Editor, Selector } from '~/ui-component/atoms';
-import { Modal } from '~/ui-component/molecules';
-import { usePostsStore } from '~/hooks/posts';
-import dayjs from 'dayjs';
 import { useAuthenticationStore } from '~/hooks/authentication';
+import { usePostsStore } from '~/hooks/posts';
+import { DatePicker, Editor, Input, InputNumber, InputPermalink, Selector, Tag, UploadImage } from '~/ui-component/atoms';
+import { Modal } from '~/ui-component/molecules';
 import PreviewModal from './PreviewModal';
 
 const AddPostModal = ({ open, setOpen }) => {
@@ -51,7 +50,7 @@ const AddPostModal = ({ open, setOpen }) => {
       formik.validateForm().then(() => {
         const { title, type, description, author, publicationDate, slug, imageAlt, content, priority, tags } = values;
 
-        console.log('values', values);
+        console.log('handle publicationDate', publicationDate);
         if (formik.isValid) {
           // logic submit
           dispatchAddPost({
@@ -59,7 +58,7 @@ const AddPostModal = ({ open, setOpen }) => {
             type,
             description,
             author,
-            publication_date: dayjs(publicationDate).toISOString(),
+            publication_date: publicationDate,
             slug,
             image: {
               path: imagePath,
@@ -79,12 +78,14 @@ const AddPostModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
-    setImagePath('')
+    setImagePath('');
   }, [formik, setOpen]);
 
   const handleChangePublicationDate = useCallback(
-    (value) => {
-      formik.setFieldValue('publicationDate', value);
+    (value, dateString) => {
+      console.log('publicationDate', dateString);
+      // setDateValue(dateString);
+      formik.setFieldValue('publicationDate', dateString);
     },
     [formik]
   );
@@ -138,6 +139,10 @@ const AddPostModal = ({ open, setOpen }) => {
 
   const handleChangeOpenPreviewModal = (status) => {
     setOpenPreviewModal(status);
+  };
+
+  const onOk = (value) => {
+    console.log('onOk: ', value);
   };
 
   return (
@@ -231,7 +236,7 @@ const AddPostModal = ({ open, setOpen }) => {
           <Cell>
             <WrapperImage2>
               <UploadImage
-                label={`* ${t('input.label.post.imageUrl')}`}
+                label={`${t('input.label.post.imageUrl')}`}
                 name="avatar"
                 message={formik.touched.avatar ? formik.errors.avatar : ''}
                 type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
@@ -253,7 +258,7 @@ const AddPostModal = ({ open, setOpen }) => {
                 }}
               />
               <Input
-                label={`* ${t('input.label.post.imageAlt')}`}
+                label={`${t('input.label.post.imageAlt')}`}
                 name="imageAlt"
                 message={formik.touched.imageAlt ? formik.errors.imageAlt : ''}
                 type={formik.touched.imageAlt && formik.errors.imageAlt ? 'error' : ''}
@@ -301,6 +306,7 @@ const AddPostModal = ({ open, setOpen }) => {
               value={formik.values.publicationDate}
               onBlur={formik.handleBlur}
               onChange={handleChangePublicationDate}
+              onOk={onOk}
               size="middle"
               isTextArea={true}
               rows={3}

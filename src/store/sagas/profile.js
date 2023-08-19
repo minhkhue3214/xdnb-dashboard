@@ -14,7 +14,8 @@ import {
     updatePasswordProfileFail,
     updateProfileRequest,
     updateProfileSuccess,
-    updateProfileFail
+    updateProfileFail,
+    forceLogout
 } from '~/store/slices/rootAction';
 
 function* requestProfileSaga(action) {
@@ -35,6 +36,11 @@ function* requestProfileSaga(action) {
             })
         );
     } catch (error) {
+        console.log("getProfileFail", error);
+        if (error.code == 401) {
+            yield put(forceLogout());
+            return;
+        }
         yield put(getProfileFail(error));
     }
 }
@@ -45,6 +51,10 @@ function* requestUpdatePasswordSaga(action) {
         const data = yield call(updatePasswordApi, action.payload);
         yield put(updatePasswordProfileSuccess(data));
     } catch (error) {
+        if (error.code == 401) {
+            yield put(forceLogout());
+            return;
+        }
         yield put(updatePasswordProfileFail(error));
     }
 }
@@ -59,6 +69,10 @@ function* requestUpdateProfileSaga(action) {
         const results = yield call(updateProfileInfoApi, action.payload);
         yield put(updateProfileSuccess(results));
     } catch (error) {
+        if (error.code == 401) {
+            yield put(forceLogout());
+            return;
+        }
         yield put(updateProfileFail(error));
     }
 }

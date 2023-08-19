@@ -16,6 +16,10 @@ export const authentication = createSlice({
     initApp: () => {
       //
     },
+    forceLogout: (state, ) => {
+      state.token = "";
+      state.loginInfo = null;
+    },
     changeRememberMe: (state, action) => {
       state.rememberMe = action.payload;
     },
@@ -82,7 +86,7 @@ export const authentication = createSlice({
   }
 });
 
-export const { initApp, changeRememberMe, loginRequest, loginSuccess, logoutRequest, logoutSuccess, loginFail, logoutFail, recoveryPassword1Request, recoveryPassword1Success, recoveryPassword1Fail, recoveryPassword2Request, recoveryPassword2Success, recoveryPassword2Fail } =
+export const { initApp, changeRememberMe, loginRequest, loginSuccess, logoutRequest, logoutSuccess, loginFail, logoutFail, recoveryPassword1Request, recoveryPassword1Success, recoveryPassword1Fail, recoveryPassword2Request, recoveryPassword2Success, recoveryPassword2Fail, forceLogout } =
   authentication.actions;
 
 export default authentication.reducer;

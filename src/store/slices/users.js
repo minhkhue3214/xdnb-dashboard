@@ -4,8 +4,11 @@ import dispatchToast from '~/handlers/toast';
 const initialState = {
   users: [],
   pagination: {
-    currentPage: null,
-    totalPages: null
+    currentPage: 1,
+    lastPage: 1,
+    totalPages: 1,
+    perPage:1,
+    total:1,
   },
   detail: null
 };
@@ -18,11 +21,13 @@ export const users = createSlice({
       // request user
     },
     getAllUserSuccess: (state, action) => {
-      const { page, totalPages, results } = action.payload;
-
-      state.pagination.currentPage = page;
-      state.pagination.totalPages = totalPages;
-      state.users = results;
+      const { data, meta } = action.payload.result;
+      console.log("getAllUserSuccess", meta)
+      state.users = data;
+      state.pagination.currentPage = meta.current_page;
+      state.pagination.lastPage = meta.last_page;
+      state.pagination.perPage = meta.per_page;
+      state.pagination.total = meta.total;
     },
     getAllUserFail: (_, action) => {
       const { message } = action.payload;

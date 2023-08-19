@@ -1,31 +1,40 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { DatePicker } from 'antd';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
 
 const AtomDatePicker = (props) => {
   const {
     style = {}, // custom style cho wrapper
     labelStyle = {}, // custom style cho label
-    inputStyle = {}, // custom style cho input
+    // inputStyle = {}, // custom style cho input
     messageStyle = {}, // custom style cho message
     visileLabel = true, // Có hiện label hay không?
     visibleMessage = true, // Có hiện message hay không?
+    onOk,
+    value,
     label = '', // labelText
     message = '', // messageText
     type = '', // '' | 'warning' | 'error'
     onFocus, // onFocus
-    onBlur, // onBlur
+    // onBlur, // onBlur
     onChange, // hàm bắt sự kiện onChange
     hiddenMode = 'hidden', // hidden || none Có 2 cách ẩn input: ẩn hoàn toàn với display = none, chỉ ẩn phần tử nhưng vẫn giữ nguyên vị trí với visibility = hidden
-    ...restProps // Tất cả những props được truyền vào khác với các props bên trên sẽ được truyền cho thẻ Input của antd
+    // ...restProps // Tất cả những props được truyền vào khác với các props bên trên sẽ được truyền cho thẻ Input của antd
     // Có thể sử dụng các thuộc tính của thẻ Input antd như bình thường.
   } = props;
+
+  // console.log('testing value', value);
 
   const [isFocused, setIsFocused] = React.useState(false);
 
   const id = React.useMemo(() => {
     return uuidv4();
+  }, []);
+
+  useEffect(() => {
+    console.log('testing value', value);
   }, []);
 
   const handleFocus = React.useCallback(
@@ -36,28 +45,25 @@ const AtomDatePicker = (props) => {
     [onFocus]
   );
 
-  const handleBlur = React.useCallback(
-    (...args) => {
-      setIsFocused(false);
-      onBlur && onBlur(...args);
-    },
-    [onBlur]
-  );
+  // const handleBlur = React.useCallback(
+  //   (...args) => {
+  //     setIsFocused(false);
+  //     onBlur && onBlur(...args);
+  //   },
+  //   [onBlur]
+  // );
 
   return (
     <InputWrapper style={style}>
       <Label htmlFor={id} style={labelStyle} className={`${visileLabel ? 'visible' : hiddenMode} ${isFocused ? 'focused' : ''}`}>
         {label}
       </Label>
-      <DatePickerCustom
-        id={id}
-        status={type}
-        style={inputStyle}
-        onChange={onChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        {...restProps}
-      />
+      {value ? (
+        <DatePickerCustom id={id} showTime onChange={onChange} onFocus={handleFocus} onOk={onOk} value={dayjs(value, 'YYYY-MM-DD HH:mm:ss')} />
+      ) : (
+        <DatePickerCustom id={id} showTime onChange={onChange} onFocus={handleFocus} onOk={onOk} />
+      )}
+
       <Message style={messageStyle} className={`${visibleMessage && type ? type : hiddenMode}`}>
         {message}
       </Message>

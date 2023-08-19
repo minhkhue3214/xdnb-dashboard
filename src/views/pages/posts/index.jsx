@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 // project imports
 import IconButton from '@mui/material/IconButton';
 import Pagination from '@mui/material/Pagination';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Image } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { AiFillEdit, AiOutlineUserAdd } from 'react-icons/ai';
 import { MdDelete } from 'react-icons/md';
@@ -85,10 +85,34 @@ const PagePost = () => {
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { dataIndex: 'title', title: t('table.post.title'), width: '25%' },
+    { dataIndex: 'title', title: t('table.post.title'), width: '16%' },
     { dataIndex: 'description', title: t('table.post.description'), width: '25%' },
     { dataIndex: 'author', title: t('table.post.author'), width: '15%' },
-    { dataIndex: 'priority', title: t('table.post.priority'), width: '10%' },
+    {
+      dataIndex: 'avatar',
+      title: t('table.user.avatar'),
+      render: (_, record) => (
+        // console.log("record",record)
+        <>
+          <Image
+            width={55}
+            style={{
+              cursor: 'pointer',
+              width: '80px',
+              height: '80px'
+            }}
+            preview={{
+              mask: false
+            }}
+            // src={record.avatar || avatarDefault}
+            src={`https://tenmienmienphi.online/storage/${record.image.path}` || avatarDefault}
+          />
+          {/* <h4>Tesing</h4> */}
+        </>
+      ),
+      width: '10%'
+    },
+    { dataIndex: 'priority', title: t('table.post.priority'), width: '7%' },
     {
       dataIndex: 'publication_date',
       title: t('table.post.publication_date'),
@@ -110,7 +134,7 @@ const PagePost = () => {
           </Popconfirm>
         </>
       ),
-      width: '10%'
+      width: '8%'
     }
   ];
 
@@ -133,7 +157,7 @@ const PagePost = () => {
         >
           {t('pages.posts.addPost')}
         </Button>
-        <Button type="primary" icon={<TbTableExport />}>
+        <Button type="primary" disabled="true" icon={<TbTableExport />}>
           {t('pages.posts.exportPostData')}
         </Button>
       </ControlBar>
@@ -142,7 +166,7 @@ const PagePost = () => {
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination
-          count={postsState.pagination.totalPages}
+          count={postsState.pagination.lastPage}
           page={postsState.pagination.currentPage}
           onChange={handleChangePage}
           color="primary"

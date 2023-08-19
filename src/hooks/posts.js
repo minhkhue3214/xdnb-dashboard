@@ -27,6 +27,7 @@ const usePostsStore = () => {
 
   const dispatchAddPost = useCallback(
     (payload) => {
+      console.log("dispatchAddPost", payload);
       dispatch(addPostRequest(payload));
 
       return true;

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeRememberMe, initApp, loginRequest, logoutRequest, recoveryPassword1Request, recoveryPassword2Request } from '~/store/slices/authentication';
+import { changeRememberMe, initApp, loginRequest, logoutRequest, recoveryPassword1Request, recoveryPassword2Request, forceLogout } from '~/store/slices/authentication';
 
 const useAuthenticationStore = () => {
   const dispatch = useDispatch();
@@ -52,6 +52,13 @@ const useAuthenticationStore = () => {
     [dispatch]
   );
 
+  const dispatchForceLogout = useCallback(
+    () => {
+      dispatch(forceLogout());
+    },
+    [dispatch]
+  );
+
   return {
     dispatchInitApp,
     authenticationState,
@@ -59,7 +66,8 @@ const useAuthenticationStore = () => {
     dispatchLogout,
     dispatchChangeRememberMe,
     dispatchRecoveryPassword1,
-    dispatchRecoveryPassword2
+    dispatchRecoveryPassword2,
+    dispatchForceLogout
   };
 };
 

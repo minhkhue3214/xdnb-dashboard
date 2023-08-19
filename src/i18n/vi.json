@@ -37,14 +37,14 @@
       "exportCategoryData": "Xuất dữ liệu"
     },
     "products": {
-      "addProduct": "Thêm sản phẩm",
-      "name": "Tên sản phẩm",
+      "addProduct": "Thêm Sản Phẩm",
+      "name": "Tên Sản Phẩm",
       "discounted_price": "Giảm giá",
-      "original_price": "Giá gốc",
+      "original_price": "Giá Gốc",
       "long_description": "Mô tả dài",
       "short_description": "Mô tả ngắn",
-      "priority": "Mức độ ưu tiên",
-      "quantity": "Số lượng",
+      "priority": "Mức Độ Ưu Tiên",
+      "quantity": "Số Lượng",
       "supplier": "Nhà cung cấp"
     },
     "consultationRequests": {
@@ -53,43 +53,43 @@
   },
   "table": {
     "user": {
-      "fullname": "Tên đầy đủ",
+      "fullname": "Tên Đầy Đủ",
       "role": "Role",
       "name": "Tên người dùng",
       "email": "Email",
-      "username": "Tên đăng nhập",
+      "username": "Tên Đăng Nhập",
       "id": "ID người dùng",
-      "actions": "Thao tác",
+      "actions": "Thao Tác",
       "password": "Mật khẩu",
       "phone": "Số điện thoại",
       "address": "Địa chỉ",
       "create_at": "Ngày tạo",
       "update_at": "Ngày chỉnh sửa",
-      "avatar": "Ảnh đại diện"
+      "avatar": "Ảnh Đại Diện"
     },
     "post": {
-      "title": "Tiêu đề",
-      "description": "Mô tả",
-      "author": "Tác giả",
-      "priority": "Ưu tiên",
-      "publication_date": "Ngày xuất bản",
-      "actions": "Thao tác"
+      "title": "Tiêu Đề",
+      "description": "Mô Tả",
+      "author": "Tác Giả",
+      "priority": "Ưu Tiên",
+      "publication_date": "Ngày Xuất Bản",
+      "actions": "Thao Tác"
     },
     "category": {
-      "name": "Danh mục",
+      "name": "Danh Mục",
       "icon": "Icon",
       "slug": "Slug",
       "visible": "Hiển thị",
-      "priority": "Ưu tiên",
-      "actions": "Thao tác"
+      "priority": "Ưu Tiên",
+      "actions": "Thao Tác"
     },
     "products": {
-      "name": "Tên sản phẩm",
-      "discounted_price": "Giá giảm",
-      "original_price": "Giá gốc",
+      "name": "Tên Sản Phẩm",
+      "discounted_price": "Giá Giảm",
+      "original_price": "Giá Gốc",
       "long_description": "Mô tả dài",
       "short_description": "Mô tả ngắn",
-      "priority": "Mức độ ưu tiên",
+      "priority": "Mức Độ Ưu Tiên",
       "quantity": "Số lượng",
       "supplier": "Nhà cung cấp",
       "gallery_items": "Danh sách ảnh",
@@ -103,7 +103,7 @@
       "note": "Ghi chú",
       "status": "Trạng thái",
       "result": "Kết quả tư vấn",
-      "actions": "Thao tác",
+      "actions": "Thao Tác",
       "statusSuccess": "Đã tư vấn",
       "statusNone": "Chưa tư vấn"
     }
@@ -180,13 +180,14 @@
         "parentId": "Danh mục cha",
         "visible": "Hiển thị danh mục",
         "visibleChildren": "Hiển thị danh mục con",
-        "imageUrl": "Ảnh loại sản phẩm",
+        "imageUrl": "Ảnh đại diện",
         "iconUrl": "Icon loại sản phẩm"
       },
       "product": {
-        "category_id": "Mã loại sản phẩm",
-        "name": "Tên sản phẩm",
+        "category_id": "Danh mục sản phẩm",
+        "name": "Tên Sản Phẩm",
         "slug": "Slug",
+        "hot":"Sản phẩm hot",
         "priority": "Ưu tiên hiển thị",
         "quantity": "Số lượng",
         "short_description": "Mô tả ngắn",
@@ -194,8 +195,8 @@
         "image_name": "Tên ảnh",
         "image_priority": "Độ ưu tiên",
         "gallery_items": "Danh sách ảnh",
-        "original_price": "Giá gốc",
-        "discounted_price": "Giá giảm"
+        "original_price": "Giá Gốc",
+        "discounted_price": "Giá Giảm"
       },
       "consultationRequest": {
         "status": "Tình trạng",

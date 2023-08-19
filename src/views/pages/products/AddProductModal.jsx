@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { useCategoriesStore } from '~/hooks/categories';
 import { useProductsStore } from '~/hooks/products';
-import { Input, InputNumber, Selector, Switch, UploadProductImage } from '~/ui-component/atoms';
+import { Input, InputNumber, Selector, Switch, UploadProductImage, Editor } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
 const AddProductModal = ({ open, setOpen }) => {
@@ -197,6 +197,13 @@ const AddProductModal = ({ open, setOpen }) => {
     [formik]
   );
 
+  const handleChangeLongDescription = useCallback(
+    (value) => {
+      formik.setFieldValue('long_description', value);
+    },
+    [formik]
+  );
+
   return (
     <>
       <Modal
@@ -211,6 +218,26 @@ const AddProductModal = ({ open, setOpen }) => {
       >
         <EditUserWrapper>
           <CellLeft>
+            <Input
+              label={`* ${t('input.label.product.slug')}`}
+              name="slug"
+              message={formik.touched.slug ? formik.errors.slug : ''}
+              type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
+              value={formik.values.slug}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
             <Selector
               label={`* ${t('input.label.product.category_id')}`}
               name="category_id"
@@ -254,48 +281,51 @@ const AddProductModal = ({ open, setOpen }) => {
                 width: '100%'
               }}
             />
-            <Input
-              label={`* ${t('input.label.product.original_price')}`}
-              name="original_price"
-              message={formik.touched.original_price ? formik.errors.original_price : ''}
-              type={formik.touched.original_price && formik.errors.original_price ? 'error' : ''}
-              value={formik.values.original_price}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <Input
-              label={`* ${t('input.label.product.discounted_price')}`}
-              name="discounted_price"
-              message={formik.touched.discounted_price ? formik.errors.discounted_price : ''}
-              type={formik.touched.discounted_price && formik.errors.discounted_price ? 'error' : ''}
-              value={formik.values.discounted_price}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
+            <WrapperImage3>
+              <InputNumber
+                label={`* ${t('input.label.product.original_price')}`}
+                name="original_price"
+                message={formik.touched.original_price ? formik.errors.original_price : ''}
+                type={formik.touched.original_price && formik.errors.original_price ? 'error' : ''}
+                value={formik.values.original_price}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                size="middle"
+                labelStyle={{
+                  padding: '2px'
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px',
+                  height: '70px'
+                }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+              <InputNumber
+                label={`* ${t('input.label.product.discounted_price')}`}
+                name="discounted_price"
+                message={formik.touched.discounted_price ? formik.errors.discounted_price : ''}
+                type={formik.touched.discounted_price && formik.errors.discounted_price ? 'error' : ''}
+                value={formik.values.discounted_price}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                size="middle"
+                labelStyle={{
+                  padding: '2px'
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px',
+                  height: '70px'
+                }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+            </WrapperImage3>
+
             <InputNumber
               label={`* ${t('input.label.product.quantity')}`}
               name="quantity"
@@ -316,16 +346,17 @@ const AddProductModal = ({ open, setOpen }) => {
                 width: '20%'
               }}
             />
-            <Input
-              label={`* ${t('input.label.product.slug')}`}
-              name="slug"
-              message={formik.touched.slug ? formik.errors.slug : ''}
-              type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
-              value={formik.values.slug}
+            <Switch
+              label={`* ${t('input.label.product.hot')}`}
+              name="hot"
+              message={formik.touched.hot ? formik.errors.hot : ''}
+              type={formik.touched.hot && formik.errors.hot ? 'error' : ''}
+              value={formik.values.hot}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={handleChangeHot}
               labelStyle={{
-                padding: '2px'
+                padding: '2px',
+                width: '20%'
               }}
               style={{
                 width: '100%',
@@ -333,7 +364,7 @@ const AddProductModal = ({ open, setOpen }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '100%'
+                width: '6%'
               }}
             />
             <InputNumber
@@ -356,27 +387,6 @@ const AddProductModal = ({ open, setOpen }) => {
                 width: '20%'
               }}
             />
-            <Switch
-              label="* True"
-              name="hot"
-              message={formik.touched.hot ? formik.errors.hot : ''}
-              type={formik.touched.hot && formik.errors.hot ? 'error' : ''}
-              value={formik.values.hot}
-              onBlur={formik.handleBlur}
-              onChange={handleChangeHot}
-              labelStyle={{
-                padding: '2px',
-                width: '20%'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '6%'
-              }}
-            />
             <Input
               label={`* ${t('input.label.product.short_description')}`}
               name="short_description"
@@ -387,7 +397,7 @@ const AddProductModal = ({ open, setOpen }) => {
               onChange={formik.handleChange}
               size="middle"
               isTextArea={true}
-              rows={2}
+              rows={4}
               labelStyle={{
                 padding: '2px'
               }}
@@ -401,29 +411,8 @@ const AddProductModal = ({ open, setOpen }) => {
               maxLength={200}
               showCount
             />
-            <Input
-              label={`* ${t('input.label.product.long_description')}`}
-              name="long_description"
-              message={formik.touched.long_description ? formik.errors.long_description : ''}
-              type={formik.touched.long_description && formik.errors.long_description ? 'error' : ''}
-              value={formik.values.long_description}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              isTextArea={true}
-              rows={5}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%'
-              }}
-              inputStyle={{
-                width: '100%',
-                resize: 'none'
-              }}
-              maxLength={2000}
-              showCount
+            <Editor
+              onChange={handleChangeLongDescription}
             />
           </CellLeft>
           <CellRight>
@@ -434,7 +423,7 @@ const AddProductModal = ({ open, setOpen }) => {
               }}
               onClick={handleAddModal}
             >
-              Add Modal
+              Thêm ảnh sản phẩm
             </Button>
             {imageProduct.map((ProductInfo) => (
               <UploadProductImage
@@ -459,7 +448,7 @@ export default memo(AddProductModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   display: grid;
   grid-template-rows: 1fr; /* 2 hàng bằng nhau */
   grid-template-columns: 1.5fr 1fr; /* 2 cột bằng nhau */
@@ -489,4 +478,11 @@ const CellRight = styled.div`
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
+`;
+
+const WrapperImage3 = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 `;

@@ -33,13 +33,12 @@ import {
 function* requestAllUsersSaga(action) {
   try {
     const result = yield call(getAllUsersApi, action.payload);
-    const { meta, data } = result;
+    // console.log("requestAllUsersSaga", result);
+    // const { meta, data } = result;
 
     yield put(
       getAllUserSuccess({
-        results: data,
-        totalPages: meta?.total,
-        page: meta?.current_page
+        result
       })
     );
   } catch (error) {
