@@ -18,7 +18,7 @@ import UpdateUserModal from './UpdateUserModal';
 const UsersPage = () => {
   const { t } = useTranslation();
   const { usersState, dispatchGetAllUsers, dispatchDeleteUser } = useUsersStore();
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const [openAddUserModal, setOpenAddUserModal] = useState(false);
 
   const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
@@ -37,9 +37,9 @@ const UsersPage = () => {
     dispatchGetAllUsers();
   }, [dispatchGetAllUsers]);
 
-  useEffect(() => {
-    setPage(usersState.pagination.currentPage);
-  }, [usersState.pagination.currentPage]);
+  // useEffect(() => {
+  //   setPage(usersState.pagination.currentPage);
+  // }, [usersState.pagination.currentPage]);
 
   function convertTimestampToHour(timestamp) {
     const date = new Date(timestamp);
@@ -139,7 +139,9 @@ const UsersPage = () => {
           <Image
             width={55}
             style={{
-              cursor: 'pointer'
+              cursor: 'pointer',
+              width: '80px',
+              height: '80px'
             }}
             preview={{
               mask: false
@@ -152,10 +154,10 @@ const UsersPage = () => {
       ),
       width: '10%'
     },
-    { dataIndex: 'username', title: t('table.user.username'), width: '30%' },
-    { dataIndex: 'full_name', title: t('table.user.fullname'), width: '40%' },
+    { dataIndex: 'username', title: t('table.user.username'), width: '20%' },
+    { dataIndex: 'full_name', title: t('table.user.fullname'), width: '30%' },
     // { dataIndex: 'email', title: t('table.user.email'), width: '10%' },
-    // { dataIndex: 'phone', title: t('table.user.phone'), width: '10%' },
+    { dataIndex: 'phone', title: t('table.user.phone'), width: '30%' },
     // { dataIndex: 'address', title: t('table.user.address'), width: '10%' },
     { dataIndex: 'role', title: t('table.user.role'), width: '10%' },
     // { dataIndex: 'created_at', title: t('table.user.create_at'), width: '10%' },
@@ -175,14 +177,14 @@ const UsersPage = () => {
           </Popconfirm>
         </>
       ),
-      width: '10%'
+      width: '12%'
     }
   ];
 
   const handleChange = useCallback(
     (event, value) => {
       dispatchGetAllUsers({ params: { page: value } });
-      setPage(value);
+      // setPage(value);
     },
     [dispatchGetAllUsers]
   );
@@ -199,7 +201,7 @@ const UsersPage = () => {
         >
           {t('pages.users.addUser')}
         </Button>
-        <Button type="primary" icon={<TbTableExport />}>
+        <Button type="primary" disabled="true" icon={<TbTableExport />}>
           {t('pages.users.exportUserData')}
         </Button>
       </ControlBar>
@@ -208,7 +210,7 @@ const UsersPage = () => {
         <AntdTable columns={columns} dataSource={users} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
-        <Pagination count={usersState.pagination.totalPages} page={page} onChange={handleChange} color="primary" />
+        <Pagination count={usersState.pagination.lastPage} page={usersState.pagination.currentPage} onChange={handleChange} color="primary" />
       </PaginationWrapper>
       <AddUserModal open={openAddUserModal} setOpen={setOpenAddUserModal} />
       <UpdateUserModal

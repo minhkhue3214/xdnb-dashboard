@@ -291,7 +291,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 width: '100%'
               }}
             />
-            <Input
+            <InputNumber
               label={`* ${t('input.label.product.original_price')}`}
               name="original_price"
               message={formik.touched.original_price ? formik.errors.original_price : ''}
@@ -312,7 +312,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 width: '100%'
               }}
             />
-            <Input
+            <InputNumber
               label={`* ${t('input.label.product.discounted_price')}`}
               name="discounted_price"
               message={formik.touched.discounted_price ? formik.errors.discounted_price : ''}
@@ -471,7 +471,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               }}
               onClick={handleAddModal}
             >
-              Add Modal
+              Thêm ảnh sản phẩm
             </Button>
             {imageProduct?.map((ProductInfo) => (
               <UploadProductImage

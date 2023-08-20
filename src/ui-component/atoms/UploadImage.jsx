@@ -79,7 +79,11 @@ const AtomUploadImage = (props) => {
       >
         {imageUrl ? (
           <GroupIcon>
-            <img src={`https://tenmienmienphi.online/storage/${imageUrl}`} alt="avatar" style={{ width: '90%', cursor: 'pointer' }} />
+            <img
+              src={`https://tenmienmienphi.online/storage/${imageUrl}`}
+              alt="avatar"
+              style={{ width: '100%', height: '90px', cursor: 'pointer' }}
+            />
             <StyledTrashIcon onClick={handleDeleteImage} />
           </GroupIcon>
         ) : (

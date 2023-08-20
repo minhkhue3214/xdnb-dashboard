@@ -165,7 +165,7 @@ const ImageWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 150px;
-  background-color: #4096ff;
+  background-color: #1677ff;
   border-radius: 8px;
   margin-top: 20px;
   align-items: center;

@@ -4,8 +4,11 @@ import dispatchToast from '~/handlers/toast';
 const initialState = {
     products: [],
     pagination: {
-        currentPage: null,
-        totalPages: null
+        currentPage: 1,
+        lastPage: 1,
+        totalPages: 1,
+        perPage:1,
+        total:1,
     },
     detail: null
 };
@@ -18,11 +21,12 @@ export const products = createSlice({
             // request user
         },
         getAllProductsSuccess: (state, action) => {
-            const { page, totalPages, results } = action.payload;
-
-            state.pagination.currentPage = page;
-            state.pagination.totalPages = totalPages;
-            state.products = results;
+            const { meta, data } = action.payload;
+            state.products = data;
+            state.pagination.currentPage = meta.current_page;
+            state.pagination.lastPage = meta.last_page;
+            state.pagination.perPage = meta.per_page;
+            state.pagination.total = meta.total;
         },
         getAllProductsFail: (_, action) => {
             const { message } = action.payload;

@@ -18,6 +18,7 @@ export const profile = createSlice({
         },
         getProfileFail: (_, action) => {
             const { message } = action.payload;
+            console.log("getProfileFail", action.payload)
             dispatchToast('error', message);
         },
         updatePasswordProfileRequest: () => {

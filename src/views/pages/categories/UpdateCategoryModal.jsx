@@ -16,11 +16,12 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
   const { categoriesState, dispatchGetCategory, dispatchUpdateCategory } = useCategoriesStore();
 
   const [loading, setLoading] = useState(false);
-  const [loadingIcon, setLoadingIcon] = useState(false);
+  // const [loadingIcon, setLoadingIcon] = useState(false);
   const [imagePath, setImagePath] = useState('');
-  const [iconPath, setIconPath] = useState('');
+  const [iconPath, setIconPath] = useState('testing');
   const [newParentId, setNewParentId] = useState(null);
   const [enable, setEnable] = useState(true);
+  const [initValue, setInitValue] = useState('');
 
   const categoryOptions = useMemo(() => {
     console.log('categoryOptions', categoriesState.categories);
@@ -81,7 +82,8 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     formik.handleReset();
     setOpen(false);
     setImagePath('');
-    setIconPath('');
+    setIconPath('testing');
+    setEnable(true);
     formik.setFieldValue('parentId', '');
     setNewParentId(null);
   }, [formik, setOpen]);
@@ -115,7 +117,9 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
 
   const handleChangeParentId = useCallback(
     (value) => {
-      formik.setFieldValue('parentId', value);
+      const name = getNameById(value, JSON.parse(JSON.stringify(categoriesState.categories)));
+      setNewParentId(value);
+      formik.setFieldValue('parentId', name);
     },
     [formik]
   );
@@ -123,7 +127,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
   const slugOfParent = useMemo(() => {
     let value = '';
     if (categoriesState.categories?.length > 0 && formik.values.parentId) {
-      value = categoriesState.categories.find((one) => one.id === formik.values.parentId)?.slug || '';
+      value = categoriesState.categories.find((one) => one.name === formik.values.parentId)?.slug || '';
     }
 
     if (value) {
@@ -158,30 +162,30 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     }
   };
 
-  const uploadIcon = async (options) => {
-    setLoading(true);
-    const { onSuccess, onError, file } = options;
+  // const uploadIcon = async (options) => {
+  //   setLoading(true);
+  //   const { onSuccess, onError, file } = options;
 
-    const fmData = new FormData();
-    fmData.append('image', file);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${authenticationState.token}`
-      }
-    };
-    try {
-      const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
+  //   const fmData = new FormData();
+  //   fmData.append('image', file);
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${authenticationState.token}`
+  //     }
+  //   };
+  //   try {
+  //     const res = await axios.post('https://tenmienmienphi.online/api/upload-image', fmData, config);
 
-      onSuccess('Ok');
-      console.log('server res: ', res);
-      setLoadingIcon(false);
-      setIconPath(res.data.data.image_path);
-    } catch (err) {
-      console.log('Eroor: ', err);
-      // const error = new Error('Some error');
-      onError({ err });
-    }
-  };
+  //     onSuccess('Ok');
+  //     console.log('server res: ', res);
+  //     setLoadingIcon(false);
+  //     setIconPath(res.data.data.image_path);
+  //   } catch (err) {
+  //     console.log('Eroor: ', err);
+  //     // const error = new Error('Some error');
+  //     onError({ err });
+  //   }
+  // };
 
   useEffect(() => {
     if (id) {
@@ -189,32 +193,32 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     }
   }, [dispatchGetCategory, id]);
 
-  useEffect(() => {
-    const getNameById = (id, data) => {
-      const item = data.find((item) => item.id === id);
-      return item ? item.name : null;
-    };
+  const getNameById = (id, data) => {
+    const item = data.find((item) => item.id === id);
+    return item ? item.name : null;
+  };
 
+  useEffect(() => {
     const data = categoriesState.detail;
     console.log('categoriesState', data);
     if (data) {
       const name = getNameById(data.parent_id, JSON.parse(JSON.stringify(categoriesState.categories)));
+      console.log('checking parentId', name);
       formik.setFieldValue('parentId', name);
       setNewParentId(data.parent_id);
 
-      if (data.parent_id) {
-        setEnable(false);
-      }
+      data.parent_id ? setEnable(false) : setEnable(true);
 
       formik.setFieldValue('name', data.name || '');
       formik.setFieldValue('slug', data.slug || '');
-      formik.setFieldValue('content', data.content || '');
+      formik.setFieldValue('content', data.content);
       formik.setFieldValue('priority', data.priority || 1);
       formik.setFieldValue('visible', data.visible);
       formik.setFieldValue('visibleChildren', data.visible_children);
       formik.setFieldValue('tags', data.tags);
       setImagePath(data.image_path);
       setIconPath(data.icon_path);
+      setInitValue(data.content);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoriesState.detail]);
@@ -278,55 +282,9 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
                 width: '100%'
               }}
             />
-            <Editor initValue={formik.values.content} onChange={handleChangeContent} />
+            <Editor initValue={initValue} onChange={handleChangeContent} />
           </Cell>
           <Cell>
-            <WrapperImage3>
-              <UploadImage
-                label={`* ${t('input.label.category.imageUrl')}`}
-                name="avatar"
-                message={formik.touched.avatar ? formik.errors.avatar : ''}
-                type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
-                value={formik.values.avatar}
-                onBlur={formik.handleBlur}
-                onChange={uploadImage}
-                loading={loading}
-                imageUrl={imagePath}
-                setImagePath={setImagePath}
-                labelStyle={{
-                  padding: '2px'
-                }}
-                // style={{
-                //   width: '100%',
-                //   marginTop: '8px'
-                // }}
-                inputStyle={{
-                  width: '100%'
-                }}
-              />
-              <UploadImage
-                label={`* ${t('input.label.category.iconUrl')}`}
-                name="avatar"
-                message={formik.touched.avatar ? formik.errors.avatar : ''}
-                type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
-                value={formik.values.avatar}
-                onBlur={formik.handleBlur}
-                onChange={uploadIcon}
-                loading={loadingIcon}
-                imageUrl={iconPath}
-                setImagePath={setIconPath}
-                labelStyle={{
-                  padding: '2px'
-                }}
-                // style={{
-                //   width: '100%',
-                //   marginTop: '8px'
-                // }}
-                inputStyle={{
-                  width: '100%'
-                }}
-              />
-            </WrapperImage3>
             <Selector
               label={`* ${t('input.label.category.parentId')}`}
               name="parentId"
@@ -425,6 +383,28 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
                 width: '100%'
               }}
             />
+            <UploadImage
+              label={`* ${t('input.label.category.imageUrl')}`}
+              name="avatar"
+              message={formik.touched.avatar ? formik.errors.avatar : ''}
+              type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
+              value={formik.values.avatar}
+              onBlur={formik.handleBlur}
+              onChange={uploadImage}
+              loading={loading}
+              imageUrl={imagePath}
+              setImagePath={setImagePath}
+              labelStyle={{
+                padding: '2px'
+              }}
+              // style={{
+              //   width: '100%',
+              //   marginTop: '8px'
+              // }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
             <Tag
               name="tags"
               initValue={formik.values.tags}
@@ -477,9 +457,9 @@ const WrapperImage2 = styled.div`
   gap: 10px; /* Khoảng cách giữa các vùng */
 `;
 
-const WrapperImage3 = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-`;
+// const WrapperImage3 = styled.div`
+//   position: relative;
+//   width: 100%;
+//   display: flex;
+//   justify-content: space-around;
+// `;

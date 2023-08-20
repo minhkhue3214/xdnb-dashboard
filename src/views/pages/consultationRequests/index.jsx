@@ -131,7 +131,7 @@ const PageConsultationRequest = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button type="primary" icon={<TbTableExport />}>
+        <Button disabled="true" type="primary" icon={<TbTableExport />}>
           {t('pages.consultationRequests.exportConsultationRequestData')}
         </Button>
       </ControlBar>
@@ -140,7 +140,7 @@ const PageConsultationRequest = () => {
       </DataTableWrapper>
       <PaginationWrapper>
         <Pagination
-          count={consultationRequestsState.pagination.totalPages}
+          count={consultationRequestsState.pagination.lastPage}
           page={consultationRequestsState.pagination.currentPage}
           onChange={handleChangePage}
           color="primary"

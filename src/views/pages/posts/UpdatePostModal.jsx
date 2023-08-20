@@ -45,7 +45,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       type: yup.string().required(t('input.error.post.pleaseEnterType')),
       author: yup.string().required(t('input.error.post.pleaseEnterAuthor')),
       description: yup.string().required(t('input.error.post.pleaseEnterDescription')),
-      publicationDate: yup.date().required(t('input.error.post.pleaseEnterPublicationDate')),
+      // publicationDate: yup.date().required(t('input.error.post.pleaseEnterPublicationDate')),
       slug: yup
         .string()
         .matches(/^[a-z0-9-]+$/, t('input.error.post.slugNotValid'))
@@ -65,7 +65,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
             type,
             description,
             author,
-            publication_date: dayjs(publicationDate).toISOString(),
+            publication_date: publicationDate,
             slug,
             image: {
               path: imagePath,
@@ -88,8 +88,8 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
   }, [formik, setOpen]);
 
   const handleChangePublicationDate = useCallback(
-    (value) => {
-      formik.setFieldValue('publicationDate', value);
+    (value, dateString) => {
+      formik.setFieldValue('publicationDate', dateString);
     },
     [formik]
   );
@@ -129,7 +129,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       formik.setFieldValue('type', data.type || 'blog');
       formik.setFieldValue('description', data.description || '');
       formik.setFieldValue('author', data.author || '');
-      formik.setFieldValue('publicationDate', dayjs(data.publicationDate).utcOffset(7) || '');
+      formik.setFieldValue('publicationDate', data.publication_date);
       formik.setFieldValue('slug', data.slug || '');
       formik.setFieldValue('imagePath', data.image?.path || '');
       formik.setFieldValue('imageAlt', data.image?.alt || '');
@@ -274,7 +274,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
           <Cell>
             <WrapperImage2>
               <UploadImage
-                label={`* ${t('input.label.post.imageUrl')}`}
+                label={`${t('input.label.post.imageUrl')}`}
                 name="avatar"
                 message={formik.touched.avatar ? formik.errors.avatar : ''}
                 type={formik.touched.avatar && formik.errors.avatar ? 'error' : ''}
@@ -296,7 +296,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
                 }}
               />
               <Input
-                label={`* ${t('input.label.post.imageAlt')}`}
+                label={`${t('input.label.post.imageAlt')}`}
                 name="imageAlt"
                 message={formik.touched.imageAlt ? formik.errors.imageAlt : ''}
                 type={formik.touched.imageAlt && formik.errors.imageAlt ? 'error' : ''}
@@ -344,9 +344,6 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
               value={formik.values.publicationDate}
               onBlur={formik.handleBlur}
               onChange={handleChangePublicationDate}
-              size="middle"
-              isTextArea={true}
-              rows={3}
               showTime
               labelStyle={{
                 padding: '2px'

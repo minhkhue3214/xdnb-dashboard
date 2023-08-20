@@ -5,7 +5,10 @@ const initialState = {
   posts: [],
   pagination: {
     currentPage: 1,
-    totalPages: 1
+    lastPage: 1,
+    totalPages: 1,
+    perPage:1,
+    total:1,
   },
   detail: null
 };
@@ -25,7 +28,9 @@ export const posts = createSlice({
 
       state.posts = data;
       state.pagination.currentPage = meta.current_page;
-      state.pagination.totalPages = meta.total;
+      state.pagination.lastPage = meta.last_page;
+      state.pagination.perPage = meta.per_page;
+      state.pagination.total = meta.total;
     },
     getPostsFail: (_, action) => {
       dispatchToast('error', action.payload);

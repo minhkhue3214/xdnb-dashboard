@@ -17,7 +17,8 @@ import {
   updatePostFail,
   deletePostRequest,
   deletePostSuccess,
-  deletePostFail
+  deletePostFail,
+  forceLogout
 } from '~/store/slices/rootAction';
 
 function* requestPostsSaga(action) {
@@ -26,6 +27,10 @@ function* requestPostsSaga(action) {
 
     yield put(getPostsSuccess(results));
   } catch (error) {
+    if (error.code == 401) {
+      yield put(forceLogout());
+      return;
+  }
     yield put(getPostsFail(error));
   }
 }
