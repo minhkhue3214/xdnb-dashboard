@@ -14,7 +14,7 @@ import PreviewModal from './PreviewModal';
 const AddPostModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
   const { dispatchAddPost } = usePostsStore();
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
 
   const [loading, setLoading] = useState(false);
   const [imagePath, setImagePath] = useState('');
@@ -132,6 +132,9 @@ const AddPostModal = ({ open, setOpen }) => {
       setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }
       // const error = new Error('Some error');
       onError({ err });
     }

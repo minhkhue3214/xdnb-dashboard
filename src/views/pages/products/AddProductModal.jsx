@@ -6,13 +6,14 @@ import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { useCategoriesStore } from '~/hooks/categories';
 import { useProductsStore } from '~/hooks/products';
-import { Input, InputNumber, Selector, Switch, UploadProductImage, Editor } from '~/ui-component/atoms';
+import { Input, InputNumber, Selector, Switch, UploadProductImage, Editor, InputPermalink } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 
 const AddProductModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
   const { dispatchAddProduct } = useProductsStore();
   const { categoriesState } = useCategoriesStore();
+  const [newCategoryId, setNewCategoryId] = useState(null);
 
   // const categoryOptions = useMemo(() => {
   //   const data = categoriesState.categories;
@@ -49,6 +50,11 @@ const AddProductModal = ({ open, setOpen }) => {
     });
 
     return flattened;
+  };
+
+  const getNameById = (id, data) => {
+    const item = data.find((item) => item.id === id);
+    return item ? item.name : null;
   };
 
   const categoryOptions = useMemo(() => {
@@ -88,7 +94,7 @@ const AddProductModal = ({ open, setOpen }) => {
           //   delete arr[i].id;
           // }
           dispatchAddProduct({
-            category_id: values.category_id,
+            category_id: newCategoryId,
             name: values.name,
             slug: values.slug,
             hot: values.hot,
@@ -112,6 +118,7 @@ const AddProductModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setImageProduct([]);
+    setNewCategoryId('');
     setOpen(false);
   }, [formik, setOpen]);
 
@@ -185,7 +192,10 @@ const AddProductModal = ({ open, setOpen }) => {
 
   const handleChangeCategoryId = useCallback(
     (value) => {
-      formik.setFieldValue('category_id', value);
+      setNewCategoryId(value);
+      const flattenedData = flattenChildren(categoriesState.categories);
+      const name = getNameById(value, flattenedData);
+      formik.setFieldValue('category_id', name);
     },
     [formik]
   );
@@ -204,6 +214,22 @@ const AddProductModal = ({ open, setOpen }) => {
     [formik]
   );
 
+  const slugOfCategory = useMemo(() => {
+    let value = '';
+    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+    const flattenedData = flattenChildren(data);
+    if (categoriesState.categories?.length > 0 && formik.values.category_id) {
+      value = flattenedData.find((one) => one.name === formik.values.category_id)?.slug || '';
+      // console.log('slugOfCategory', categoriesState.categories);
+    }
+
+    if (value) {
+      value += '/';
+    }
+
+    return value;
+  }, [formik.values.category_id, categoriesState]);
+
   return (
     <>
       <Modal
@@ -212,15 +238,16 @@ const AddProductModal = ({ open, setOpen }) => {
         title={t('modal.product.addProduct')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
-        width="85%"
+        width="100%"
         okText={t('modal.user.submitAddUser')}
         cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
           <CellLeft>
-            <Input
-              label={`* ${t('input.label.product.slug')}`}
+            <InputPermalink
+              label={`* ${t('input.label.category.slug')}`}
               name="slug"
+              addonBefore={`https://xuongdaninhbinh.com/${slugOfCategory}`}
               message={formik.touched.slug ? formik.errors.slug : ''}
               type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
               value={formik.values.slug}
@@ -397,7 +424,7 @@ const AddProductModal = ({ open, setOpen }) => {
               onChange={formik.handleChange}
               size="middle"
               isTextArea={true}
-              rows={4}
+              rows={6}
               labelStyle={{
                 padding: '2px'
               }}
@@ -411,15 +438,15 @@ const AddProductModal = ({ open, setOpen }) => {
               maxLength={200}
               showCount
             />
-            <Editor
-              onChange={handleChangeLongDescription}
-            />
           </CellLeft>
+          <CellBetween>
+            <Editor onChange={handleChangeLongDescription} />
+          </CellBetween>
           <CellRight>
             <Button
               type="primary"
               style={{
-                width: '30%'
+                width: '200px'
               }}
               onClick={handleAddModal}
             >
@@ -448,10 +475,10 @@ export default memo(AddProductModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 85vh;
   display: grid;
-  grid-template-rows: 1fr; /* 2 hàng bằng nhau */
-  grid-template-columns: 1.5fr 1fr; /* 2 cột bằng nhau */
+  grid-template-rows: 1fr; /* 1 hàng */
+  grid-template-columns: 1fr 1fr 1fr; /* 3 cột bằng nhau */
   gap: 12px; /* Khoảng cách giữa các vùng */
 `;
 
@@ -467,6 +494,20 @@ const CellLeft = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const CellBetween = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f1f6f9;
+  border-radius: 8px;
+  padding: 8px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+`;
+
 const CellRight = styled.div`
   position: relative;
   width: 100%;

@@ -46,6 +46,7 @@ const RecoveryPassword2 = () => {
             password: values.password,
             password_confirmation: values.password_confirmation
           });
+          console.log('check recoveryPassword2Status', authenticationState.recoveryPassword2Status);
           if (authenticationState.recoveryPassword2Status) {
             navigateTo('/login');
           }
@@ -145,7 +146,7 @@ const RecoveryPassword2 = () => {
           <NavigationLink to="/recoveryPassword1">Gửi lại token</NavigationLink>
         </SupportSpace>
         <Button onClick={formik.handleSubmit} type="primary">
-          Đăng nhập
+          Đặt lại mật khẩu
         </Button>
       </EditUserWrapper>
     </AuthWrapper1>

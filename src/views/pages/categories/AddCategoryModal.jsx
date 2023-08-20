@@ -3,15 +3,15 @@ import { useFormik } from 'formik';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { useAuthenticationStore } from '~/hooks/authentication';
 import * as yup from 'yup';
 import { useCategoriesStore } from '~/hooks/categories';
+import { useAuthenticationStore } from '~/hooks/authentication';
 import { Editor, Input, InputNumber, InputPermalink, Selector, Switch, Tag, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import axios from 'axios';
 
 const AddCategoryModal = ({ open, setOpen }) => {
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
   const [loading, setLoading] = useState(false);
   // const [loadingIcon, setLoadingIcon] = useState(false);
   const [imagePath, setImagePath] = useState('');
@@ -149,6 +149,9 @@ const AddCategoryModal = ({ open, setOpen }) => {
       setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err.response.status);
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }
       // const error = new Error('Some error');
       onError({ err });
     }

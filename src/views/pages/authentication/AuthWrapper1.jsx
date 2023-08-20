@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { styled } from '@mui/material/styles';
 
 const AuthWrapper1 = styled('div')(() => ({
-  backgroundImage: 'url("../../../../public/bg.jpg")', // Thay đổi đường dẫn ở đây
+  backgroundImage: 'url("../../../../bg.jpg")', // Thay đổi đường dẫn ở đây
   backgroundSize: 'cover', // Tùy chọn: cover, contain, hoặc các giá trị khác
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center center',

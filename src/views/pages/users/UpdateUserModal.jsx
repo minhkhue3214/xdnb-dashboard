@@ -12,7 +12,7 @@ import { Modal } from '~/ui-component/molecules';
 
 const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) => {
   const { t } = useTranslation();
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState,dispatchForceLogout } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
   const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
 
@@ -142,6 +142,9 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }s
       // const error = new Error('Some error');
       onError({ err });
     }

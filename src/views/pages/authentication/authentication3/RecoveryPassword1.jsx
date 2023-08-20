@@ -32,8 +32,8 @@ const RecoveryPassword1 = () => {
           dispatchRecoveryPassword1({
             email: values.email
           });
-          console.log('authenticationState navigate', authenticationState.recoveryPassword1Status);
-
+          // navigateTo('/recoverypassword2');
+          console.log('check recoveryPassword1Status', authenticationState.recoveryPassword2Status);
           if (authenticationState.recoveryPassword1Status) {
             navigateTo('/recoverypassword2');
           }

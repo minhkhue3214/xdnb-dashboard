@@ -11,7 +11,7 @@ import { Modal } from '~/ui-component/molecules';
 import axios from 'axios';
 
 const UpdateCategoryModal = ({ id, open, setOpen }) => {
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
   const { t } = useTranslation();
   const { categoriesState, dispatchGetCategory, dispatchUpdateCategory } = useCategoriesStore();
 
@@ -157,7 +157,9 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
       setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
-      // const error = new Error('Some error');
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }
       onError({ err });
     }
   };
