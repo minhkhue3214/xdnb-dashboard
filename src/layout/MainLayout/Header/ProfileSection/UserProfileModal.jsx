@@ -168,7 +168,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
         <EditUserWrapper>
           <UploadImage
             name="avatar"
-            disabled="true"
+            disabled={true}
             value={formik.values.avatar}
             loading={loading}
             imageUrl={imagePath}
@@ -193,7 +193,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
           <Input
             label={`* ${t('input.label.user.username')}`}
             name="username"
-            disabled="true"
+            disabled={true}
             value={formik.values.username}
             onChange={handleChange}
             labelStyle={{
@@ -281,7 +281,7 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
           <Input
             label={`* ${t('input.label.user.role')}`}
             name="role"
-            disabled="true"
+            disabled={true}
             value={formik.values.role}
             onChange={handleChange}
             size="middle"

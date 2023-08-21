@@ -36,7 +36,7 @@ export default function AtomEditor({ initValue = '', onChange }) {
             'code',
             'help',
             'wordcount',
-            'textcolor'
+            // 'textcolor'
           ],
           toolbar:
             'undo redo | outdent indent |' +

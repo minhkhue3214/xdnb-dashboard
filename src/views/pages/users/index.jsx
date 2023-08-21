@@ -52,17 +52,20 @@ const UsersPage = () => {
 
   const users = useMemo(() => {
     console.log('shiftsState.users', usersState.users);
-    const convertedusers = usersState.users.map((user) => {
-      const formattedHour = convertTimestampToHour(user.created_at);
-      const formattedHour1 = convertTimestampToHour(user.updated_at);
-
+  
+    const updatedDataSource = usersState.users.map((user) => {
+      const formattedCreatedAt = convertTimestampToHour(user.created_at);
+      const formattedUpdatedAt = convertTimestampToHour(user.updated_at);
+  
       return {
+        key: user.id,
         ...user,
-        created_at: formattedHour,
-        updated_at: formattedHour1
+        created_at: formattedCreatedAt,
+        updated_at: formattedUpdatedAt
       };
     });
-    return convertedusers;
+  
+    return updatedDataSource;
   }, [usersState.users]);
 
   const handleChangeEditUserModal = useCallback((props) => {
@@ -201,7 +204,7 @@ const UsersPage = () => {
         >
           {t('pages.users.addUser')}
         </Button>
-        <Button type="primary" disabled="true" icon={<TbTableExport />}>
+        <Button type="primary" disabled={true} icon={<TbTableExport />}>
           {t('pages.users.exportUserData')}
         </Button>
       </ControlBar>
@@ -210,7 +213,12 @@ const UsersPage = () => {
         <AntdTable columns={columns} dataSource={users} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
-        <Pagination count={usersState.pagination.lastPage} page={usersState.pagination.currentPage} onChange={handleChange} color="primary" />
+        <Pagination
+          count={usersState.pagination.lastPage}
+          page={usersState.pagination.currentPage}
+          onChange={handleChange}
+          color="primary"
+        />
       </PaginationWrapper>
       <AddUserModal open={openAddUserModal} setOpen={setOpenAddUserModal} />
       <UpdateUserModal

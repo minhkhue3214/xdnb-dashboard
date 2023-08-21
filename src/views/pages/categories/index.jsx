@@ -183,7 +183,7 @@ const PageCategory = () => {
         >
           {t('pages.categories.addCategory')}
         </Button>
-        <Button type="primary" disabled="true" icon={<TbTableExport />}>
+        <Button type="primary" disabled={true} icon={<TbTableExport />}>
           {t('pages.categories.exportCategoryData')}
         </Button>
       </ControlBar>

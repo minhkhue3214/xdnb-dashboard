@@ -28,6 +28,7 @@ const defaultConfigs = {
 };
 
 const AntdTable = ({ style, ...restProps }) => {
+  console.log('restProps', restProps);
   const tableRef = useRef();
 
   return (

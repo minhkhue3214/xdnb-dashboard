@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button } from 'antd';id
 import { useFormik } from 'formik';
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -121,9 +121,9 @@ const AddProductModal = ({ open, setOpen }) => {
     setOpen(false);
   }, [formik, setOpen]);
 
-  const id = React.useMemo(() => {
-    return uuidv4();
-  }, []);
+  // const id = React.useMemo(() => {
+  //   return uuidv4();
+  // }, []);
 
   const handleProductName = (id, e) => {
     setImageProduct((prevImageProduct) => {
@@ -454,7 +454,7 @@ const AddProductModal = ({ open, setOpen }) => {
             </Button>
             {imageProduct.map((ProductInfo) => (
               <UploadProductImage
-                key={id}
+                key={ProductInfo.id}
                 handleProductName={handleProductName}
                 handleDeleteModal={handleDeleteModal}
                 handleProductAlt={handleProductAlt}

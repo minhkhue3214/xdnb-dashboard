@@ -131,7 +131,7 @@ const PageConsultationRequest = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button disabled="true" type="primary" icon={<TbTableExport />}>
+        <Button disabled={true} type="primary" icon={<TbTableExport />}>
           {t('pages.consultationRequests.exportConsultationRequestData')}
         </Button>
       </ControlBar>
