@@ -121,7 +121,7 @@ const UsersPage = () => {
   const handleEdit = (params) => {
     handleChangeEditUserModal({
       status: true,
-      id: params?.id
+      id: params?.key
     });
   };
 

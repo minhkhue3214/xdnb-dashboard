@@ -78,7 +78,7 @@ const PagePost = () => {
   const handleEdit = (params) => {
     handleChangeEditPostModal({
       status: true,
-      id: params?.id
+      id: params?.key
     });
   };
 

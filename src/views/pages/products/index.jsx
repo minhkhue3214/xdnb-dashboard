@@ -115,7 +115,7 @@ const ProductsPage = () => {
   const handleEdit = (params) => {
     handleChangeEditProductModal({
       status: true,
-      id: params?.id
+      id: params?.key
     });
   };
 
