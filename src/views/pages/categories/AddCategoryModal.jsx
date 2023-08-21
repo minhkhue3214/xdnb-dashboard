@@ -20,7 +20,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
   const { categoriesState, dispatchAddCategory } = useCategoriesStore();
 
   const categoryOptions = useMemo(() => {
-    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+    const data = categoriesState.categories;
 
     return data?.map((one) => ({
       label: one.name,
@@ -79,7 +79,6 @@ const AddCategoryModal = ({ open, setOpen }) => {
     setOpen(false);
     setImagePath('');
     setIconPath('testing');
-    setEnable(true);
   }, [formik, setOpen]);
 
   const handleChangeTags = useCallback(
@@ -241,6 +240,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
               selectStyle={{
                 width: '200px'
               }}
+              disabled="false"
               options={categoryOptions}
               value={formik.values.parentId}
               onChange={handleChangeParentId}

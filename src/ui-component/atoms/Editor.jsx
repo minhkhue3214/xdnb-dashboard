@@ -1,18 +1,20 @@
 import React, { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import styled from 'styled-components';
 
 export default function AtomEditor({ initValue = '', onChange }) {
   const editorRef = useRef(null);
 
   return (
-    <>
+    <EditUserWrapper>
+      {/* <h1>test</h1> */}
       <Editor
         apiKey="er3esf1jqgtskimmpszcfxf0zm84j1co1sfw2gleerhsleth"
         tinymceScriptSrc={'/tinymce/tinymce.min.js'}
         onInit={(evt, editor) => (editorRef.current = editor)}
         initialValue={initValue}
         init={{
-          height: '100%',
+          height: '700px',
           menubar: false,
           resize: false,
           plugins: [
@@ -50,6 +52,12 @@ export default function AtomEditor({ initValue = '', onChange }) {
         }}
         onEditorChange={onChange}
       />
-    </>
+    </EditUserWrapper>
   );
 }
+
+const EditUserWrapper = styled.div`
+  /* position: absolute; */
+  width: 100%;
+  margin: 10px 0px;
+`;

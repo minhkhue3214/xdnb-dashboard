@@ -43,7 +43,6 @@ const AddPostModal = ({ open, setOpen }) => {
         .string()
         .matches(/^[a-z0-9-]+$/, t('input.error.post.slugNotValid'))
         .required(t('input.error.post.pleaseEnterSlug')),
-      // content: yup.string().required(t('input.error.post.pleaseEnterContent')),
       priority: yup.string().required(t('input.error.post.pleaseEnterPriority'))
     }),
     onSubmit: (values) => {

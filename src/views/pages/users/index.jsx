@@ -152,7 +152,7 @@ const UsersPage = () => {
           {/* <h4>Tesing</h4> */}
         </>
       ),
-      width: '10%'
+      width: '15%'
     },
     { dataIndex: 'username', title: t('table.user.username'), width: '20%' },
     { dataIndex: 'full_name', title: t('table.user.fullname'), width: '30%' },

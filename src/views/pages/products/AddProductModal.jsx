@@ -13,7 +13,7 @@ const AddProductModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
   const { dispatchAddProduct } = useProductsStore();
   const { categoriesState } = useCategoriesStore();
-  const [newCategoryId, setNewCategoryId] = useState(null);
+  // const [newCategoryId, setNewCategoryId] = useState(null);
 
   // const categoryOptions = useMemo(() => {
   //   const data = categoriesState.categories;
@@ -52,13 +52,13 @@ const AddProductModal = ({ open, setOpen }) => {
     return flattened;
   };
 
-  const getNameById = (id, data) => {
-    const item = data.find((item) => item.id === id);
-    return item ? item.name : null;
-  };
+  // const getNameById = (id, data) => {
+  //   const item = data.find((item) => item.id === id);
+  //   return item ? item.name : null;
+  // };
 
   const categoryOptions = useMemo(() => {
-    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+    const data = categoriesState.categories;
 
     const flattenedData = flattenChildren(data);
     console.log('flattenedData', flattenedData);
@@ -94,7 +94,7 @@ const AddProductModal = ({ open, setOpen }) => {
           //   delete arr[i].id;
           // }
           dispatchAddProduct({
-            category_id: newCategoryId,
+            category_id: values.category_id,
             name: values.name,
             slug: values.slug,
             hot: values.hot,
@@ -118,7 +118,6 @@ const AddProductModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setImageProduct([]);
-    setNewCategoryId('');
     setOpen(false);
   }, [formik, setOpen]);
 
@@ -192,10 +191,10 @@ const AddProductModal = ({ open, setOpen }) => {
 
   const handleChangeCategoryId = useCallback(
     (value) => {
-      setNewCategoryId(value);
-      const flattenedData = flattenChildren(categoriesState.categories);
-      const name = getNameById(value, flattenedData);
-      formik.setFieldValue('category_id', name);
+      // setNewCategoryId(value);
+      // const flattenedData = flattenChildren(categoriesState.categories);
+      // const name = getNameById(value, flattenedData);
+      formik.setFieldValue('category_id', value);
     },
     [formik]
   );
@@ -216,10 +215,10 @@ const AddProductModal = ({ open, setOpen }) => {
 
   const slugOfCategory = useMemo(() => {
     let value = '';
-    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+    const data = categoriesState.categories;
     const flattenedData = flattenChildren(data);
     if (categoriesState.categories?.length > 0 && formik.values.category_id) {
-      value = flattenedData.find((one) => one.name === formik.values.category_id)?.slug || '';
+      value = flattenedData.find((one) => one.id === formik.values.category_id)?.slug || '';
       // console.log('slugOfCategory', categoriesState.categories);
     }
 
@@ -370,7 +369,7 @@ const AddProductModal = ({ open, setOpen }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '20%'
+                width: '30%'
               }}
             />
             <Switch
@@ -383,7 +382,7 @@ const AddProductModal = ({ open, setOpen }) => {
               onChange={handleChangeHot}
               labelStyle={{
                 padding: '2px',
-                width: '20%'
+                width: '40%'
               }}
               style={{
                 width: '100%',
@@ -391,7 +390,7 @@ const AddProductModal = ({ open, setOpen }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '6%'
+                width: '10%'
               }}
             />
             <InputNumber
@@ -411,7 +410,7 @@ const AddProductModal = ({ open, setOpen }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '20%'
+                width: '30%'
               }}
             />
             <Input
@@ -438,10 +437,11 @@ const AddProductModal = ({ open, setOpen }) => {
               maxLength={200}
               showCount
             />
-          </CellLeft>
-          <CellBetween>
             <Editor onChange={handleChangeLongDescription} />
-          </CellBetween>
+          </CellLeft>
+          {/* <CellBetween>
+            <Editor onChange={handleChangeLongDescription} />
+          </CellBetween> */}
           <CellRight>
             <Button
               type="primary"
@@ -475,10 +475,10 @@ export default memo(AddProductModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 85vh;
+  height: 80vh;
   display: grid;
   grid-template-rows: 1fr; /* 1 hàng */
-  grid-template-columns: 1fr 1fr 1fr; /* 3 cột bằng nhau */
+  grid-template-columns: 1.5fr 1fr; /* 3 cột bằng nhau */
   gap: 12px; /* Khoảng cách giữa các vùng */
 `;
 
@@ -495,18 +495,18 @@ const CellLeft = styled.div`
   flex-direction: column;
 `;
 
-const CellBetween = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-color: #f1f6f9;
-  border-radius: 8px;
-  padding: 8px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-`;
+// const CellBetween = styled.div`
+//   position: relative;
+//   width: 100%;
+//   height: 100%;
+//   background-color: #f1f6f9;
+//   border-radius: 8px;
+//   padding: 8px;
+//   overflow-x: hidden;
+//   overflow-y: scroll;
+//   display: flex;
+//   flex-direction: column;
+// `;
 
 const CellRight = styled.div`
   position: relative;
@@ -525,5 +525,6 @@ const WrapperImage3 = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+  gap: 30px; /* Khoảng cách giữa các vùng */
   justify-content: space-around;
 `;

@@ -47,7 +47,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
         .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
         .required(t('input.error.user.pleaseEnterUsername'))
         .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
-      address: yup.string().max(50, t('input.error.user.nameTooLong')),
+      address: yup.string().max(50, t('input.error.user.addressTooLong')),
       role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
     }),
     onSubmit: (values) => {

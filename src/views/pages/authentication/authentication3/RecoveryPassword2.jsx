@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
@@ -7,16 +7,57 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { InputPassword, Input } from '~/ui-component/atoms';
+import dispatchToast from '~/handlers/toast';
+import { Input, InputPassword } from '~/ui-component/atoms';
 
 // project imports
-import { useAuthenticationStore } from '~/hooks/authentication';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import AuthWrapper1 from '../AuthWrapper1';
 
 const RecoveryPassword2 = () => {
-  const { dispatchRecoveryPassword2, authenticationState } = useAuthenticationStore();
   const { t } = useTranslation();
-  const [errMess, setErrMess] = useState(false);
+  const navigateTo = useNavigate();
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     email: '',
+  //     token: '',
+  //     password: '',
+  //     password_confirmation: ''
+  //   },
+  //   validationSchema: yup.object({
+  //     password: yup
+  //       .string()
+  //       .min(8, t('input.error.user.passwordMinLength'))
+  //       .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
+  //       .required(t('input.error.user.pleaseEnterPassword'))
+  //   }),
+  //   onSubmit: (values) => {
+  //     if (values.password !== values.password_confirmation) {
+  //       setErrMess(true);
+  //       // setTimeout(setErrMess(false), 3000);
+  //       return;
+  //     }
+  //     formik.validateForm().then(() => {
+  //       if (formik.isValid) {
+  //         dispatchRecoveryPassword2({
+  //           email: values.email,
+  //           token: values.token,
+  //           password: values.password,
+  //           password_confirmation: values.password_confirmation
+  //         });
+  //         setTimeout(() => {
+  //           console.log('check recoveryPassword2Status', authenticationState.recoveryPassword2Status);
+  //           if (authenticationState.recoveryPassword2Status) {
+  //             navigateTo('/login');
+  //           }
+  //         }, 5000);
+  //       }
+  //     });
+  //   },
+  //   validateOnChange: true
+  // });
 
   const formik = useFormik({
     initialValues: {
@@ -26,32 +67,41 @@ const RecoveryPassword2 = () => {
       password_confirmation: ''
     },
     validationSchema: yup.object({
-      password: yup
-        .string()
-        .min(8, t('input.error.user.passwordMinLength'))
-        .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
-        .required(t('input.error.user.pleaseEnterPassword'))
+      email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail')),
+      token: yup.string().required(t('input.error.user.pleaseEnterToken')),
+      password: yup.string().required(t('input.error.user.pleaseEnterPassword')),
+      password_confirmation: yup.string().required(t('input.error.user.pleaseEnterRePassword'))
     }),
-    onSubmit: (values) => {
-      if (values.password !== values.password_confirmation) {
-        setErrMess(true);
-        // setTimeout(setErrMess(false), 3000);
-        return;
-      }
-      formik.validateForm().then(() => {
-        if (formik.isValid) {
-          dispatchRecoveryPassword2({
-            email: values.email,
-            token: values.token,
-            password: values.password,
-            password_confirmation: values.password_confirmation
-          });
-          console.log('check recoveryPassword2Status', authenticationState.recoveryPassword2Status);
-          if (authenticationState.recoveryPassword2Status) {
-            navigateTo('/login');
-          }
+    onSubmit: async (values) => {
+      await formik.validateForm();
+
+      if (formik.isValid) {
+
+        if (values.password !== values.password_confirmation) {
+          dispatchToast('error', 'Mật khẩu không khớp');
+          return;
         }
-      });
+
+        try {
+          const response = await axios.put(
+            'https://tenmienmienphi.online/api/auth/recovery-password-step2',
+            { email: values.email, token: values.token, password: values.password, password_confirmation: values.password_confirmation },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+          // console.log('Response:', response.data.message);
+          dispatchToast('success', response.data.message);
+          navigateTo('/login');
+
+          // Do something with the response if needed
+        } catch (error) {
+          // console.log('error', error);
+          dispatchToast('error', error.response.data.message);
+        }
+      }
     },
     validateOnChange: true
   });
@@ -140,7 +190,6 @@ const RecoveryPassword2 = () => {
             width: '100%'
           }}
         />
-        {errMess && <EditLinkPassword>{t('input.error.user.passwordsDoNotMatch')}</EditLinkPassword>}
         <SupportSpace>
           <NavigationLink to="/login">Quay lại đăng nhập</NavigationLink>
           <NavigationLink to="/recoveryPassword1">Gửi lại token</NavigationLink>
@@ -185,7 +234,7 @@ const SupportSpace = styled.div`
   padding-bottom: 3%;
 `;
 
-const EditLinkPassword = styled.h4`
-  padding-top: 15px;
-  color: #f0432c;
-`;
+// const EditLinkPassword = styled.h4`
+//   padding-top: 15px;
+//   color: #f0432c;
+// `;

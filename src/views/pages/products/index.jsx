@@ -125,7 +125,7 @@ const ProductsPage = () => {
   };
 
   const columns = [
-    { dataIndex: 'name', title: t('table.products.name'), width: '15%' },
+    { dataIndex: 'name', title: t('table.products.name'), width: '12%' },
     { dataIndex: 'original_price', title: t('table.products.original_price'), width: '10%' },
     { dataIndex: 'discounted_price', title: t('table.products.discounted_price'), width: '10%' },
     { dataIndex: 'priority', title: t('table.products.priority'), width: '6%' },
@@ -137,7 +137,7 @@ const ProductsPage = () => {
         // console.log("record",record)
         <>{record.hot ? <Tag color="red">Hiển thị</Tag> : <Tag color="blue">Không hiển thị</Tag>}</>
       ),
-      width: '10%'
+      width: '5%'
     },
     {
       dataIndex: 'actions',
@@ -154,7 +154,7 @@ const ProductsPage = () => {
           </Popconfirm>
         </>
       ),
-      width: '8%'
+      width: '6%'
     }
   ];
 

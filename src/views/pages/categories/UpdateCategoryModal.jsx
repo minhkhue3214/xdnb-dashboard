@@ -19,13 +19,12 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
   // const [loadingIcon, setLoadingIcon] = useState(false);
   const [imagePath, setImagePath] = useState('');
   const [iconPath, setIconPath] = useState('testing');
-  const [newParentId, setNewParentId] = useState(null);
+  // const [newParentId, setNewParentId] = useState(null);
   const [enable, setEnable] = useState(true);
   const [initValue, setInitValue] = useState('');
 
   const categoryOptions = useMemo(() => {
-    console.log('categoryOptions', categoriesState.categories);
-    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+    const data = categoriesState.categories;
 
     return data?.map((one) => ({
       label: one.name,
@@ -54,14 +53,14 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
-        const { name, slug, content, priority, tags, visible, visibleChildren } = values;
+        const { name, slug, parentId, content, priority, tags, visible, visibleChildren } = values;
 
         if (formik.isValid) {
           // logic submit
           dispatchUpdateCategory({
             id,
             name,
-            parent_id: newParentId,
+            parent_id: parentId,
             slug,
             visible,
             visible_children: visibleChildren,
@@ -85,7 +84,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     setIconPath('testing');
     setEnable(true);
     formik.setFieldValue('parentId', '');
-    setNewParentId(null);
+    // setNewParentId(null);
   }, [formik, setOpen]);
 
   const handleChangeTags = useCallback(
@@ -117,9 +116,9 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
 
   const handleChangeParentId = useCallback(
     (value) => {
-      const name = getNameById(value, JSON.parse(JSON.stringify(categoriesState.categories)));
-      setNewParentId(value);
-      formik.setFieldValue('parentId', name);
+      // const name = getNameById(value, categoriesState.categories);
+      // setNewParentId(value);
+      formik.setFieldValue('parentId', value);
     },
     [formik]
   );
@@ -127,7 +126,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
   const slugOfParent = useMemo(() => {
     let value = '';
     if (categoriesState.categories?.length > 0 && formik.values.parentId) {
-      value = categoriesState.categories.find((one) => one.name === formik.values.parentId)?.slug || '';
+      value = categoriesState.categories.find((one) => one.id === formik.values.parentId)?.slug || '';
     }
 
     if (value) {
@@ -195,19 +194,19 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     }
   }, [dispatchGetCategory, id]);
 
-  const getNameById = (id, data) => {
-    const item = data.find((item) => item.id === id);
-    return item ? item.name : null;
-  };
+  // const getNameById = (id, data) => {
+  //   const item = data.find((item) => item.id === id);
+  //   return item ? item.name : null;
+  // };
 
   useEffect(() => {
     const data = categoriesState.detail;
     console.log('categoriesState', data);
     if (data) {
-      const name = getNameById(data.parent_id, JSON.parse(JSON.stringify(categoriesState.categories)));
-      console.log('checking parentId', name);
-      formik.setFieldValue('parentId', name);
-      setNewParentId(data.parent_id);
+      // const name = getNameById(data.parent_id, categoriesState.categories);
+      // console.log('checking parentId', name);
+      formik.setFieldValue('parentId', data.parent_id);
+      // setNewParentId(data.parent_id);
 
       data.parent_id ? setEnable(false) : setEnable(true);
 

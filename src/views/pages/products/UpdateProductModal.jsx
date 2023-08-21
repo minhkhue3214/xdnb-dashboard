@@ -13,7 +13,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   const { t } = useTranslation();
   const { productsState, dispatchGetProductById, dispatchUpdateProduct } = useProductsStore();
   const { categoriesState } = useCategoriesStore();
-  const [newCategoryId, setNewCategoryId] = useState(null);
+  // const [newCategoryId, setNewCategoryId] = useState(null);
   const [initValue, setInitValue] = useState('');
 
   const flattenChildren = (items) => {
@@ -36,13 +36,13 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
     return flattened;
   };
 
-  const getNameById = (id, data) => {
-    const item = data.find((item) => item.id === id);
-    return item ? item.name : null;
-  };
+  // const getNameById = (id, data) => {
+  //   const item = data.find((item) => item.id === id);
+  //   return item ? item.name : null;
+  // };
 
   const categoryOptions = useMemo(() => {
-    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+    const data = categoriesState.categories;
 
     const flattenedData = flattenChildren(data);
     console.log('flattenedData', flattenedData);
@@ -59,7 +59,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
 
   const formik = useFormik({
     initialValues: {
-      category_id: 'category123',
+      category_id: '',
       name: '',
       slug: '',
       hot: true,
@@ -75,7 +75,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
         if (formik.isValid) {
           dispatchUpdateProduct({
             id,
-            category_id: newCategoryId,
+            category_id: values.category_id,
             name: values.name,
             slug: values.slug,
             hot: values.hot,
@@ -99,7 +99,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
-    setNewCategoryId(null);
+    // setNewCategoryId(null);
   }, [formik, setOpen]);
 
   useEffect(() => {
@@ -115,10 +115,10 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       console.log('productsState', data);
 
       console.log('Productmodal', JSON.parse(JSON.stringify(categoriesState.categories)));
-      const flattenedData = flattenChildren(categoriesState.categories);
-      const name = getNameById(data.category_id, flattenedData);
-      formik.setFieldValue('category_id', name);
-      setNewCategoryId(data.category_id);
+      // const flattenedData = flattenChildren(categoriesState.categories);
+      // const name = getNameById(data.category_id, flattenedData);
+      formik.setFieldValue('category_id', data.category_id);
+      // setNewCategoryId(data.category_id);
 
       // formik.setFieldValue('category_id', data.category_id || '');
       formik.setFieldValue('name', data.name || '');
@@ -228,10 +228,10 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
 
   const handleChangeCategoryId = useCallback(
     (value) => {
-      setNewCategoryId(value);
-      const flattenedData = flattenChildren(categoriesState.categories);
-      const name = getNameById(value, flattenedData);
-      formik.setFieldValue('category_id', name);
+      // setNewCategoryId(value);
+      // const flattenedData = flattenChildren(categoriesState.categories);
+      // const name = getNameById(value, flattenedData);
+      formik.setFieldValue('category_id', value);
     },
     [formik]
   );
@@ -247,7 +247,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
     let value = '';
     const flattenedData = flattenChildren(categoriesState.categories);
     if (categoriesState.categories?.length > 0 && formik.values.category_id) {
-      value = flattenedData.find((one) => one.name === formik.values.category_id)?.slug || '';
+      value = flattenedData.find((one) => one.id === formik.values.category_id)?.slug || '';
     }
 
     if (value) {
@@ -262,7 +262,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       <Modal
         open={open}
         onOpen={setOpen}
-        title={t('modal.product.addProduct')}
+        title={t('modal.product.updateProduct')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
         width="100%"
@@ -397,7 +397,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '20%'
+                width: '30%'
               }}
             />
             <Switch
@@ -410,7 +410,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               onChange={handleChangeHot}
               labelStyle={{
                 padding: '2px',
-                width: '20%'
+                width: '40%'
               }}
               style={{
                 width: '100%',
@@ -418,7 +418,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '6%'
+                width: '10%'
               }}
             />
             <InputNumber
@@ -438,7 +438,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '20%'
+                width: '30%'
               }}
             />
             <Input
@@ -451,7 +451,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               onChange={formik.handleChange}
               size="middle"
               isTextArea={true}
-              rows={2}
+              rows={6}
               labelStyle={{
                 padding: '2px'
               }}
@@ -465,17 +465,14 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               maxLength={20}
               showCount
             />
-          </CellLeft>
-
-          <CellBetween>
             <Editor initValue={initValue} onChange={handleChangeLongDescription} />
-          </CellBetween>
+          </CellLeft>
 
           <CellRight>
             <Button
               type="primary"
               style={{
-                width: '30%'
+                width: '200px'
               }}
               onClick={handleAddModal}
             >
@@ -504,10 +501,10 @@ export default memo(UpdateProductModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 85vh;
+  height: 80vh;
   display: grid;
   grid-template-rows: 1fr; /* 1 hàng */
-  grid-template-columns: 1fr 1fr 1fr; /* 3 cột bằng nhau */
+  grid-template-columns: 1.5fr 1fr; /* 3 cột bằng nhau */
   gap: 12px; /* Khoảng cách giữa các vùng */
 `;
 
@@ -524,18 +521,18 @@ const CellLeft = styled.div`
   flex-direction: column;
 `;
 
-const CellBetween = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-color: #f1f6f9;
-  border-radius: 8px;
-  padding: 8px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-`;
+// const CellBetween = styled.div`
+//   position: relative;
+//   width: 100%;
+//   height: 100%;
+//   background-color: #f1f6f9;
+//   border-radius: 8px;
+//   padding: 8px;
+//   overflow-x: hidden;
+//   overflow-y: scroll;
+//   display: flex;
+//   flex-direction: column;
+// `;
 
 const CellRight = styled.div`
   position: relative;
@@ -554,5 +551,6 @@ const WrapperImage3 = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+  gap: 30px; /* Khoảng cách giữa các vùng */
   justify-content: space-around;
 `;

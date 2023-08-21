@@ -38,6 +38,7 @@
     },
     "products": {
       "addProduct": "Thêm Sản Phẩm",
+      "updateProduct": "Sửa Sản Phẩm",
       "name": "Tên Sản Phẩm",
       "discounted_price": "Giảm giá",
       "original_price": "Giá Gốc",
@@ -89,7 +90,7 @@
       "original_price": "Giá Gốc",
       "long_description": "Mô tả dài",
       "short_description": "Mô tả ngắn",
-      "priority": "Mức Độ Ưu Tiên",
+      "priority": "Độ Ưu Tiên",
       "quantity": "Số lượng",
       "supplier": "Nhà cung cấp",
       "gallery_items": "Danh sách ảnh",
@@ -129,7 +130,8 @@
       "submitEditPost": "Xác nhận"
     },
     "product": {
-      "addProduct": "Thêm sản phẩm"
+      "addProduct": "Thêm sản phẩm",
+      "updateProduct": "Sửa sản phẩm"
     },
     "category": {
       "addCategory": "Thêm danh mục sản phẩm",
@@ -187,7 +189,7 @@
         "category_id": "Danh mục sản phẩm",
         "name": "Tên Sản Phẩm",
         "slug": "Slug",
-        "hot":"Sản phẩm hot",
+        "hot": "Sản phẩm hot",
         "priority": "Ưu tiên hiển thị",
         "quantity": "Số lượng",
         "short_description": "Mô tả ngắn",
@@ -206,12 +208,16 @@
     "error": {
       "user": {
         "invalidEmail": "Email không hợp lệ",
+        "invalidToken": "Vui lòng điền token",
         "pleaseEnterEmail": "Vui lòng nhập email",
+        "pleaseEnterToken": "Vui lòng nhập token",
         "pleaseEnterPassword": "Vui lòng nhập mật khẩu",
+        "pleaseEnterRePassword": "Vui lòng nhập lại mật khẩu",
         "passwordsDoNotMatch": "Mật khẩu không khớp",
         "passwordMinLength": "Mật khẩu phải có ít nhất 8 ký tự",
         "passwordRequirements": "Mật khẩu phải chứa ít nhất 1 chữ cái và 1 số",
         "nameTooLong": "Tên của bạn quá dài",
+        "addressTooLong": "Địa chỉ của bạn quá dài",
         "phoneTooLong": "Số điện thoại của bạn quá dài",
         "pleaseEnterUsername": "Vui lòng nhập tên người dùng",
         "usernameNoSpecialChars": "Tên người dùng không được chứa ký tự đặc biệt",

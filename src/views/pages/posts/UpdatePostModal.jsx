@@ -45,7 +45,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       type: yup.string().required(t('input.error.post.pleaseEnterType')),
       author: yup.string().required(t('input.error.post.pleaseEnterAuthor')),
       description: yup.string().required(t('input.error.post.pleaseEnterDescription')),
-      // publicationDate: yup.date().required(t('input.error.post.pleaseEnterPublicationDate')),
+      publicationDate: yup.string().required(t('input.error.post.pleaseEnterPublicationDate')),
       slug: yup
         .string()
         .matches(/^[a-z0-9-]+$/, t('input.error.post.slugNotValid'))
