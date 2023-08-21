@@ -11,13 +11,41 @@ import * as yup from 'yup';
 import { Input } from '~/ui-component/atoms';
 
 // project imports
-import { useAuthenticationStore } from '~/hooks/authentication';
 import AuthWrapper1 from '../AuthWrapper1';
+import axios from 'axios';
+import dispatchToast from '~/handlers/toast';
 
 const RecoveryPassword1 = () => {
-  const { authenticationState, dispatchRecoveryPassword1 } = useAuthenticationStore();
   const { t } = useTranslation();
   const navigateTo = useNavigate();
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     email: ''
+  //   },
+  //   validationSchema: yup.object({
+  //     email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail'))
+  //   }),
+  //   onSubmit: (values) => {
+  //     formik.validateForm().then(() => {
+  //       if (formik.isValid) {
+  //         dispatchRecoveryPassword1({
+  //           email: values.email
+  //         });
+
+  //         console.log('check recoveryPassword1Status', authenticationState.recoveryPassword1Status);
+  //         if (authenticationState.recoveryPassword1Status) {
+  //           navigateTo('/recoverypassword2');
+  //         }
+  //         // navigateTo('/recoverypassword2');
+  //         // setTimeout(() => {
+
+  //         // }, 5000);
+  //       }
+  //     });
+  //   },
+  //   validateOnChange: true
+  // });
 
   const formik = useFormik({
     initialValues: {
@@ -26,19 +54,30 @@ const RecoveryPassword1 = () => {
     validationSchema: yup.object({
       email: yup.string().email(t('input.error.user.invalidEmail')).required(t('input.error.user.pleaseEnterEmail'))
     }),
-    onSubmit: (values) => {
-      formik.validateForm().then(() => {
-        if (formik.isValid) {
-          dispatchRecoveryPassword1({
-            email: values.email
-          });
-          console.log('authenticationState navigate', authenticationState.recoveryPassword1Status);
+    onSubmit: async (values) => {
+      await formik.validateForm();
 
-          if (authenticationState.recoveryPassword1Status) {
-            navigateTo('/recoverypassword2');
-          }
+      if (formik.isValid) {
+        try {
+          const response = await axios.post(
+            'https://tenmienmienphi.online/api/auth/recovery-password-step1',
+            { email: values.email },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+          // console.log('Response:', response.data.message);
+          dispatchToast('success', response.data.message);
+          navigateTo('/recoverypassword2');
+
+          // Do something with the response if needed
+        } catch (error) {
+          // console.error('Error:', error.response.data.message);
+          dispatchToast('error', error.response.data.message);
         }
-      });
+      }
     },
     validateOnChange: true
   });

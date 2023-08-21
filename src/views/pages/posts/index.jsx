@@ -85,9 +85,6 @@ const PagePost = () => {
 
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
-    { dataIndex: 'title', title: t('table.post.title'), width: '16%' },
-    { dataIndex: 'description', title: t('table.post.description'), width: '25%' },
-    { dataIndex: 'author', title: t('table.post.author'), width: '15%' },
     {
       dataIndex: 'avatar',
       title: t('table.user.avatar'),
@@ -112,6 +109,9 @@ const PagePost = () => {
       ),
       width: '10%'
     },
+    { dataIndex: 'title', title: t('table.post.title'), width: '16%' },
+    { dataIndex: 'description', title: t('table.post.description'), width: '25%' },
+    { dataIndex: 'author', title: t('table.post.author'), width: '10%' },
     { dataIndex: 'priority', title: t('table.post.priority'), width: '7%' },
     {
       dataIndex: 'publication_date',
@@ -134,7 +134,7 @@ const PagePost = () => {
           </Popconfirm>
         </>
       ),
-      width: '8%'
+      width: '10%'
     }
   ];
 

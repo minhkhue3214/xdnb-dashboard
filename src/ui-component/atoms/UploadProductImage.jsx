@@ -30,7 +30,7 @@ const AtomUploadProductImage = ({
 }) => {
   // const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
 
   // useEffect(() => {
   //   console.log('ProductInfo', ProductInfo);
@@ -73,6 +73,9 @@ const AtomUploadProductImage = ({
       handleProductSource(ProductInfo.id, res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }
       // const error = new Error('Some error');
       onError({ err });
     }
@@ -147,7 +150,7 @@ const AtomUploadProductImage = ({
       <ButtonWrapper>
         <BsFillTrashFillIcon
           className="BsFillTrashFill"
-          color="#ffffff"
+          color="#1677ff;"
           onClick={() => {
             handleDeleteModal(ProductInfo.id);
           }}
@@ -165,10 +168,12 @@ const ImageWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 150px;
-  background-color: #1677ff;
+  background-color: #ffffff; /* Background trắng */
+  border: 2px solid #b4cdf191; /* Border xanh với độ dày 2px */
   border-radius: 8px;
   margin-top: 20px;
   align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Shadow */
 `;
 
 const InputWrapper = styled.div`
@@ -211,7 +216,7 @@ const CustomInput = styled(Input)`
 
 const BsFillTrashFillIcon = styled(BsFillTrashFill)`
   &:hover {
-    color: black;
+    color: #4096ff;
   }
 `;
 

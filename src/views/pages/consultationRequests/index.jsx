@@ -83,7 +83,7 @@ const PageConsultationRequest = () => {
   // Ngoài những thuộc tính trong này, có thể xem thêm thuộc tính của columns table trong ~/ui-component/molecules/DataTable nha. Có giải thích rõ ràng ở đó
   const columns = [
     { dataIndex: 'name', title: t('table.consultationRequest.name'), width: '13%' },
-    { dataIndex: 'phone', title: t('table.consultationRequest.phone'), width: '10%' },
+    { dataIndex: 'phone', title: t('table.consultationRequest.phone'), width: '14%' },
     { dataIndex: 'email', title: t('table.consultationRequest.email'), width: '15%' },
     { dataIndex: 'note', title: t('table.consultationRequest.note'), width: '20%' },
     {

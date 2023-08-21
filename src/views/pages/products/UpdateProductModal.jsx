@@ -6,14 +6,15 @@ import styled from 'styled-components';
 // import * as yup from 'yup';
 import { useCategoriesStore } from '~/hooks/categories';
 import { useProductsStore } from '~/hooks/products';
-import { Input, InputNumber, Selector, Switch, UploadProductImage } from '~/ui-component/atoms';
+import { Input, InputNumber, Selector, Switch, UploadProductImage, Editor, InputPermalink } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import { v4 as uuidv4 } from 'uuid';
 const UpdateProductModal = ({ id, setOpen, open }) => {
   const { t } = useTranslation();
   const { productsState, dispatchGetProductById, dispatchUpdateProduct } = useProductsStore();
   const { categoriesState } = useCategoriesStore();
-  const [newCategoryId, setNewCategoryId] = useState(null);
+  // const [newCategoryId, setNewCategoryId] = useState(null);
+  const [initValue, setInitValue] = useState('');
 
   const flattenChildren = (items) => {
     const flattened = [];
@@ -35,8 +36,13 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
     return flattened;
   };
 
+  // const getNameById = (id, data) => {
+  //   const item = data.find((item) => item.id === id);
+  //   return item ? item.name : null;
+  // };
+
   const categoryOptions = useMemo(() => {
-    const data = JSON.parse(JSON.stringify(categoriesState.categories));
+    const data = categoriesState.categories;
 
     const flattenedData = flattenChildren(data);
     console.log('flattenedData', flattenedData);
@@ -49,11 +55,11 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
 
   const [imageProduct, setImageProduct] = useState([]);
   const [deleteProduct, setDeleteProduct] = useState([]);
-  const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
+  // const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
 
   const formik = useFormik({
     initialValues: {
-      category_id: 'category123',
+      category_id: '',
       name: '',
       slug: '',
       hot: true,
@@ -69,7 +75,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
         if (formik.isValid) {
           dispatchUpdateProduct({
             id,
-            category_id: newCategoryId,
+            category_id: values.category_id,
             name: values.name,
             slug: values.slug,
             hot: values.hot,
@@ -93,7 +99,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setOpen(false);
-    setNewCategoryId('');
+    // setNewCategoryId(null);
   }, [formik, setOpen]);
 
   useEffect(() => {
@@ -104,21 +110,15 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   }, [dispatchGetProductById, id]);
 
   useEffect(() => {
-    const getNameById = (id, data) => {
-      const item = data.find((item) => item.id === id);
-      return item ? item.name : null;
-    };
-
     const data = productsState.detail;
     if (data) {
       console.log('productsState', data);
 
       console.log('Productmodal', JSON.parse(JSON.stringify(categoriesState.categories)));
-      const flattenedData = flattenChildren(JSON.parse(JSON.stringify(categoriesState.categories)));
-
-      const name = getNameById(data.category_id, flattenedData);
-      formik.setFieldValue('category_id', name);
-      setNewCategoryId(data.category_id);
+      // const flattenedData = flattenChildren(categoriesState.categories);
+      // const name = getNameById(data.category_id, flattenedData);
+      formik.setFieldValue('category_id', data.category_id);
+      // setNewCategoryId(data.category_id);
 
       // formik.setFieldValue('category_id', data.category_id || '');
       formik.setFieldValue('name', data.name || '');
@@ -130,6 +130,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       }
       formik.setFieldValue('short_description', data.short_description || '');
       formik.setFieldValue('long_description', data.long_description || '');
+      setInitValue(data.long_description);
       formik.setFieldValue('original_price', data.original_price || '');
       formik.setFieldValue('discounted_price', data.discounted_price || '');
       formik.setFieldValue('quantity', data.quantity || '');
@@ -211,7 +212,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
         id: uuidv4(),
         name: 'Gallery Item 1',
         alt: 'Alt text for Gallery Item 1',
-        path: avatarDefault,
+        path: '',
         priority: 1
       };
       return [...prevImageProduct, newImage];
@@ -227,27 +228,70 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
 
   const handleChangeCategoryId = useCallback(
     (value) => {
-      console.log('handleChangeCategoryId', value);
-      setNewCategoryId(value);
+      // setNewCategoryId(value);
+      // const flattenedData = flattenChildren(categoriesState.categories);
+      // const name = getNameById(value, flattenedData);
       formik.setFieldValue('category_id', value);
     },
     [formik]
   );
+
+  const handleChangeLongDescription = useCallback(
+    (value) => {
+      formik.setFieldValue('long_description', value);
+    },
+    [formik]
+  );
+
+  const slugOfCategory = useMemo(() => {
+    let value = '';
+    const flattenedData = flattenChildren(categoriesState.categories);
+    if (categoriesState.categories?.length > 0 && formik.values.category_id) {
+      value = flattenedData.find((one) => one.id === formik.values.category_id)?.slug || '';
+    }
+
+    if (value) {
+      value += '/';
+    }
+
+    return value;
+  }, [formik.values.category_id, categoriesState]);
 
   return (
     <>
       <Modal
         open={open}
         onOpen={setOpen}
-        title={t('modal.product.addProduct')}
+        title={t('modal.product.updateProduct')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
-        width="85%"
+        width="100%"
         okText={t('modal.user.submitAddUser')}
         cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
           <CellLeft>
+            <InputPermalink
+              label={`* ${t('input.label.category.slug')}`}
+              name="slug"
+              addonBefore={`https://xuongdaninhbinh.com/${slugOfCategory}`}
+              message={formik.touched.slug ? formik.errors.slug : ''}
+              type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
+              value={formik.values.slug}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              labelStyle={{
+                padding: '2px'
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                height: '70px'
+              }}
+              inputStyle={{
+                width: '100%'
+              }}
+            />
             <Selector
               label={`* ${t('input.label.product.category_id')}`}
               name="category_id"
@@ -291,48 +335,51 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 width: '100%'
               }}
             />
-            <InputNumber
-              label={`* ${t('input.label.product.original_price')}`}
-              name="original_price"
-              message={formik.touched.original_price ? formik.errors.original_price : ''}
-              type={formik.touched.original_price && formik.errors.original_price ? 'error' : ''}
-              value={formik.values.original_price}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
-            <InputNumber
-              label={`* ${t('input.label.product.discounted_price')}`}
-              name="discounted_price"
-              message={formik.touched.discounted_price ? formik.errors.discounted_price : ''}
-              type={formik.touched.discounted_price && formik.errors.discounted_price ? 'error' : ''}
-              value={formik.values.discounted_price}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '100%'
-              }}
-            />
+            <WrapperImage3>
+              <InputNumber
+                label={`* ${t('input.label.product.original_price')}`}
+                name="original_price"
+                message={formik.touched.original_price ? formik.errors.original_price : ''}
+                type={formik.touched.original_price && formik.errors.original_price ? 'error' : ''}
+                value={formik.values.original_price}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                size="middle"
+                labelStyle={{
+                  padding: '2px'
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px',
+                  height: '70px'
+                }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+              <InputNumber
+                label={`* ${t('input.label.product.discounted_price')}`}
+                name="discounted_price"
+                message={formik.touched.discounted_price ? formik.errors.discounted_price : ''}
+                type={formik.touched.discounted_price && formik.errors.discounted_price ? 'error' : ''}
+                value={formik.values.discounted_price}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                size="middle"
+                labelStyle={{
+                  padding: '2px'
+                }}
+                style={{
+                  width: '100%',
+                  marginTop: '8px',
+                  height: '70px'
+                }}
+                inputStyle={{
+                  width: '100%'
+                }}
+              />
+            </WrapperImage3>
+
             <InputNumber
               label={`* ${t('input.label.product.quantity')}`}
               name="quantity"
@@ -350,19 +397,20 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '20%'
+                width: '30%'
               }}
             />
-            <Input
-              label={`* ${t('input.label.product.slug')}`}
-              name="slug"
-              message={formik.touched.slug ? formik.errors.slug : ''}
-              type={formik.touched.slug && formik.errors.slug ? 'error' : ''}
-              value={formik.values.slug}
+            <Switch
+              label={`* ${t('input.label.product.hot')}`}
+              name="hot"
+              message={formik.touched.hot ? formik.errors.hot : ''}
+              type={formik.touched.hot && formik.errors.hot ? 'error' : ''}
+              value={formik.values.hot}
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={handleChangeHot}
               labelStyle={{
-                padding: '2px'
+                padding: '2px',
+                width: '40%'
               }}
               style={{
                 width: '100%',
@@ -370,7 +418,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '100%'
+                width: '10%'
               }}
             />
             <InputNumber
@@ -390,28 +438,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 height: '70px'
               }}
               inputStyle={{
-                width: '20%'
-              }}
-            />
-            <Switch
-              label="* True"
-              name="hot"
-              message={formik.touched.hot ? formik.errors.hot : ''}
-              type={formik.touched.hot && formik.errors.hot ? 'error' : ''}
-              value={formik.values.hot}
-              onBlur={formik.handleBlur}
-              onChange={handleChangeHot}
-              labelStyle={{
-                padding: '2px',
-                width: '20%'
-              }}
-              style={{
-                width: '100%',
-                marginTop: '8px',
-                height: '70px'
-              }}
-              inputStyle={{
-                width: '6%'
+                width: '30%'
               }}
             />
             <Input
@@ -424,7 +451,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               onChange={formik.handleChange}
               size="middle"
               isTextArea={true}
-              rows={2}
+              rows={6}
               labelStyle={{
                 padding: '2px'
               }}
@@ -438,36 +465,14 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               maxLength={20}
               showCount
             />
-            <Input
-              label={`* ${t('input.label.product.long_description')}`}
-              name="long_description"
-              message={formik.touched.long_description ? formik.errors.long_description : ''}
-              type={formik.touched.long_description && formik.errors.long_description ? 'error' : ''}
-              value={formik.values.long_description}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              size="middle"
-              isTextArea={true}
-              rows={5}
-              labelStyle={{
-                padding: '2px'
-              }}
-              style={{
-                width: '100%'
-              }}
-              inputStyle={{
-                width: '100%',
-                resize: 'none'
-              }}
-              maxLength={2000}
-              showCount
-            />
+            <Editor initValue={initValue} onChange={handleChangeLongDescription} />
           </CellLeft>
+
           <CellRight>
             <Button
               type="primary"
               style={{
-                width: '30%'
+                width: '200px'
               }}
               onClick={handleAddModal}
             >
@@ -496,11 +501,11 @@ export default memo(UpdateProductModal);
 const EditUserWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 55vh;
+  height: 80vh;
   display: grid;
-  grid-template-rows: 1fr; /* 2 hàng bằng nhau */
-  grid-template-columns: 1.6fr 1fr; /* 2 cột bằng nhau */
-  gap: 10px; /* Khoảng cách giữa các vùng */
+  grid-template-rows: 1fr; /* 1 hàng */
+  grid-template-columns: 1.5fr 1fr; /* 3 cột bằng nhau */
+  gap: 12px; /* Khoảng cách giữa các vùng */
 `;
 
 const CellLeft = styled.div`
@@ -515,6 +520,20 @@ const CellLeft = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+// const CellBetween = styled.div`
+//   position: relative;
+//   width: 100%;
+//   height: 100%;
+//   background-color: #f1f6f9;
+//   border-radius: 8px;
+//   padding: 8px;
+//   overflow-x: hidden;
+//   overflow-y: scroll;
+//   display: flex;
+//   flex-direction: column;
+// `;
+
 const CellRight = styled.div`
   position: relative;
   width: 100%;
@@ -526,4 +545,12 @@ const CellRight = styled.div`
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
+`;
+
+const WrapperImage3 = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  gap: 30px; /* Khoảng cách giữa các vùng */
+  justify-content: space-around;
 `;

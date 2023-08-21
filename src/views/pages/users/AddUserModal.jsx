@@ -12,7 +12,7 @@ import { Modal } from '~/ui-component/molecules';
 
 const AddUserModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
   const { dispatchAddUser } = useUsersStore();
 
@@ -53,7 +53,7 @@ const AddUserModal = ({ open, setOpen }) => {
         .required(t('input.error.user.pleaseEnterUsername'))
         .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
       // avatar: yup.string().max(9000000, t('input.error.user.nameTooLong')),
-      address: yup.string().max(50, t('input.error.user.nameTooLong')),
+      address: yup.string().max(50, t('input.error.user.addressTooLong')),
       role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
     }),
     onSubmit: (values) => {
@@ -112,6 +112,9 @@ const AddUserModal = ({ open, setOpen }) => {
       setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }
       // const error = new Error('Some error');
       onError({ err });
     }

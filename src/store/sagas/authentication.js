@@ -1,7 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { loginRequestApi, logoutRequestApi, recoveryPasswordStep1Api, recoveryPasswordStep2Api } from '~/api/authentication';
 import { loginFail, loginRequest, loginSuccess, logoutRequest, logoutSuccess, logoutFail, recoveryPassword1Request, recoveryPassword1Success, recoveryPassword1Fail, recoveryPassword2Request, recoveryPassword2Success, recoveryPassword2Fail, forceLogout } from '~/store/slices/rootAction';
-
 function* loginRequestSaga(action) {
   try {
     const results = yield call(loginRequestApi, action.payload);
@@ -26,6 +25,7 @@ function* logoutRequestSaga(action) {
 }
 function* recoveryPassword1Saga(action) {
   try {
+
     const results = yield call(recoveryPasswordStep1Api, action.payload);
     console.log("logoutRequestSaga", results);
     yield put(recoveryPassword1Success(results));

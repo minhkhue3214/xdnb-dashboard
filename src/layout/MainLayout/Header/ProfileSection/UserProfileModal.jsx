@@ -12,7 +12,7 @@ import { Modal } from '~/ui-component/molecules';
 
 const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
   const { t } = useTranslation();
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
   const { profileState, dispatchGetProfile, dispatchUpdateProfile } = useProfileStore();
   const avatarDefault = 'https://ionicframework.com/docs/img/demos/avatar.svg';
   const [id, setId] = useState('');
@@ -127,6 +127,9 @@ const UserProfileModal = ({ open, setOpen, handleChangeEditPasswordModal }) => {
       setDisableButton(false);
     } catch (err) {
       console.log('Eroor: ', err);
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }
       onError({ err });
     }
   };

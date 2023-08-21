@@ -12,7 +12,7 @@ import { Modal } from '~/ui-component/molecules';
 
 const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) => {
   const { t } = useTranslation();
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState,dispatchForceLogout } = useAuthenticationStore();
   const [newRoles, setNewRoles] = useState([]);
   const { usersState, dispatchUpdateUser, dispatchGetUserById } = useUsersStore();
 
@@ -47,7 +47,7 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
         .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))
         .required(t('input.error.user.pleaseEnterUsername'))
         .test('no-spaces', t('input.error.user.usernameNoSpaces'), (value) => !/\s/.test(value)),
-      address: yup.string().max(50, t('input.error.user.nameTooLong')),
+      address: yup.string().max(50, t('input.error.user.addressTooLong')),
       role: yup.string().required(t('input.error.user.pleaseSelectUserRole'))
     }),
     onSubmit: (values) => {
@@ -142,6 +142,9 @@ const UpdateUserModal = ({ id, open, setOpen, handleChangeEditPasswordModal }) =
       setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log('Eroor: ', err);
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }s
       // const error = new Error('Some error');
       onError({ err });
     }

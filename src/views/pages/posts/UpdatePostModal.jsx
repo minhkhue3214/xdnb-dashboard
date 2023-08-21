@@ -20,7 +20,7 @@ dayjs.extend(timezone);
 const UpdatePostModal = ({ id, open, setOpen }) => {
   const { t } = useTranslation();
   const { postsState, dispatchUpdatePost, dispatchGetPost } = usePostsStore();
-  const { authenticationState } = useAuthenticationStore();
+  const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
 
   const [loading, setLoading] = useState(false);
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
@@ -45,7 +45,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       type: yup.string().required(t('input.error.post.pleaseEnterType')),
       author: yup.string().required(t('input.error.post.pleaseEnterAuthor')),
       description: yup.string().required(t('input.error.post.pleaseEnterDescription')),
-      // publicationDate: yup.date().required(t('input.error.post.pleaseEnterPublicationDate')),
+      publicationDate: yup.string().required(t('input.error.post.pleaseEnterPublicationDate')),
       slug: yup
         .string()
         .matches(/^[a-z0-9-]+$/, t('input.error.post.slugNotValid'))
@@ -175,6 +175,9 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
     } catch (err) {
       console.log('Eroor: ', err);
       // const error = new Error('Some error');
+      if (err.response.status == 401) {
+        dispatchForceLogout();
+      }
       onError({ err });
     }
   };
