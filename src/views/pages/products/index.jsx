@@ -49,8 +49,17 @@ const ProductsPage = () => {
   //   setPage(productsState.pagination.currentPage);
   // }, [productsState.pagination.currentPage]);
 
+  // const products = useMemo(() => {
+  //   return productsState.products;
+  // }, [productsState.products]);
+
   const products = useMemo(() => {
-    return productsState.products;
+    const updatedDataSource = productsState.products.map((item) => {
+      const { id, ...rest } = item;
+      return { key: id, ...rest };
+    });
+  
+    return updatedDataSource;
   }, [productsState.products]);
 
   // const handleChangeGalleryItemsModal = useCallback((props) => {
@@ -126,8 +135,8 @@ const ProductsPage = () => {
 
   const columns = [
     { dataIndex: 'name', title: t('table.products.name'), width: '12%' },
-    { dataIndex: 'original_price', title: t('table.products.original_price'), width: '10%' },
-    { dataIndex: 'discounted_price', title: t('table.products.discounted_price'), width: '10%' },
+    { dataIndex: 'original_price', title: t('table.products.original_price'), width: '8%' },
+    { dataIndex: 'discounted_price', title: t('table.products.discounted_price'), width: '8%' },
     { dataIndex: 'priority', title: t('table.products.priority'), width: '6%' },
     { dataIndex: 'quantity', title: t('table.products.quantity'), width: '6%' },
     {
@@ -137,7 +146,7 @@ const ProductsPage = () => {
         // console.log("record",record)
         <>{record.hot ? <Tag color="red">Hiển thị</Tag> : <Tag color="blue">Không hiển thị</Tag>}</>
       ),
-      width: '5%'
+      width: '6%'
     },
     {
       dataIndex: 'actions',
@@ -178,7 +187,7 @@ const ProductsPage = () => {
         >
           {t('pages.products.addProduct')}
         </Button>
-        <Button type="primary" disabled="true" icon={<TbTableExport />}>
+        <Button type="primary" disabled={true} icon={<TbTableExport />}>
           {t('pages.users.exportUserData')}
         </Button>
       </ControlBar>

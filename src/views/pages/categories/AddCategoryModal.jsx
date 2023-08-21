@@ -240,7 +240,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
               selectStyle={{
                 width: '200px'
               }}
-              disabled="false"
+              disabled={false}
               options={categoryOptions}
               value={formik.values.parentId}
               onChange={handleChangeParentId}
@@ -264,9 +264,9 @@ const AddCategoryModal = ({ open, setOpen }) => {
                   flexDirection: 'row',
                   height: '40px'
                 }}
-                switchStyle={{
-                  marginLeft: '2px'
-                }}
+                // switchStyle={{
+                //   marginLeft: '2px'
+                // }}
               />
               <Switch
                 label={`* ${t('input.label.category.visibleChildren')}`}
@@ -286,9 +286,9 @@ const AddCategoryModal = ({ open, setOpen }) => {
                   flexDirection: 'row',
                   height: '40px'
                 }}
-                switchStyle={{
-                  marginLeft: '2px'
-                }}
+                // switchStyle={{
+                //   marginLeft: '2px'
+                // }}
               />
             </WrapperImage2>
 

@@ -480,7 +480,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
             </Button>
             {imageProduct?.map((ProductInfo) => (
               <UploadProductImage
-                key={id}
+                key={ProductInfo.id}
                 handleProductName={handleProductName}
                 handleDeleteModal={handleDeleteModal}
                 handleProductAlt={handleProductAlt}

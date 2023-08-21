@@ -38,7 +38,12 @@ const PagePost = () => {
   }, [dispatchGetPosts]);
 
   const posts = useMemo(() => {
-    return postsState.posts;
+    const updatedDataSource = postsState.posts.map((item) => {
+      const { id, ...rest } = item;
+      return { key: id, ...rest };
+    });
+  
+    return updatedDataSource;
   }, [postsState.posts]);
 
   // const handleChangeOpenPreviewModal = (status) => {
@@ -157,7 +162,7 @@ const PagePost = () => {
         >
           {t('pages.posts.addPost')}
         </Button>
-        <Button type="primary" disabled="true" icon={<TbTableExport />}>
+        <Button type="primary" disabled={true} icon={<TbTableExport />}>
           {t('pages.posts.exportPostData')}
         </Button>
       </ControlBar>

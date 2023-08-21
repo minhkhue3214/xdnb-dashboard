@@ -150,7 +150,7 @@ const AtomUploadProductImage = ({
       <ButtonWrapper>
         <BsFillTrashFillIcon
           className="BsFillTrashFill"
-          color="#1677ff;"
+          color="#1677ff"
           onClick={() => {
             handleDeleteModal(ProductInfo.id);
           }}
