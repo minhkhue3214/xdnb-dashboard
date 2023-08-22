@@ -295,6 +295,7 @@ const AddProductModal = ({ open, setOpen }) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               size="middle"
+              addonAfter="đ"
               labelStyle={{
                 padding: '2px'
               }}
@@ -317,6 +318,7 @@ const AddProductModal = ({ open, setOpen }) => {
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
                 size="middle"
+                addonAfter="đ"
                 labelStyle={{
                   padding: '2px'
                 }}

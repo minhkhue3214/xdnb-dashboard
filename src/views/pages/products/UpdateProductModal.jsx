@@ -344,6 +344,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 value={formik.values.original_price}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                addonAfter="đ"
                 size="middle"
                 labelStyle={{
                   padding: '2px'
@@ -365,6 +366,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 value={formik.values.discounted_price}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                addonAfter="đ"
                 size="middle"
                 labelStyle={{
                   padding: '2px'

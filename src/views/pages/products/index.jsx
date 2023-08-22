@@ -16,6 +16,7 @@ import { AntdTable } from '~/ui-component/molecules';
 import AddProductModal from './AddProductModal';
 // import GalleryItem from './GalleryItem';
 import UpdateProductModal from './UpdateProductModal';
+import { formatNumberWithCommas } from '~/handlers/formatNumberWithCommas';
 
 const ProductsPage = () => {
   const { t } = useTranslation();
@@ -58,7 +59,7 @@ const ProductsPage = () => {
       const { id, ...rest } = item;
       return { key: id, ...rest };
     });
-  
+
     return updatedDataSource;
   }, [productsState.products]);
 
@@ -134,11 +135,23 @@ const ProductsPage = () => {
   };
 
   const columns = [
-    { dataIndex: 'name', title: t('table.products.name'), width: '12%' },
-    { dataIndex: 'original_price', title: t('table.products.original_price'), width: '8%' },
-    { dataIndex: 'discounted_price', title: t('table.products.discounted_price'), width: '8%' },
-    { dataIndex: 'priority', title: t('table.products.priority'), width: '6%' },
-    { dataIndex: 'quantity', title: t('table.products.quantity'), width: '6%' },
+    { dataIndex: 'name', title: t('table.products.name'), width: '40%' },
+    {
+      dataIndex: 'original_price',
+      title: t('table.products.original_price'),
+      width: '10%',
+      align: 'center',
+      render: (_, record) => `${formatNumberWithCommas(record.original_price || 0)} đ`
+    },
+    {
+      dataIndex: 'discounted_price',
+      title: t('table.products.discounted_price'),
+      width: '10%',
+      align: 'center',
+      render: (_, record) => `${formatNumberWithCommas(record.discounted_price || 0)} đ`
+    },
+    { dataIndex: 'priority', title: t('table.products.priority'), width: '10%', align: 'center' },
+    { dataIndex: 'quantity', title: t('table.products.quantity'), width: '10%', align: 'center' },
     {
       dataIndex: 'hot',
       title: 'Hot',
@@ -146,7 +159,8 @@ const ProductsPage = () => {
         // console.log("record",record)
         <>{record.hot ? <Tag color="red">Hiển thị</Tag> : <Tag color="blue">Không hiển thị</Tag>}</>
       ),
-      width: '6%'
+      width: '10%',
+      align: 'center'
     },
     {
       dataIndex: 'actions',
@@ -163,7 +177,8 @@ const ProductsPage = () => {
           </Popconfirm>
         </>
       ),
-      width: '6%'
+      width: '10%',
+      align: 'center'
     }
   ];
 
@@ -196,7 +211,12 @@ const ProductsPage = () => {
         <AntdTable columns={columns} dataSource={products} checkboxSelection={false} />
       </DataTableWrapper>
       <PaginationWrapper>
-        <Pagination count={productsState.pagination.lastPage} page={productsState.pagination.currentPage} onChange={handleChange} color="primary" />
+        <Pagination
+          count={productsState.pagination.lastPage}
+          page={productsState.pagination.currentPage}
+          onChange={handleChange}
+          color="primary"
+        />
       </PaginationWrapper>
       <AddProductModal open={openAddProductModal} setOpen={setOpenAddProductModal} />
       <UpdateProductModal id={openEditProductModal.id} open={openEditProductModal.status} setOpen={handleChangeEditProductModal} />

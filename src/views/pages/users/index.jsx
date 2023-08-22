@@ -51,12 +51,10 @@ const UsersPage = () => {
   }
 
   const users = useMemo(() => {
-    console.log('shiftsState.users', usersState.users);
-  
     const updatedDataSource = usersState.users.map((user) => {
       const formattedCreatedAt = convertTimestampToHour(user.created_at);
       const formattedUpdatedAt = convertTimestampToHour(user.updated_at);
-  
+
       return {
         key: user.id,
         ...user,
@@ -64,7 +62,7 @@ const UsersPage = () => {
         updated_at: formattedUpdatedAt
       };
     });
-  
+
     return updatedDataSource;
   }, [usersState.users]);
 
@@ -143,8 +141,8 @@ const UsersPage = () => {
             width={55}
             style={{
               cursor: 'pointer',
-              width: '80px',
-              height: '80px'
+              width: '60px',
+              height: '60px'
             }}
             preview={{
               mask: false
@@ -155,19 +153,21 @@ const UsersPage = () => {
           {/* <h4>Tesing</h4> */}
         </>
       ),
-      width: '15%'
+      align: 'center',
+      width: '7%'
     },
-    { dataIndex: 'username', title: t('table.user.username'), width: '20%' },
-    { dataIndex: 'full_name', title: t('table.user.fullname'), width: '30%' },
-    // { dataIndex: 'email', title: t('table.user.email'), width: '10%' },
-    { dataIndex: 'phone', title: t('table.user.phone'), width: '30%' },
+    { dataIndex: 'username', title: t('table.user.username'), width: '25%' },
+    { dataIndex: 'full_name', title: t('table.user.fullname'), width: '20%' },
+    { dataIndex: 'email', title: t('table.user.email'), width: '20%' },
+    { dataIndex: 'phone', title: t('table.user.phone'), width: '10%', align: 'center' },
     // { dataIndex: 'address', title: t('table.user.address'), width: '10%' },
-    { dataIndex: 'role', title: t('table.user.role'), width: '10%' },
+    { dataIndex: 'role', title: t('table.user.role'), width: '5%', align: 'center' },
     // { dataIndex: 'created_at', title: t('table.user.create_at'), width: '10%' },
     // { dataIndex: 'updated_at', title: t('table.user.update_at'), width: '10%' },
     {
       dataIndex: 'actions',
       title: t('table.post.actions'),
+      align: 'center',
       render: (_, record) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>
@@ -180,7 +180,7 @@ const UsersPage = () => {
           </Popconfirm>
         </>
       ),
-      width: '12%'
+      width: '8%'
     }
   ];
 

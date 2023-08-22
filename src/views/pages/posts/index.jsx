@@ -42,7 +42,7 @@ const PagePost = () => {
       const { id, ...rest } = item;
       return { key: id, ...rest };
     });
-  
+
     return updatedDataSource;
   }, [postsState.posts]);
 
@@ -93,6 +93,7 @@ const PagePost = () => {
     {
       dataIndex: 'avatar',
       title: t('table.user.avatar'),
+      align: 'center',
       render: (_, record) => (
         // console.log("record",record)
         <>
@@ -100,8 +101,8 @@ const PagePost = () => {
             width={55}
             style={{
               cursor: 'pointer',
-              width: '80px',
-              height: '80px'
+              width: '60px',
+              height: '60px'
             }}
             preview={{
               mask: false
@@ -112,21 +113,23 @@ const PagePost = () => {
           {/* <h4>Tesing</h4> */}
         </>
       ),
-      width: '10%'
+      width: '7%'
     },
-    { dataIndex: 'title', title: t('table.post.title'), width: '16%' },
-    { dataIndex: 'description', title: t('table.post.description'), width: '25%' },
-    { dataIndex: 'author', title: t('table.post.author'), width: '10%' },
-    { dataIndex: 'priority', title: t('table.post.priority'), width: '7%' },
+    { dataIndex: 'title', title: t('table.post.title'), width: '20%' },
+    { dataIndex: 'description', title: t('table.post.description'), width: '30%' },
+    { dataIndex: 'author', title: t('table.post.author'), width: '13%' },
+    { dataIndex: 'priority', title: t('table.post.priority'), width: '5%', align: 'center' },
     {
       dataIndex: 'publication_date',
       title: t('table.post.publication_date'),
       width: '15%',
+      align: 'center',
       render: (_, record) => dayjs(record.publication_date).utcOffset(7).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       dataIndex: 'actions',
       title: t('table.post.actions'),
+      align: 'center',
       render: (_, record) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>

@@ -122,8 +122,9 @@ const PageCategory = () => {
       width: '35%'
     },
     {
-      title: 'Visible',
+      title: 'Hiển thị',
       dataIndex: t('table.category.visible'),
+      align: 'center',
       render: (_, record) => (
         // console.log("record",record)
         <>
@@ -143,12 +144,14 @@ const PageCategory = () => {
     {
       title: t('table.category.priority'),
       dataIndex: 'priority',
-      width: '10%'
+      width: '10%',
+      align: 'center'
     },
     {
       title: t('table.category.actions'),
       dataIndex: 'action',
       width: '10%',
+      align: 'center',
       render: (_, record) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import { Table } from 'antd';
 import styled from 'styled-components';
@@ -18,7 +18,7 @@ const defaultConfigs = {
   width: '100%',
   height: '100%',
   scroll: {
-    y: '378px'
+    y: '450px'
   },
   scrollToFirstRowOnChange: true,
   pagination: {
@@ -28,12 +28,31 @@ const defaultConfigs = {
 };
 
 const AntdTable = ({ style, ...restProps }) => {
-  console.log('restProps', restProps);
+  const [scroll, setScroll] = useState({
+    y: '450px'
+  });
   const tableRef = useRef();
 
+  useEffect(() => {
+    if (!tableRef.current) return;
+    const observerCallback = () => {
+      window.requestAnimationFrame(() => {
+        const tableHeight = tableRef.current.clientHeight;
+
+        setScroll({
+          y: tableHeight - 50
+        });
+      });
+    };
+
+    const resizeObserver = new ResizeObserver(observerCallback);
+    resizeObserver.observe(tableRef.current);
+    return () => resizeObserver.disconnect(); // clean up
+  }, []);
+
   return (
-    <DataTableWrapper style={style}>
-      <CustomTable ref={tableRef} {...defaultConfigs} {...restProps} />
+    <DataTableWrapper style={style} ref={tableRef}>
+      <CustomTable {...defaultConfigs} {...restProps} scroll={scroll} size={'small'} />
     </DataTableWrapper>
   );
 };
@@ -41,11 +60,12 @@ const AntdTable = ({ style, ...restProps }) => {
 export default AntdTable;
 
 const DataTableWrapper = styled.div`
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-  height: 100%;
   width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 `;
 
 const CustomTable = styled(Table)`

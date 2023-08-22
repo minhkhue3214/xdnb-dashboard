@@ -62,7 +62,7 @@ const MainCard = forwardRef(
 
         {/* card content */}
         {content && (
-          <CardContent sx={contentSX} className={contentClass}>
+          <CardContent sx={contentSX} className={contentClass} style={{ padding: '16px' }}>
             {children}
           </CardContent>
         )}
