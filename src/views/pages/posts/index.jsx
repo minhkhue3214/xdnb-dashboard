@@ -84,7 +84,7 @@ const PagePost = () => {
 
   const handleDelete = (params) => {
     dispatchDeletePost({
-      id: params?.id || ''
+      id: params?.key || ''
     });
   };
 

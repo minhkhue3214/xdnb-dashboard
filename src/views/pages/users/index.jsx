@@ -127,7 +127,7 @@ const UsersPage = () => {
 
   const handleDelete = (params) => {
     dispatchDeleteUser({
-      id: params?.id || ''
+      id: params?.key || ''
     });
     // setPage(1)
   };
