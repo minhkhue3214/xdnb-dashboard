@@ -238,13 +238,13 @@ const AddProductModal = ({ open, setOpen }) => {
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
         width="100%"
-        okText={t('modal.user.submitAddUser')}
+        okText={t('modal.product.submitAddProduct')}
         cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
           <CellLeft>
             <InputPermalink
-              label={`* ${t('input.label.category.slug')}`}
+              label={`* ${t('input.label.product.slug')}`}
               name="slug"
               addonBefore={`https://xuongdaninhbinh.com/${slugOfCategory}`}
               message={formik.touched.slug ? formik.errors.slug : ''}
@@ -295,7 +295,6 @@ const AddProductModal = ({ open, setOpen }) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               size="middle"
-              addonAfter="đ"
               labelStyle={{
                 padding: '2px'
               }}
@@ -340,6 +339,7 @@ const AddProductModal = ({ open, setOpen }) => {
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
                 size="middle"
+                addonAfter="đ"
                 labelStyle={{
                   padding: '2px'
                 }}
@@ -452,7 +452,7 @@ const AddProductModal = ({ open, setOpen }) => {
               }}
               onClick={handleAddModal}
             >
-              Thêm ảnh sản phẩm
+              {`* ${t('input.label.product.add_Product_Image')}`}
             </Button>
             {imageProduct.map((ProductInfo) => (
               <UploadProductImage

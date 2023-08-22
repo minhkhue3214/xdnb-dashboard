@@ -164,7 +164,7 @@ const ProductsPage = () => {
     },
     {
       dataIndex: 'actions',
-      title: t('table.post.actions'),
+      title: t('table.products.actions'),
       render: (_, record) => (
         <>
           <IconButton aria-label="edit" color="primary" onClick={() => handleEdit(record)}>

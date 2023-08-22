@@ -69,6 +69,7 @@
       "avatar": "Ảnh"
     },
     "post": {
+      "avatar": "Ảnh đại diện",
       "title": "Tiêu Đề",
       "description": "Mô Tả",
       "author": "Tác Giả",
@@ -82,7 +83,8 @@
       "slug": "Slug",
       "visible": "Hiển thị",
       "priority": "Ưu Tiên",
-      "actions": "Thao Tác"
+      "actions": "Thao Tác",
+      "hide": "Ẩn"
     },
     "products": {
       "name": "Tên Sản Phẩm",
@@ -95,7 +97,8 @@
       "supplier": "Nhà cung cấp",
       "gallery_items": "Danh sách ảnh",
       "image_name": "Tên ảnh",
-      "image_priority": "Độ ưu tiên"
+      "image_priority": "Độ ưu tiên",
+      "actions": "Thao Tác"
     },
     "consultationRequest": {
       "name": "Tên khách hàng",
@@ -131,7 +134,8 @@
     },
     "product": {
       "addProduct": "Thêm sản phẩm",
-      "updateProduct": "Sửa sản phẩm"
+      "updateProduct": "Sửa sản phẩm",
+      "submitAddProduct": "Xác nhận"
     },
     "category": {
       "addCategory": "Thêm danh mục sản phẩm",
@@ -198,7 +202,8 @@
         "image_priority": "Độ ưu tiên",
         "gallery_items": "Danh sách ảnh",
         "original_price": "Giá Gốc",
-        "discounted_price": "Giá Giảm"
+        "discounted_price": "Giá Giảm",
+        "add_Product_Image": "Thêm hình ảnh sản phẩm"
       },
       "consultationRequest": {
         "status": "Tình trạng",

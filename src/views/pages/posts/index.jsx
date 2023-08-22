@@ -92,7 +92,7 @@ const PagePost = () => {
   const columns = [
     {
       dataIndex: 'avatar',
-      title: t('table.user.avatar'),
+      title: t('table.post.avatar'),
       align: 'center',
       render: (_, record) => (
         // console.log("record",record)

@@ -59,10 +59,12 @@
       "fullname": "Fullname",
       "id": "User ID",
       "actions": "Actions",
-      "password": "Password"
+      "password": "Password",
+      "phone": "Phone"
     },
     "post": {
       "title": "Title",
+      "avatar": "Avatar",
       "description": "Description",
       "author": "Author",
       "priority": "Priority",
@@ -70,12 +72,13 @@
       "actions": "Actions"
     },
     "category": {
-      "name": "Category",
+      "name": "Category Name",
       "icon": "Icon",
       "slug": "Slug",
       "visible": "Visible",
       "priority": "Priority",
-      "actions": "Actions"
+      "actions": "Actions",
+      "hide": "Hide"
     },
     "products": {
       "name": "Product name",
@@ -86,7 +89,8 @@
       "priority": "Priority",
       "quantity": "Quantity",
       "supplier": "Supplier",
-      "gallery_items": "Gallery items"
+      "gallery_items": "Gallery items",
+      "actions": "Actions"
     },
     "consultationRequest": {
       "name": "Name",
@@ -126,6 +130,11 @@
       "submitAddCategory": "Submit",
       "submitEditCategory": "Submit"
     },
+    "product": {
+      "addProduct": "Add Product",
+      "submitAddProduct": "Submit",
+      "category_id": "Category id"
+    },
     "consultationRequest": {
       "editConsultationRequest": "Update Consultation Request Status",
       "cancel": "Cancel",
@@ -136,12 +145,15 @@
     "label": {
       "user": {
         "username": "Username",
+        "fullname": "Fullname",
         "name": "Fullname",
         "password": "Password",
         "email": "Email",
         "role": "Role",
         "newPassword": "New password",
-        "reTypeNewPassword": "Re-type new password"
+        "reTypeNewPassword": "Re-type new password",
+        "phone": "Phone",
+        "address": "Address"
       },
       "post": {
         "slug": "Permalink",
@@ -162,7 +174,19 @@
         "addTagText": "Add Tag",
         "parentId": "Parent Category",
         "visible": "Visible",
-        "visibleChildren": "Visible Children Categories"
+        "visibleChildren": "Visible Children Categories",
+        "imageUrl": "Avatar"
+      },
+      "product": {
+        "category_id": "Category id",
+        "name": "Product name",
+        "original_price": "Original price",
+        "discounted_price": "Discounted price",
+        "quantity": "Quantity",
+        "hot": "Hot",
+        "priority": "Priority",
+        "short_description": "Short description",
+        "add_Product_Image": "Add Product Image"
       },
       "consultationRequest": {
         "status": "Status",

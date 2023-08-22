@@ -37,10 +37,6 @@ const UsersPage = () => {
     dispatchGetAllUsers();
   }, [dispatchGetAllUsers]);
 
-  // useEffect(() => {
-  //   setPage(usersState.pagination.currentPage);
-  // }, [usersState.pagination.currentPage]);
-
   function convertTimestampToHour(timestamp) {
     const date = new Date(timestamp);
     const hour = date.getHours();
@@ -135,7 +131,6 @@ const UsersPage = () => {
       dataIndex: 'avatar',
       title: t('table.user.avatar'),
       render: (_, record) => (
-        // console.log("record",record)
         <>
           <Image
             width={55}
@@ -150,7 +145,6 @@ const UsersPage = () => {
             // src={record.avatar || avatarDefault}
             src={`https://tenmienmienphi.online/storage/${record.avatar}` || avatarDefault}
           />
-          {/* <h4>Tesing</h4> */}
         </>
       ),
       align: 'center',

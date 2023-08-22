@@ -122,19 +122,19 @@ const PageCategory = () => {
       width: '35%'
     },
     {
-      title: 'Hiển thị',
-      dataIndex: t('table.category.visible'),
+      title: t('table.category.visible'),
+      dataIndex: 'visible',
       align: 'center',
       render: (_, record) => (
         // console.log("record",record)
         <>
           {record.visible ? (
             <Tag color="blue" style={{ width: '70px', textAlign: 'center', borderRadius: '8px' }}>
-              Hiển thị
+              {t('table.category.visible')}
             </Tag>
           ) : (
             <Tag color="red" style={{ width: '70px', textAlign: 'center', borderRadius: '8px' }}>
-              Ẩn
+              {t('table.category.hide')}
             </Tag>
           )}
         </>

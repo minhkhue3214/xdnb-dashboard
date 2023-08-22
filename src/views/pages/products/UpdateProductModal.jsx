@@ -266,7 +266,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
         width="100%"
-        okText={t('modal.user.submitAddUser')}
+        okText={t('modal.product.submitAddProduct')}
         cancelText={t('modal.user.cancel')}
       >
         <EditUserWrapper>
@@ -478,7 +478,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
               }}
               onClick={handleAddModal}
             >
-              Thêm ảnh sản phẩm
+              {`* ${t('input.label.product.add_Product_Image')}`}
             </Button>
             {imageProduct?.map((ProductInfo) => (
               <UploadProductImage
