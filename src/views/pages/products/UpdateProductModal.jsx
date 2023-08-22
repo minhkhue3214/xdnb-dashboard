@@ -133,7 +133,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       setInitValue(data.long_description);
       formik.setFieldValue('original_price', data.original_price || '');
       formik.setFieldValue('discounted_price', data.discounted_price || '');
-      formik.setFieldValue('quantity', data.quantity || '');
+      formik.setFieldValue('quantity', data.quantity || 1);
       formik.setFieldValue('priority', data.priority || '');
       formik.setFieldValue('gallery_items', data.gallery_items || '');
 
@@ -462,7 +462,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
                 width: '100%',
                 resize: 'none'
               }}
-              maxLength={20}
+              maxLength={255}
               showCount
             />
             <Editor initValue={initValue} onChange={handleChangeLongDescription} />

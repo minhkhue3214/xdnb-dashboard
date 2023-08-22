@@ -82,7 +82,7 @@ const AddProductModal = ({ open, setOpen }) => {
       long_description: '',
       original_price: '',
       discounted_price: '',
-      quantity: 0,
+      quantity: 1,
       priority: 1,
       gallery_items: imageProduct
     },
@@ -434,7 +434,7 @@ const AddProductModal = ({ open, setOpen }) => {
                 width: '100%',
                 resize: 'none'
               }}
-              maxLength={200}
+              maxLength={255}
               showCount
             />
             <Editor onChange={handleChangeLongDescription} />
