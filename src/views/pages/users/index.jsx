@@ -121,13 +121,13 @@ const UsersPage = () => {
   const handleEdit = (params) => {
     handleChangeEditUserModal({
       status: true,
-      id: params?.id
+      id: params?.key
     });
   };
 
   const handleDelete = (params) => {
     dispatchDeleteUser({
-      id: params?.id || ''
+      id: params?.key || ''
     });
     // setPage(1)
   };

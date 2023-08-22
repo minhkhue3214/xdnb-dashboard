@@ -115,7 +115,7 @@ const ProductsPage = () => {
   const handleEdit = (params) => {
     handleChangeEditProductModal({
       status: true,
-      id: params?.id
+      id: params?.key
     });
   };
 
@@ -128,7 +128,7 @@ const ProductsPage = () => {
 
   const handleDelete = (params) => {
     dispatchDeleteProduct({
-      id: params?.id || ''
+      id: params?.key || ''
     });
     // setPage(1);
   };

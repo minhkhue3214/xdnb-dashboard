@@ -78,13 +78,13 @@ const PagePost = () => {
   const handleEdit = (params) => {
     handleChangeEditPostModal({
       status: true,
-      id: params?.id
+      id: params?.key
     });
   };
 
   const handleDelete = (params) => {
     dispatchDeletePost({
-      id: params?.id || ''
+      id: params?.key || ''
     });
   };
 
