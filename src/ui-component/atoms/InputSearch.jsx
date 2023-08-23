@@ -1,51 +1,35 @@
 import { Input } from 'antd';
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { v4 as uuidv4 } from 'uuid';
 
 const { Search } = Input;
 
 const AtomInputSearch = (props) => {
   const {
     style = {}, // custom style cho wrapper
-    // inputStyle = {}, // custom style cho input
+    inputStyle = {}, // custom style cho input
     // messageStyle = {}, // custom style cho message
     // visileLabel = true, // Có hiện label hay không?
     // visibleMessage = true, // Có hiện message hay không?
     // label = '', // labelText
     // message = '', // messageText
-    // type = '', // '' | 'warning' | 'error'
+    type = '', // '' | 'warning' | 'error'
     // onFocus, // onFocus
     // onBlur, // onBlur
-    // onChange, // hàm bắt sự kiện onChange
+    onChange, // hàm bắt sự kiện onChange
     // hiddenMode = 'hidden', // hidden || none Có 2 cách ẩn input: ẩn hoàn toàn với display = none, chỉ ẩn phần tử nhưng vẫn giữ nguyên vị trí với visibility = hidden
     ...restProps // Tất cả những props được truyền vào khác với các props bên trên sẽ được truyền cho thẻ Input của antd
     // Có thể sử dụng các thuộc tính của thẻ Input antd như bình thường.
   } = props;
 
 
-  const id = React.useMemo(() => {
-    return uuidv4();
-  }, []);
-
-  const handleFocus = React.useCallback(
-    (...args) => {
-      onFocus && onFocus(...args);
-    },
-    [onFocus]
-  );
-
-  const handleBlur = React.useCallback(
-    (...args) => {
-      setIsFocused(false);
-      onBlur && onBlur(...args);
-    },
-    [onBlur]
-  );
+  // const id = React.useMemo(() => {
+  //   return uuidv4();
+  // }, []);
 
   return (
     <InputWrapper style={style}>
-      <Search id={id} status={type} style={inputStyle} size="large" onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} {...restProps} />
+      <Search status={type} style={inputStyle} size="large" onChange={onChange}{...restProps} />
     </InputWrapper>
   );
 };
