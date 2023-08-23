@@ -14,3 +14,5 @@ export { default as InputImage } from './InputImage';
 export { default as Editor } from './Editor';
 export { default as UploadMultipleImage } from './UploadMultipleImage';
 export { default as UploadProductImage } from './UploadProductImage';
+export { default as InputSearch } from './InputSearch';
+export { default as PreviewModal } from './PreviewModal';

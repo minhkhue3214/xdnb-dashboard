@@ -14,6 +14,7 @@ import { AntdTable } from '~/ui-component/molecules';
 import AddUserModal from './AddUserModal';
 import ChangePasswordModal from './ChangePasswordModal';
 import UpdateUserModal from './UpdateUserModal';
+import { InputSearch } from '~/ui-component/atoms';
 
 const UsersPage = () => {
   const { t } = useTranslation();
@@ -189,18 +190,34 @@ const UsersPage = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button
-          type="primary"
-          icon={<AiOutlineUserAdd />}
-          onClick={() => {
-            setOpenAddUserModal(true);
+        <InputSearch
+          name=""
+          message=""
+          type=""
+          value=""
+          onBlur=""
+          onChange=""
+          style={{
+            width: '40%'
+            // marginTop: '8px',
+            // height: '70px'
           }}
-        >
-          {t('pages.users.addUser')}
-        </Button>
-        <Button type="primary" disabled={true} icon={<TbTableExport />}>
-          {t('pages.users.exportUserData')}
-        </Button>
+        />
+
+        <ButtonWrapper>
+          <Button
+            type="primary"
+            icon={<AiOutlineUserAdd />}
+            onClick={() => {
+              setOpenAddUserModal(true);
+            }}
+          >
+            {t('pages.users.addUser')}
+          </Button>
+          <Button type="primary" disabled={true} icon={<TbTableExport />}>
+            {t('pages.users.exportUserData')}
+          </Button>
+        </ButtonWrapper>
       </ControlBar>
       <DataTableWrapper>
         {/* <DataTable columns={columns} rows={users} checkboxSelection={false} /> */}
@@ -233,13 +250,19 @@ const ControlBar = styled.div`
   height: fit-content;
   padding-bottom: 16px;
   position: relative;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   display: flex;
   flex-direction: row;
 
   & > Button {
     margin: 0 8px;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 20px;
 `;
 
 const DataTableWrapper = styled.div`

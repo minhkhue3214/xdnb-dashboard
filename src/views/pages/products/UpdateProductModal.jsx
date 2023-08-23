@@ -6,13 +6,15 @@ import styled from 'styled-components';
 // import * as yup from 'yup';
 import { useCategoriesStore } from '~/hooks/categories';
 import { useProductsStore } from '~/hooks/products';
-import { Input, InputNumber, Selector, Switch, UploadProductImage, Editor, InputPermalink } from '~/ui-component/atoms';
+import { Input, InputNumber, Selector, Switch, UploadProductImage, Editor, InputPermalink, PreviewModal } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import { v4 as uuidv4 } from 'uuid';
+
 const UpdateProductModal = ({ id, setOpen, open }) => {
   const { t } = useTranslation();
   const { productsState, dispatchGetProductById, dispatchUpdateProduct } = useProductsStore();
   const { categoriesState } = useCategoriesStore();
+  const [openPreviewModal, setOpenPreviewModal] = useState(false);
   // const [newCategoryId, setNewCategoryId] = useState(null);
   const [initValue, setInitValue] = useState('');
 
@@ -257,17 +259,30 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
     return value;
   }, [formik.values.category_id, categoriesState]);
 
+  const handleChangeOpenPreviewModal = (status) => {
+    setOpenPreviewModal(status);
+  };
+
   return (
     <>
       <Modal
+        title={t('modal.product.updateProduct')}
         open={open}
         onOpen={setOpen}
-        title={t('modal.product.updateProduct')}
         onOk={formik.handleSubmit}
         onCancel={handleCancel}
         width="100%"
-        okText={t('modal.product.submitAddProduct')}
-        cancelText={t('modal.user.cancel')}
+        footer={[
+          <Button key="3" ghost type="primary" onClick={() => handleChangeOpenPreviewModal(true)}>
+            {t('modal.post.previewPost')}
+          </Button>,
+          <Button key="1" type="primary" onClick={formik.handleSubmit}>
+            {t('modal.post.submitAddProduct')}
+          </Button>,
+          <Button key="2" danger onClick={handleCancel}>
+            {t('modal.post.cancel')}
+          </Button>
+        ]}
       >
         <EditUserWrapper>
           <CellLeft>
@@ -493,6 +508,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
             ))}
           </CellRight>
         </EditUserWrapper>
+        <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values.long_description} />
       </Modal>
     </>
   );

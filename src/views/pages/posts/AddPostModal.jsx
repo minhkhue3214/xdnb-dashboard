@@ -7,9 +7,9 @@ import styled from 'styled-components';
 import * as yup from 'yup';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { usePostsStore } from '~/hooks/posts';
-import { DatePicker, Editor, Input, InputNumber, InputPermalink, Selector, Tag, UploadImage } from '~/ui-component/atoms';
+import { DatePicker, Editor, Input, InputNumber, InputPermalink, Selector, Tag, UploadImage, PreviewModal } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
-import PreviewModal from './PreviewModal';
+import NavigateLink from './NavigateLink';
 
 const AddPostModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
@@ -19,6 +19,7 @@ const AddPostModal = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);
   const [imagePath, setImagePath] = useState('');
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
+  const [openNavigateLink, setOpenNavigateLink] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -68,6 +69,7 @@ const AddPostModal = ({ open, setOpen }) => {
             tags
           });
           handleCancel();
+          setOpenNavigateLink(true)
         }
       });
     },
@@ -380,7 +382,8 @@ const AddPostModal = ({ open, setOpen }) => {
           </Cell>
         </Wrapper>
       </Modal>
-      <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values} />
+      <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values.content} />
+      <NavigateLink open={openNavigateLink} setOpen={setOpenNavigateLink} />
     </>
   );
 };

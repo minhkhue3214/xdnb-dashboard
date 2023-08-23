@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { Tag } from 'antd';
+import { InputSearch } from '~/ui-component/atoms';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -177,18 +178,33 @@ const PageCategory = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button
-          type="primary"
-          icon={<AiOutlineUserAdd />}
-          onClick={() => {
-            setOpenAddCategoryModal(true);
+        <InputSearch
+          name=""
+          message=""
+          type=""
+          value=""
+          onBlur=""
+          onChange=""
+          style={{
+            width: '40%'
+            // marginTop: '8px',
+            // height: '70px'
           }}
-        >
-          {t('pages.categories.addCategory')}
-        </Button>
-        <Button type="primary" disabled={true} icon={<TbTableExport />}>
-          {t('pages.categories.exportCategoryData')}
-        </Button>
+        />
+        <ButtonWrapper>
+          <Button
+            type="primary"
+            icon={<AiOutlineUserAdd />}
+            onClick={() => {
+              setOpenAddCategoryModal(true);
+            }}
+          >
+            {t('pages.categories.addCategory')}
+          </Button>
+          <Button type="primary" disabled={true} icon={<TbTableExport />}>
+            {t('pages.categories.exportCategoryData')}
+          </Button>
+        </ButtonWrapper>
       </ControlBar>
       <DataTableWrapper>
         {/* <DataTable columns={columns} rows={categories} checkboxSelection={false} treeData getTreeDataPath={getTreeDataPath} /> */}
@@ -215,13 +231,19 @@ const ControlBar = styled.div`
   height: fit-content;
   padding-bottom: 16px;
   position: relative;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   display: flex;
   flex-direction: row;
 
   & > Button {
     margin: 0 8px;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 20px;
 `;
 
 const DataTableWrapper = styled.div`

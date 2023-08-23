@@ -15,6 +15,7 @@ import { useConsultationRequestsStore } from '~/hooks/consultationRequests';
 import MainCard from '~/ui-component/cards/MainCard';
 import { AntdTable } from '~/ui-component/molecules';
 import UpdateConsultationRequestModal from './UpdateConsultationRequestModal';
+import { InputSearch } from '~/ui-component/atoms';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -131,6 +132,19 @@ const PageConsultationRequest = () => {
   return (
     <MainCard>
       <ControlBar>
+        <InputSearch
+          name=""
+          message=""
+          type=""
+          value=""
+          onBlur=""
+          onChange=""
+          style={{
+            width: '40%'
+            // marginTop: '8px',
+            // height: '70px'
+          }}
+        />
         <Button disabled={true} type="primary" icon={<TbTableExport />}>
           {t('pages.consultationRequests.exportConsultationRequestData')}
         </Button>
@@ -162,7 +176,8 @@ const ControlBar = styled.div`
   height: fit-content;
   padding-bottom: 16px;
   position: relative;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   display: flex;
   flex-direction: row;
 

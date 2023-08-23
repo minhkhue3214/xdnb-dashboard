@@ -17,6 +17,7 @@ import AddProductModal from './AddProductModal';
 // import GalleryItem from './GalleryItem';
 import UpdateProductModal from './UpdateProductModal';
 import { formatNumberWithCommas } from '~/handlers/formatNumberWithCommas';
+import { InputSearch } from '~/ui-component/atoms';
 
 const ProductsPage = () => {
   const { t } = useTranslation();
@@ -193,18 +194,34 @@ const ProductsPage = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button
-          type="primary"
-          icon={<AiOutlineUserAdd />}
-          onClick={() => {
-            setOpenAddProductModal(true);
+        <InputSearch
+          name=""
+          message=""
+          type=""
+          value=""
+          onBlur=""
+          onChange=""
+          style={{
+            width: '40%'
+            // marginTop: '8px',
+            // height: '70px'
           }}
-        >
-          {t('pages.products.addProduct')}
-        </Button>
-        <Button type="primary" disabled={true} icon={<TbTableExport />}>
-          {t('pages.users.exportUserData')}
-        </Button>
+        />
+
+        <ButtonWrapper>
+          <Button
+            type="primary"
+            icon={<AiOutlineUserAdd />}
+            onClick={() => {
+              setOpenAddProductModal(true);
+            }}
+          >
+            {t('pages.products.addProduct')}
+          </Button>
+          <Button type="primary" disabled={true} icon={<TbTableExport />}>
+            {t('pages.users.exportUserData')}
+          </Button>
+        </ButtonWrapper>
       </ControlBar>
       <DataTableWrapper>
         {/* <DataTable columns={columns} rows={products} checkboxSelection={false} /> */}
@@ -232,13 +249,19 @@ const ControlBar = styled.div`
   height: fit-content;
   padding-bottom: 16px;
   position: relative;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   display: flex;
   flex-direction: row;
 
   & > Button {
     margin: 0 8px;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 20px;
 `;
 
 const DataTableWrapper = styled.div`

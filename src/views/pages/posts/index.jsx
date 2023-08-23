@@ -12,11 +12,12 @@ import { usePostsStore } from '~/hooks/posts';
 import MainCard from '~/ui-component/cards/MainCard';
 import { AntdTable } from '~/ui-component/molecules';
 import AddPostModal from './AddPostModal';
-// import PreviewModal from './PreviewModal';
 import UpdatePostModal from './UpdatePostModal';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { InputSearch } from '~/ui-component/atoms';
+// import PreviewModal from './PreviewModal';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -25,7 +26,7 @@ const PagePost = () => {
   const { t } = useTranslation();
   const { postsState, dispatchGetPosts, dispatchDeletePost } = usePostsStore();
   const [openAddPostModal, setOpenAddPostModal] = useState(false);
-  // const [openPreviewModal, setOpenPreviewModal] = useState(false);
+
   // const [isPreViewModal, setIsPreViewModal] = useState(false);
 
   const [openEditPostModal, setOpenEditPostModal] = useState({
@@ -156,18 +157,33 @@ const PagePost = () => {
   return (
     <MainCard>
       <ControlBar>
-        <Button
-          type="primary"
-          icon={<AiOutlineUserAdd />}
-          onClick={() => {
-            setOpenAddPostModal(true);
+        <InputSearch
+          name=""
+          message=""
+          type=""
+          value=""
+          onBlur=""
+          onChange=""
+          style={{
+            width: '40%'
+            // marginTop: '8px',
+            // height: '70px'
           }}
-        >
-          {t('pages.posts.addPost')}
-        </Button>
-        <Button type="primary" disabled={true} icon={<TbTableExport />}>
-          {t('pages.posts.exportPostData')}
-        </Button>
+        />
+        <ButtonWrapper>
+          <Button
+            type="primary"
+            icon={<AiOutlineUserAdd />}
+            onClick={() => {
+              setOpenAddPostModal(true);
+            }}
+          >
+            {t('pages.posts.addPost')}
+          </Button>
+          <Button type="primary" disabled={true} icon={<TbTableExport />}>
+            {t('pages.posts.exportPostData')}
+          </Button>
+        </ButtonWrapper>
       </ControlBar>
       <DataTableWrapper>
         <AntdTable columns={columns} dataSource={posts} checkboxSelection={false} />
@@ -199,13 +215,19 @@ const ControlBar = styled.div`
   height: fit-content;
   padding-bottom: 16px;
   position: relative;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   display: flex;
   flex-direction: row;
 
   & > Button {
     margin: 0 8px;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 20px;
 `;
 
 const DataTableWrapper = styled.div`

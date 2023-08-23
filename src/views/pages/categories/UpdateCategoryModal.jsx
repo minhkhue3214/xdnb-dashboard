@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import * as yup from 'yup';
 import { useCategoriesStore } from '~/hooks/categories';
 import { useAuthenticationStore } from '~/hooks/authentication';
-import { Editor, Input, InputNumber, InputPermalink, Selector, Switch, Tag, UploadImage } from '~/ui-component/atoms';
+import { Editor, Input, InputNumber, InputPermalink, Selector, Switch, Tag, UploadImage, PreviewModal } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import axios from 'axios';
 
@@ -22,6 +22,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
   // const [newParentId, setNewParentId] = useState(null);
   const [enable, setEnable] = useState(true);
   const [initValue, setInitValue] = useState('');
+  const [openPreviewModal, setOpenPreviewModal] = useState(false);
 
   const categoryOptions = useMemo(() => {
     const data = categoriesState.categories;
@@ -224,6 +225,10 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoriesState.detail]);
 
+  const handleChangeOpenPreviewModal = (status) => {
+    setOpenPreviewModal(status);
+  };
+
   return (
     <>
       <Modal
@@ -232,6 +237,9 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
         onOpen={setOpen}
         width="95%"
         footer={[
+          <Button key="3" ghost type="primary" onClick={() => handleChangeOpenPreviewModal(true)}>
+            {t('modal.post.previewPost')}
+          </Button>,
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
             {t('modal.category.submitEditCategory')}
           </Button>,
@@ -417,6 +425,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
             />
           </Cell>
         </Wrapper>
+        <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values.content} />
       </Modal>
     </>
   );

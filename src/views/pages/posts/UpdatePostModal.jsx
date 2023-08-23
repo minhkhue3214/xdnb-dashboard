@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { DatePicker, Input, InputPermalink, Tag, InputNumber, Editor, Selector, UploadImage } from '~/ui-component/atoms';
+import { DatePicker, Input, InputPermalink, Tag, InputNumber, Editor, Selector, UploadImage, PreviewModal } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import { usePostsStore } from '~/hooks/posts';
 import { useAuthenticationStore } from '~/hooks/authentication';
@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import axios from 'axios';
-import PreviewModal from './PreviewModal';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -414,7 +413,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
             />
           </Cell>
         </Wrapper>
-        <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values} />
+        <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values.content} />
       </Modal>
     </>
   );

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import * as yup from 'yup';
 import { useCategoriesStore } from '~/hooks/categories';
 import { useAuthenticationStore } from '~/hooks/authentication';
-import { Editor, Input, InputNumber, InputPermalink, Selector, Switch, Tag, UploadImage } from '~/ui-component/atoms';
+import { Editor, Input, InputNumber, InputPermalink, Selector, Switch, Tag, UploadImage, PreviewModal } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import axios from 'axios';
 
@@ -16,6 +16,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
   // const [loadingIcon, setLoadingIcon] = useState(false);
   const [imagePath, setImagePath] = useState('');
   const [iconPath, setIconPath] = useState('testing');
+  const [openPreviewModal, setOpenPreviewModal] = useState(false);
   const { t } = useTranslation();
   const { categoriesState, dispatchAddCategory } = useCategoriesStore();
 
@@ -156,6 +157,10 @@ const AddCategoryModal = ({ open, setOpen }) => {
     }
   };
 
+  const handleChangeOpenPreviewModal = (status) => {
+    setOpenPreviewModal(status);
+  };
+
   return (
     <>
       <Modal
@@ -164,6 +169,9 @@ const AddCategoryModal = ({ open, setOpen }) => {
         onOpen={setOpen}
         width="95%"
         footer={[
+          <Button key="3" ghost type="primary" onClick={() => handleChangeOpenPreviewModal(true)}>
+            {t('modal.post.previewPost')}
+          </Button>,
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
             {t('modal.category.submitAddCategory')}
           </Button>,
@@ -346,6 +354,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
           </Cell>
         </Wrapper>
       </Modal>
+      <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values.content} />
     </>
   );
 };
