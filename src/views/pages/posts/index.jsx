@@ -154,16 +154,16 @@ const PagePost = () => {
     [dispatchGetPosts]
   );
 
+  const onSearch = (value) => {
+    dispatchGetPosts({ params: { search: value } });
+  };
+
   return (
     <MainCard>
       <ControlBar>
         <InputSearch
-          name=""
-          message=""
-          type=""
-          value=""
-          onBlur=""
-          onChange=""
+          onSearch={onSearch}
+          placeholder={t('table.post.searching')}
           style={{
             width: '40%'
             // marginTop: '8px',

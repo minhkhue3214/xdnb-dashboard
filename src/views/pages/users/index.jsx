@@ -187,16 +187,16 @@ const UsersPage = () => {
     [dispatchGetAllUsers]
   );
 
+  const onSearch = (value) => {
+    dispatchGetAllUsers({ params: { search: value } });
+  };
+
   return (
     <MainCard>
       <ControlBar>
         <InputSearch
-          name=""
-          message=""
-          type=""
-          value=""
-          onBlur=""
-          onChange=""
+          onSearch={onSearch}
+          placeholder={t('table.user.searching')}
           style={{
             width: '40%'
             // marginTop: '8px',

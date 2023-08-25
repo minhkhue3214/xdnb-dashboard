@@ -129,16 +129,16 @@ const PageConsultationRequest = () => {
     [dispatchGetConsultationRequests]
   );
 
+  const onSearch = (value) => {
+    dispatchGetConsultationRequests({ params: { search: value } });
+  };
+
   return (
     <MainCard>
       <ControlBar>
-        <InputSearch
-          name=""
-          message=""
-          type=""
-          value=""
-          onBlur=""
-          onChange=""
+      <InputSearch
+          onSearch={onSearch}
+          placeholder={t('table.consultationRequest.searching')}
           style={{
             width: '40%'
             // marginTop: '8px',

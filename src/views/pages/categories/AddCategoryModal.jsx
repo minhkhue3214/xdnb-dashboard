@@ -1,14 +1,17 @@
 import { Button } from 'antd';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { useCategoriesStore } from '~/hooks/categories';
+import { addCategoryApi } from '~/api/categories';
+import dispatchToast from '~/handlers/toast';
 import { useAuthenticationStore } from '~/hooks/authentication';
-import { Editor, Input, InputNumber, InputPermalink, Selector, Switch, Tag, UploadImage, PreviewModal } from '~/ui-component/atoms';
+import { useCategoriesStore } from '~/hooks/categories';
+import { Editor, Input, InputNumber, InputPermalink, PreviewModal, Selector, Switch, Tag, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
-import axios from 'axios';
+import NavigateLink from './NavigateLink';
 
 const AddCategoryModal = ({ open, setOpen }) => {
   const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
@@ -17,8 +20,11 @@ const AddCategoryModal = ({ open, setOpen }) => {
   const [imagePath, setImagePath] = useState('');
   const [iconPath, setIconPath] = useState('testing');
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
+  const [openNavigateLink, setOpenNavigateLink] = useState(false);
+  const [navigateLink, setNavigateLink] = useState('');
+
   const { t } = useTranslation();
-  const { categoriesState, dispatchAddCategory } = useCategoriesStore();
+  const { categoriesState, dispatchGetCategories } = useCategoriesStore();
 
   const categoryOptions = useMemo(() => {
     const data = categoriesState.categories;
@@ -55,18 +61,48 @@ const AddCategoryModal = ({ open, setOpen }) => {
         console.log('values', values);
         if (formik.isValid) {
           // logic submit
-          dispatchAddCategory({
-            name,
-            parent_id: parentId,
-            slug,
-            visible,
-            visible_children: visibleChildren,
-            content,
-            image: imagePath,
-            icon: iconPath,
-            priority,
-            tags
-          });
+          // dispatchAddCategory({
+          //   name,
+          //   parent_id: parentId,
+          //   slug,
+          //   visible,
+          //   visible_children: visibleChildren,
+          //   content,
+          //   image: imagePath,
+          //   icon: iconPath,
+          //   priority,
+          //   tags
+          // });
+
+          try {
+            const results = addCategoryApi({
+              name,
+              parent_id: parentId,
+              slug,
+              visible,
+              visible_children: visibleChildren,
+              content,
+              image: imagePath,
+              icon: iconPath,
+              priority,
+              tags
+            });
+
+            console.log('Success', results);
+            setNavigateLink(`https://xuongdaninhbinh.com/${slugOfParent}${slug}`);
+            dispatchToast('success', 'Thêm loại sản phẩm thành công');
+            dispatchGetCategories();
+
+            // dispatchGetPosts();
+            setOpenNavigateLink(true);
+          } catch (error) {
+            // console.log('Error', results);
+            if (error.code == 401) {
+              dispatchForceLogout();
+            }
+            dispatchToast('error', error.message);
+          }
+
           handleCancel();
         }
       });
@@ -78,6 +114,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
     console.log('handleCancel');
     formik.handleReset();
     setOpen(false);
+    setNavigateLink('');
     setImagePath('');
     setIconPath('testing');
   }, [formik, setOpen]);
@@ -355,6 +392,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
         </Wrapper>
       </Modal>
       <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values.content} />
+      <NavigateLink open={openNavigateLink} setOpen={setOpenNavigateLink} navigateLink={navigateLink} />
     </>
   );
 };

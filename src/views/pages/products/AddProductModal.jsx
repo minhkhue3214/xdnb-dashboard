@@ -4,16 +4,24 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import { addProductApi } from '~/api/products';
+import dispatchToast from '~/handlers/toast';
 import { useCategoriesStore } from '~/hooks/categories';
 import { useProductsStore } from '~/hooks/products';
-import { Input, InputNumber, Selector, Switch, UploadProductImage, Editor, InputPermalink, PreviewModal } from '~/ui-component/atoms';
+import { useAuthenticationStore } from '~/hooks/authentication';
+import { Editor, Input, InputNumber, InputPermalink, PreviewModal, Selector, Switch, UploadProductImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
+import NavigateLink from './NavigateLink';
 
 const AddProductModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
-  const { dispatchAddProduct } = useProductsStore();
+  const { dispatchGetAllProducts } = useProductsStore();
+  const { dispatchForceLogout } = useAuthenticationStore();
   const { categoriesState } = useCategoriesStore();
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
+  const [openNavigateLink, setOpenNavigateLink] = useState(false);
+  const [navigateLink, setNavigateLink] = useState('');
+
   // const [newCategoryId, setNewCategoryId] = useState(null);
 
   // const categoryOptions = useMemo(() => {
@@ -94,19 +102,49 @@ const AddProductModal = ({ open, setOpen }) => {
           // for (var i = 0; i < arr.length; i++) {
           //   delete arr[i].id;
           // }
-          dispatchAddProduct({
-            category_id: values.category_id,
-            name: values.name,
-            slug: values.slug,
-            hot: values.hot,
-            short_description: values.short_description,
-            long_description: values.long_description,
-            original_price: values.original_price,
-            discounted_price: values.discounted_price,
-            quantity: values.quantity,
-            priority: values.priority,
-            gallery_items: imageProduct
-          });
+          // dispatchAddProduct({
+          //   category_id: values.category_id,
+          //   name: values.name,
+          //   slug: values.slug,
+          //   hot: values.hot,
+          //   short_description: values.short_description,
+          //   long_description: values.long_description,
+          //   original_price: values.original_price,
+          //   discounted_price: values.discounted_price,
+          //   quantity: values.quantity,
+          //   priority: values.priority,
+          //   gallery_items: imageProduct
+          // });
+
+          try {
+            const results = addProductApi({
+              category_id: values.category_id,
+              name: values.name,
+              slug: values.slug,
+              hot: values.hot,
+              short_description: values.short_description,
+              long_description: values.long_description,
+              original_price: values.original_price,
+              discounted_price: values.discounted_price,
+              quantity: values.quantity,
+              priority: values.priority,
+              gallery_items: imageProduct
+            });
+
+            console.log('Success', results);
+            dispatchToast('success', 'Thêm loại sản phẩm thành công');
+            dispatchGetAllProducts();
+
+            // dispatchGetPosts();
+            setNavigateLink(`https://xuongdaninhbinh.com/${slugOfCategory}${values.slug}`);
+            setOpenNavigateLink(true);
+          } catch (error) {
+            // console.log('Error', results);
+            if (error.code == 401) {
+              dispatchForceLogout();
+            }
+            dispatchToast('error', error.message);
+          }
 
           handleCancel();
           setImageProduct([]);
@@ -119,6 +157,7 @@ const AddProductModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setImageProduct([]);
+    setNavigateLink('');
     setOpen(false);
   }, [formik, setOpen]);
 
@@ -482,6 +521,7 @@ const AddProductModal = ({ open, setOpen }) => {
         </EditUserWrapper>
       </Modal>
       <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values.long_description} />
+      <NavigateLink open={openNavigateLink} setOpen={setOpenNavigateLink} navigateLink={navigateLink} />
     </>
   );
 };

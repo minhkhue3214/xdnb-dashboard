@@ -23,6 +23,7 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
   const [enable, setEnable] = useState(true);
   const [initValue, setInitValue] = useState('');
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
+  const [linkCategory, setLinkCategory] = useState('');
 
   const categoryOptions = useMemo(() => {
     const data = categoriesState.categories;
@@ -207,8 +208,6 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
       // const name = getNameById(data.parent_id, categoriesState.categories);
       // console.log('checking parentId', name);
       formik.setFieldValue('parentId', data.parent_id);
-      // setNewParentId(data.parent_id);
-
       data.parent_id ? setEnable(false) : setEnable(true);
 
       formik.setFieldValue('name', data.name || '');
@@ -221,6 +220,8 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
       setImagePath(data.image_path);
       setIconPath(data.icon_path);
       setInitValue(data.content);
+      console.log('slugOfParent', slugOfParent);
+      setLinkCategory(data.slug);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoriesState.detail]);
@@ -245,7 +246,10 @@ const UpdateCategoryModal = ({ id, open, setOpen }) => {
           </Button>,
           <Button key="2" danger onClick={handleCancel}>
             {t('modal.category.cancel')}
-          </Button>
+          </Button>,
+          <a key="4" href={`https://xuongdaninhbinh.com/${slugOfParent}${linkCategory}`} target="_blank" rel="noopener noreferrer">
+            <Button>{t('modal.post.navigateLink')}</Button>
+          </a>
         ]}
       >
         <Wrapper>

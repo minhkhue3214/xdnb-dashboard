@@ -191,16 +191,16 @@ const ProductsPage = () => {
     [dispatchGetAllProducts]
   );
 
+  const onSearch = (value) => {
+    dispatchGetAllProducts({ params: { search: value } });
+  };
+
   return (
     <MainCard>
       <ControlBar>
         <InputSearch
-          name=""
-          message=""
-          type=""
-          value=""
-          onBlur=""
-          onChange=""
+          onSearch={onSearch}
+          placeholder={t('table.products.searching')}
           style={{
             width: '40%'
             // marginTop: '8px',

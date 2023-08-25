@@ -175,16 +175,16 @@ const PageCategory = () => {
     [dispatchGetCategories]
   );
 
+  const onSearch = (value) => {
+    dispatchGetCategories({ params: { search: value } });
+  };
+
   return (
     <MainCard>
       <ControlBar>
         <InputSearch
-          name=""
-          message=""
-          type=""
-          value=""
-          onBlur=""
-          onChange=""
+          onSearch={onSearch}
+          placeholder={t('table.category.searching')}
           style={{
             width: '40%'
             // marginTop: '8px',

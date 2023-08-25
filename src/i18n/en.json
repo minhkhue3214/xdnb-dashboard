@@ -52,6 +52,7 @@
   },
   "table": {
     "user": {
+      "searching":"User Search",
       "role": "Role",
       "name": "Fullname",
       "email": "Email",
@@ -63,6 +64,7 @@
       "phone": "Phone"
     },
     "post": {
+      "searching":"Post Search",
       "title": "Title",
       "avatar": "Avatar",
       "description": "Description",
@@ -72,6 +74,7 @@
       "actions": "Actions"
     },
     "category": {
+      "searching":"Category Search",
       "name": "Category Name",
       "icon": "Icon",
       "slug": "Slug",
@@ -81,6 +84,7 @@
       "hide": "Hide"
     },
     "products": {
+      "searching":"Product Search",
       "name": "Product name",
       "discounted_price": "Discounted price",
       "original_price": "Original price",
@@ -93,6 +97,7 @@
       "actions": "Actions"
     },
     "consultationRequest": {
+      "searching":"Consultation Search",
       "name": "Name",
       "phone": "Phone",
       "email": "Email Address",
@@ -121,7 +126,8 @@
       "previewPost": "Preview",
       "cancel": "Cancel",
       "submitAddPost": "Submit",
-      "submitEditPost": "Submit"
+      "submitEditPost": "Submit",
+      "navigateLink": "Forward link"
     },
     "category": {
       "addCategory": "Add Category",

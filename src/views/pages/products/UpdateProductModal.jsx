@@ -17,6 +17,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
   // const [newCategoryId, setNewCategoryId] = useState(null);
   const [initValue, setInitValue] = useState('');
+  const [linkProduct, setLinkProduct] = useState('');
 
   const flattenChildren = (items) => {
     const flattened = [];
@@ -140,6 +141,7 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       formik.setFieldValue('gallery_items', data.gallery_items || '');
 
       console.log('data.gallery_items', data.gallery_items);
+      setLinkProduct(data.slug);
       // var galleryWithId = data.gallery_items?.map((obj) => {
       //   return { ...obj, id: uuidv4() };
       // });
@@ -277,11 +279,14 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
             {t('modal.post.previewPost')}
           </Button>,
           <Button key="1" type="primary" onClick={formik.handleSubmit}>
-            {t('modal.post.submitAddProduct')}
+            {t('modal.product.submitAddProduct')}
           </Button>,
           <Button key="2" danger onClick={handleCancel}>
             {t('modal.post.cancel')}
-          </Button>
+          </Button>,
+          <a key="4" href={`https://xuongdaninhbinh.com/${slugOfCategory}${linkProduct}`} target="_blank" rel="noopener noreferrer">
+            <Button>{t('modal.post.navigateLink')}</Button>
+          </a>
         ]}
       >
         <EditUserWrapper>

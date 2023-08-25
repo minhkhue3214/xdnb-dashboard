@@ -25,6 +25,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
   const [imagePath, setImagePath] = useState('');
   const [initValue, setInitValue] = useState('');
+  const [linkPost, setLinkPost] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -137,6 +138,7 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
       formik.setFieldValue('tags', data.tags);
       setImagePath(data.image?.path || '');
       setInitValue(data.content);
+      setLinkPost(`https://xuongdaninhbinh.com/post/${data.slug}`)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postsState.detail]);
@@ -201,7 +203,10 @@ const UpdatePostModal = ({ id, open, setOpen }) => {
           </Button>,
           <Button key="2" danger onClick={handleCancel}>
             {t('modal.post.cancel')}
-          </Button>
+          </Button>,
+          <a key="4" href={linkPost} target="_blank" rel="noopener noreferrer">
+            <Button >{t('modal.post.navigateLink')}</Button>
+          </a>
         ]}
       >
         <Wrapper>

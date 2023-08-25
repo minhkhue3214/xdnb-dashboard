@@ -7,21 +7,22 @@ const { Search } = Input;
 const AtomInputSearch = (props) => {
   const {
     style = {}, // custom style cho wrapper
-    inputStyle = {}, // custom style cho input
+    // inputStyle = {}, // custom style cho input
     // messageStyle = {}, // custom style cho message
     // visileLabel = true, // Có hiện label hay không?
     // visibleMessage = true, // Có hiện message hay không?
     // label = '', // labelText
     // message = '', // messageText
-    type = '', // '' | 'warning' | 'error'
+    // type = '', // '' | 'warning' | 'error'
     // onFocus, // onFocus
     // onBlur, // onBlur
-    onChange, // hàm bắt sự kiện onChange
+    // onChange, // hàm bắt sự kiện onChange
+    onSearch,
+    placeholder,
     // hiddenMode = 'hidden', // hidden || none Có 2 cách ẩn input: ẩn hoàn toàn với display = none, chỉ ẩn phần tử nhưng vẫn giữ nguyên vị trí với visibility = hidden
-    ...restProps // Tất cả những props được truyền vào khác với các props bên trên sẽ được truyền cho thẻ Input của antd
+    // ...restProps // Tất cả những props được truyền vào khác với các props bên trên sẽ được truyền cho thẻ Input của antd
     // Có thể sử dụng các thuộc tính của thẻ Input antd như bình thường.
   } = props;
-
 
   // const id = React.useMemo(() => {
   //   return uuidv4();
@@ -29,7 +30,7 @@ const AtomInputSearch = (props) => {
 
   return (
     <InputWrapper style={style}>
-      <Search status={type} style={inputStyle} size="large" onChange={onChange}{...restProps} />
+      <Search size="large" placeholder={placeholder} onSearch={onSearch} enterButton />
     </InputWrapper>
   );
 };

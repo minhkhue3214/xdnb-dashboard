@@ -5,21 +5,24 @@ import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import * as yup from 'yup';
+import { addPostApi } from '~/api/posts';
+import dispatchToast from '~/handlers/toast';
 import { useAuthenticationStore } from '~/hooks/authentication';
 import { usePostsStore } from '~/hooks/posts';
-import { DatePicker, Editor, Input, InputNumber, InputPermalink, Selector, Tag, UploadImage, PreviewModal } from '~/ui-component/atoms';
+import { DatePicker, Editor, Input, InputNumber, InputPermalink, PreviewModal, Selector, Tag, UploadImage } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import NavigateLink from './NavigateLink';
 
 const AddPostModal = ({ open, setOpen }) => {
   const { t } = useTranslation();
-  const { dispatchAddPost } = usePostsStore();
+  const { dispatchGetPosts } = usePostsStore();
   const { authenticationState, dispatchForceLogout } = useAuthenticationStore();
 
   const [loading, setLoading] = useState(false);
   const [imagePath, setImagePath] = useState('');
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
   const [openNavigateLink, setOpenNavigateLink] = useState(false);
+  const [navigateLink, setNavigateLink] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -53,23 +56,53 @@ const AddPostModal = ({ open, setOpen }) => {
         console.log('handle publicationDate', publicationDate);
         if (formik.isValid) {
           // logic submit
-          dispatchAddPost({
-            title,
-            type,
-            description,
-            author,
-            publication_date: publicationDate,
-            slug,
-            image: {
-              path: imagePath,
-              alt: imageAlt
-            },
-            content,
-            priority,
-            tags
-          });
+          // dispatchAddPost({
+          //   title,
+          //   type,
+          //   description,
+          //   author,
+          //   publication_date: publicationDate,
+          //   slug,
+          //   image: {
+          //     path: imagePath,
+          //     alt: imageAlt
+          //   },
+          //   content,
+          //   priority,
+          //   tags
+          // });
+
+          try {
+            const results = addPostApi({
+              title,
+              type,
+              description,
+              author,
+              publication_date: publicationDate,
+              slug,
+              image: {
+                path: imagePath,
+                alt: imageAlt
+              },
+              content,
+              priority,
+              tags
+            });
+
+            console.log('Success', results);
+            dispatchToast('success', 'Thêm bài viết thành công');
+            dispatchGetPosts();
+            setNavigateLink(`https://xuongdaninhbinh.com/post/${slug}`);
+            setOpenNavigateLink(true);
+          } catch (error) {
+            // console.log('Error', results);
+            if (error.code == 401) {
+              dispatchForceLogout();
+            }
+            dispatchToast('error', results.message);
+          }
+
           handleCancel();
-          setOpenNavigateLink(true)
         }
       });
     },
@@ -80,6 +113,7 @@ const AddPostModal = ({ open, setOpen }) => {
     formik.handleReset();
     setOpen(false);
     setImagePath('');
+    setNavigateLink('');
   }, [formik, setOpen]);
 
   const handleChangePublicationDate = useCallback(
@@ -383,7 +417,7 @@ const AddPostModal = ({ open, setOpen }) => {
         </Wrapper>
       </Modal>
       <PreviewModal open={openPreviewModal} setOpen={handleChangeOpenPreviewModal} previewValue={formik.values.content} />
-      <NavigateLink open={openNavigateLink} setOpen={setOpenNavigateLink} />
+      <NavigateLink open={openNavigateLink} setOpen={setOpenNavigateLink} navigateLink={navigateLink} />
     </>
   );
 };
