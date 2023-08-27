@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+import * as yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import { addProductApi } from '~/api/products';
 import dispatchToast from '~/handlers/toast';
@@ -95,6 +96,16 @@ const AddProductModal = ({ open, setOpen }) => {
       priority: 1,
       gallery_items: imageProduct
     },
+    validationSchema: yup.object({
+      name: yup.string().required(t('input.error.product.pleaseEnterName')),
+      slug: yup
+        .string()
+        .matches(/^[a-z0-9-]+$/, t('input.error.category.slugNotValid'))
+        .required(t('input.error.category.pleaseEnterSlug')),
+      short_description: yup.string().required(t('input.error.product.pleaseEnterShortdescription')),
+      long_description: yup.string().required(t('input.error.product.pleaseEnterLongdescription')),
+      original_price: yup.string().required(t('input.error.product.pleaseEnterOriginalPrice')),
+    }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {

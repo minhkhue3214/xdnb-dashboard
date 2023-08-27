@@ -48,6 +48,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
     },
     validationSchema: yup.object({
       name: yup.string().required(t('input.error.category.pleaseEnterName')),
+      content: yup.string().required(t('input.error.category.pleaseEnterContent')),
       slug: yup
         .string()
         .matches(/^[a-z0-9-]+$/, t('input.error.category.slugNotValid'))

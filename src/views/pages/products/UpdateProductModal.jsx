@@ -9,6 +9,7 @@ import { useProductsStore } from '~/hooks/products';
 import { Input, InputNumber, Selector, Switch, UploadProductImage, Editor, InputPermalink, PreviewModal } from '~/ui-component/atoms';
 import { Modal } from '~/ui-component/molecules';
 import { v4 as uuidv4 } from 'uuid';
+import * as yup from 'yup';
 
 const UpdateProductModal = ({ id, setOpen, open }) => {
   const { t } = useTranslation();
@@ -70,9 +71,19 @@ const UpdateProductModal = ({ id, setOpen, open }) => {
       long_description: '',
       original_price: '',
       discounted_price: '',
-      quantity: 0,
+      quantity: 1,
       priority: 1
     },
+    validationSchema: yup.object({
+      name: yup.string().required(t('input.error.product.pleaseEnterName')),
+      slug: yup
+        .string()
+        .matches(/^[a-z0-9-]+$/, t('input.error.category.slugNotValid'))
+        .required(t('input.error.category.pleaseEnterSlug')),
+      short_description: yup.string().required(t('input.error.product.pleaseEnterShortdescription')),
+      long_description: yup.string().required(t('input.error.product.pleaseEnterLongdescription')),
+      original_price: yup.string().required(t('input.error.product.pleaseEnterOriginalPrice'))
+    }),
     onSubmit: (values) => {
       formik.validateForm().then(() => {
         if (formik.isValid) {

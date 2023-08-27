@@ -45,8 +45,8 @@ const AddUserModal = ({ open, setOpen }) => {
         .min(8, t('input.error.user.passwordMinLength'))
         .matches(/^(?=.*[a-z])(?=.*[0-9])/, t('input.error.user.passwordRequirements'))
         .required(t('input.error.user.pleaseEnterPassword')),
-      fullname: yup.string().max(100, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
-      phone: yup.number(),
+      fullname: yup.string().max(50, t('input.error.user.nameTooLong')).required(t('input.error.user.pleaseEnterUsername')),
+      phone: yup.number().max(10, t('input.error.user.phoneTooLong')).required(t('input.error.user.pleaseEnterPhone')),
       username: yup
         .string()
         .matches(/^[a-zA-Z0-9_]+$/, t('input.error.user.usernameNoSpecialChars'))

@@ -40,8 +40,9 @@ const AddPostModal = ({ open, setOpen }) => {
     validationSchema: yup.object({
       title: yup.string().required(t('input.error.post.pleaseEnterTitle')),
       type: yup.string().required(t('input.error.post.pleaseEnterType')),
-      author: yup.string().required(t('input.error.post.pleaseEnterAuthor')),
       description: yup.string().required(t('input.error.post.pleaseEnterDescription')),
+      author: yup.string().required(t('input.error.post.pleaseEnterAuthor')),
+      content: yup.string().required(t('input.error.post.pleaseEnterContent')),
       publicationDate: yup.date().required(t('input.error.post.pleaseEnterPublicationDate')),
       slug: yup
         .string()

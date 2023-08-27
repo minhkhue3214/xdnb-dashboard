@@ -54,7 +54,7 @@
   },
   "table": {
     "user": {
-      "searching":"Tìm kiếm người dùng",
+      "searching": "Tìm kiếm người dùng",
       "fullname": "Tên Đầy Đủ",
       "role": "Role",
       "name": "Tên người dùng",
@@ -70,7 +70,7 @@
       "avatar": "Ảnh"
     },
     "post": {
-      "searching":"Tìm kiếm bài viết",
+      "searching": "Tìm kiếm bài viết",
       "avatar": "Ảnh đại diện",
       "title": "Tiêu Đề",
       "description": "Mô Tả",
@@ -80,7 +80,7 @@
       "actions": "Thao Tác"
     },
     "category": {
-      "searching":"Tìm kiếm loại sản phẩm",
+      "searching": "Tìm kiếm loại sản phẩm",
       "name": "Danh Mục",
       "icon": "Icon",
       "slug": "Slug",
@@ -90,7 +90,7 @@
       "hide": "Ẩn"
     },
     "products": {
-      "searching":"Tìm kiếm sản phẩm",
+      "searching": "Tìm kiếm sản phẩm",
       "name": "Tên Sản Phẩm",
       "discounted_price": "Giá Giảm",
       "original_price": "Giá Gốc",
@@ -105,7 +105,7 @@
       "actions": "Thao Tác"
     },
     "consultationRequest": {
-      "searching":"Tìm kiếm yêu cầu tư vấn",
+      "searching": "Tìm kiếm yêu cầu tư vấn",
       "name": "Tên khách hàng",
       "phone": "Số điện thoại",
       "email": "Địa chỉ email",
@@ -231,6 +231,7 @@
         "nameTooLong": "Tên của bạn quá dài",
         "addressTooLong": "Địa chỉ của bạn quá dài",
         "phoneTooLong": "Số điện thoại của bạn quá dài",
+        "pleaseEnterPhone": "Vui lòng nhập số điện thoại của bạn",
         "pleaseEnterUsername": "Vui lòng nhập tên người dùng",
         "usernameNoSpecialChars": "Tên người dùng không được chứa ký tự đặc biệt",
         "usernameNoSpaces": "Tên người dùng không được chứa dấu cách",
@@ -249,9 +250,16 @@
       },
       "category": {
         "pleaseEnterName": "Vui lòng nhập tiêu đề bài viết",
+        "pleaseEnterContent": "Vui lòng nhập nội dụng bài viết",
         "pleaseEnterSlug": "Vui lòng nhập permalink",
         "pleaseEnterPriority": "Vui lòng nhập độ ưu tiên",
         "slugNotValid": "permalink không hợp lệ"
+      },
+      "product": {
+        "pleaseEnterName": "Vui lòng nhập tên sản phẩm",
+        "pleaseEnterShortdescription": "Vui lòng nhập mô tả ngắn",
+        "pleaseEnterLongdescription": "Vui lòng nhập mô tả đầy đủ",
+        "pleaseEnterOriginalPrice": "Vui lòng nhập giá nguyên gốc"
       }
     }
   }
