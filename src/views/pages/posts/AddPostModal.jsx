@@ -114,7 +114,7 @@ const AddPostModal = ({ open, setOpen }) => {
     formik.handleReset();
     setOpen(false);
     setImagePath('');
-    setNavigateLink('');
+    // setNavigateLink('');
   }, [formik, setOpen]);
 
   const handleChangePublicationDate = useCallback(

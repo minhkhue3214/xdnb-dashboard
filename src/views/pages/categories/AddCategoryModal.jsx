@@ -115,7 +115,7 @@ const AddCategoryModal = ({ open, setOpen }) => {
     console.log('handleCancel');
     formik.handleReset();
     setOpen(false);
-    setNavigateLink('');
+    // setNavigateLink('');
     setImagePath('');
     setIconPath('testing');
   }, [formik, setOpen]);

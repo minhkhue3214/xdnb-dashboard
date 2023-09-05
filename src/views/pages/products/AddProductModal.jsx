@@ -168,7 +168,7 @@ const AddProductModal = ({ open, setOpen }) => {
   const handleCancel = useCallback(() => {
     formik.handleReset();
     setImageProduct([]);
-    setNavigateLink('');
+    // setNavigateLink('');
     setOpen(false);
   }, [formik, setOpen]);
 

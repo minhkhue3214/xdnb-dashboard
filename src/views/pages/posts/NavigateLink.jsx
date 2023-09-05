@@ -6,7 +6,7 @@ const { Link, Paragraph } = Typography;
 
 const NavigateLinkModal = ({ open, setOpen, navigateLink }) => {
   // const { t } = useTranslation();
-
+  console.log('navigateLink', navigateLink);
   const handleCancel = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
